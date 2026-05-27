@@ -25,25 +25,33 @@ export const tools: Tool[] = [
   { slug: 'random-text-generator', title: 'Random Text Generator', description: 'Generate random strings for testing.', component: 'RandomTextGenerator', category: 'text', icon: 'Shuffle' },
   { slug: 'lorem-ipsum-generator', title: 'Lorem Ipsum Generator', description: 'Generate placeholder text.', component: 'LoremIpsumGenerator', category: 'text', icon: 'Text' },
 
-  // Image Tools
-  { slug: 'image-compressor', title: 'Image Compressor', description: 'Reduce image file size instantly.', component: 'ImageCompressor', category: 'image', icon: 'Minimize2' },
-  { slug: 'png-to-jpg', title: 'PNG to JPG', description: 'Convert PNG images to JPG instantly in your browser. No upload required.', component: 'PngToJpg', category: 'image', icon: 'RefreshCw' },
-  { slug: 'jpg-to-png', title: 'JPG to PNG', description: 'Convert JPG images to PNG instantly in your browser. No upload required.', component: 'JpgToPng', category: 'image', icon: 'RefreshCw' },
-  { slug: 'jpg-to-webp', title: 'JPG to WebP', description: 'Convert JPG images to WebP format instantly in your browser. No upload required.', component: 'JpgToWebp', category: 'image', icon: 'RefreshCw' },
-  { slug: 'webp-to-jpg', title: 'WebP to JPG', description: 'Convert WebP images to JPG format instantly in your browser. No upload required.', component: 'WebpToJpg', category: 'image', icon: 'RefreshCw' },
-  { slug: 'png-to-webp', title: 'PNG to WebP', description: 'Convert PNG images to WebP format instantly in your browser. No upload required.', component: 'PngToWebp', category: 'image', icon: 'RefreshCw' },
-  { slug: 'webp-to-png', title: 'WebP to PNG', description: 'Convert WebP images to PNG format instantly in your browser. No upload required.', component: 'WebpToPng', category: 'image', icon: 'RefreshCw' },
-  { slug: 'heic-to-jpg', title: 'HEIC to JPG', description: 'Convert HEIC images to JPG format instantly in your browser. No upload required.', component: 'HeicToJpg', category: 'image', icon: 'RefreshCw' },
-  { slug: 'avif-to-jpg', title: 'AVIF to JPG', description: 'Convert AVIF images to JPG format instantly in your browser. No upload required.', component: 'AvifToJpg', category: 'image', icon: 'RefreshCw' },
-  { slug: 'svg-to-png', title: 'SVG to PNG', description: 'Convert SVG images to PNG format instantly in your browser. No upload required.', component: 'SvgToPng', category: 'image', icon: 'RefreshCw' },
-  { slug: 'image-resizer', title: 'Image Resizer', description: 'Resize images to any dimensions.', component: 'ImageResizer', category: 'image', icon: 'Maximize' },
-  { slug: 'image-editor', title: 'Image Editor', description: 'Rotate, flip, and edit images.', component: 'ImageEditor', category: 'image', icon: 'Edit3' },
-  { slug: 'image-base64', title: 'Image to Base64', description: 'Convert images to Base64 strings.', component: 'ImageBase64Tool', category: 'image', icon: 'FileCode' },
-  { slug: 'image-metadata', title: 'Image Metadata', description: 'View and remove image EXIF data.', component: 'ImageMetadataTool', category: 'image', icon: 'Info' },
-  { slug: 'image-color-tool', title: 'Image Color Tool', description: 'Extract colors and grayscale.', component: 'ImageColorTool', category: 'image', icon: 'Pipette' },
-  { slug: 'thumbnail-generator', title: 'Thumbnail Generator', description: 'Create custom image thumbnails.', component: 'ThumbnailGenerator', category: 'image', icon: 'Image' },
-  { slug: 'blur-detector', title: 'Blur Detector', description: 'Check image sharpness and blur.', component: 'BlurDetector', category: 'image', icon: 'EyeOff' },
-  { slug: 'image-crop', title: 'Image Cropper', description: 'Crop images with free or fixed aspect ratios.', component: 'ImageCropTool', category: 'image', icon: 'Crop' },
+  // Image Tools - Refactored and Reordered
+  { slug: 'image-compressor', title: 'Image Compressor', description: 'Reduce image file size instantly.', component: 'ImageCompressor', category: 'image', subCategory: 'Optimize', icon: 'Minimize2' },
+  { slug: 'image-resizer', title: 'Image Resizer', description: 'Resize images to any dimensions.', component: 'ImageResizer', category: 'image', subCategory: 'Optimize', icon: 'Maximize' },
+
+  // Convert Group
+  { slug: 'png-to-jpg', title: 'PNG to JPG', description: 'Convert PNG images to JPG instantly in your browser. No upload required.', component: 'PngToJpg', category: 'image', subCategory: 'Convert', icon: 'RefreshCw' },
+  { slug: 'jpg-to-png', title: 'JPG to PNG', description: 'Convert JPG images to PNG instantly in your browser. No upload required.', component: 'JpgToPng', category: 'image', subCategory: 'Convert', icon: 'RefreshCw' },
+  { slug: 'jpg-to-webp', title: 'JPG to WebP', description: 'Convert JPG images to WebP format instantly in your browser. No upload required.', component: 'JpgToWebp', category: 'image', subCategory: 'Convert', icon: 'RefreshCw' },
+  { slug: 'png-to-webp', title: 'PNG to WebP', description: 'Convert PNG images to WebP format instantly in your browser. No upload required.', component: 'PngToWebp', category: 'image', subCategory: 'Convert', icon: 'RefreshCw' },
+  { slug: 'webp-to-jpg', title: 'WebP to JPG', description: 'Convert WebP images to JPG format instantly in your browser. No upload required.', component: 'WebpToJpg', category: 'image', subCategory: 'Convert', icon: 'RefreshCw' },
+  { slug: 'webp-to-png', title: 'WebP to PNG', description: 'Convert WebP images to PNG format instantly in your browser. No upload required.', component: 'WebpToPng', category: 'image', subCategory: 'Convert', icon: 'RefreshCw' },
+  { slug: 'heic-to-jpg', title: 'HEIC to JPG', description: 'Convert HEIC images to JPG format instantly in your browser. No upload required.', component: 'HeicToJpg', category: 'image', subCategory: 'Convert', icon: 'RefreshCw' },
+  { slug: 'avif-to-jpg', title: 'AVIF to JPG', description: 'Convert AVIF images to JPG format instantly in your browser. No upload required.', component: 'AvifToJpg', category: 'image', subCategory: 'Convert', icon: 'RefreshCw' },
+  { slug: 'svg-to-png', title: 'SVG to PNG', description: 'Convert SVG images to PNG format instantly in your browser. No upload required.', component: 'SvgToPng', category: 'image', subCategory: 'Convert', icon: 'RefreshCw' },
+
+  // Edit Group
+  { slug: 'image-crop', title: 'Image Cropper', description: 'Crop images with free or fixed aspect ratios.', component: 'ImageCropTool', category: 'image', subCategory: 'Edit', icon: 'Crop' },
+  { slug: 'image-editor', title: 'Image Editor', description: 'Rotate, flip, and edit images.', component: 'ImageEditor', category: 'image', subCategory: 'Edit', icon: 'Edit3' },
+
+  // Analyze Group
+  { slug: 'image-metadata', title: 'Image Metadata', description: 'View and remove image EXIF data.', component: 'ImageMetadataTool', category: 'image', subCategory: 'Analyze', icon: 'Info' },
+  { slug: 'image-color-tool', title: 'Image Color Tool', description: 'Extract colors and grayscale.', component: 'ImageColorTool', category: 'image', subCategory: 'Analyze', icon: 'Pipette' },
+  { slug: 'blur-detector', title: 'Blur Detector', description: 'Check image sharpness and blur.', component: 'BlurDetector', category: 'image', subCategory: 'Analyze', icon: 'EyeOff' },
+
+  // Utilities Group
+  { slug: 'image-base64', title: 'Image to Base64', description: 'Convert images to Base64 strings.', component: 'ImageBase64Tool', category: 'image', subCategory: 'Utilities', icon: 'FileCode' },
+  { slug: 'thumbnail-generator', title: 'Thumbnail Generator', description: 'Create custom image thumbnails.', component: 'ThumbnailGenerator', category: 'image', subCategory: 'Utilities', icon: 'Image' },
 
   // PDF Tools
   { slug: 'pdf-merge', title: 'PDF Merge', description: 'Combine multiple PDFs into one.', component: 'PdfMergeTool', category: 'pdf', icon: 'Combine' },

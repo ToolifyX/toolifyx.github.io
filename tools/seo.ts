@@ -4,6 +4,7 @@ export const seoData: Record<string, {
   faqs: { question: string; answer: string }[];
   howToUse: string[];
 }> = {
+  // Developer Tools
   "json-formatter": {
     "seoTitle": "JSON Formatter - Online JSON Beautifier & Prettifier",
     "metaDescription": "Free online tool to format, beautify, and prettify JSON data. Make your JSON readable with custom indentation instantly.",
@@ -144,6 +145,8 @@ export const seoData: Record<string, {
       "Copy the result to your project."
     ]
   },
+
+  // Text Tools
   "word-counter": {
     "seoTitle": "Word Counter - Count Words & Characters Online",
     "metaDescription": "Free online word counter tool. Calculate word count, character count, sentences, and paragraphs in real-time.",
@@ -284,6 +287,8 @@ export const seoData: Record<string, {
       "Click 'Generate' and copy the text."
     ]
   },
+
+  // Image Tools - Reordered
   "image-compressor": {
     "seoTitle": "Image Compressor - Reduce Image Size Online",
     "metaDescription": "Compress images without losing quality. Support for JPG, PNG, and WebP. Faster website loading times.",
@@ -296,6 +301,20 @@ export const seoData: Record<string, {
       "Upload your image file.",
       "Adjust the quality slider.",
       "Click 'Compress' and download the result."
+    ]
+  },
+  "image-resizer": {
+    "seoTitle": "Image Resizer - Resize Images Online Free",
+    "metaDescription": "Change image dimensions to any width and height. Maintain aspect ratio for professional results.",
+    "faqs": [
+      { "question": "Can I keep aspect ratio?", "answer": "Yes, the tool can automatically calculate height based on width to avoid stretching." },
+      { "question": "What is the output format?", "answer": "Resized images are currently exported as PNG for maximum quality." },
+      { "question": "Is it free?", "answer": "Yes, all our image tools are 100% free to use." }
+    ],
+    "howToUse": [
+      "Upload the image you want to resize.",
+      "Enter the new width and height.",
+      "Download the resized image."
     ]
   },
   "png-to-jpg": {
@@ -340,20 +359,6 @@ export const seoData: Record<string, {
       "Download your WebP images."
     ]
   },
-  "webp-to-jpg": {
-    "seoTitle": "WebP to JPG Converter – Free Online Tool",
-    "metaDescription": "Convert WebP images to JPG instantly in your browser. No upload required.",
-    "faqs": [
-      { "question": "Can I convert many images?", "answer": "Yes, you can upload up to 12 files at once." },
-      { "question": "Will it work on my phone?", "answer": "Yes, it works on any device with a modern browser." },
-      { "question": "Is it fast?", "answer": "It is ultra-fast as it uses your device's hardware." }
-    ],
-    "howToUse": [
-      "Select your WebP files.",
-      "Click 'Convert to JPG'.",
-      "Download your JPG images."
-    ]
-  },
   "png-to-webp": {
     "seoTitle": "PNG to WebP Converter – Free Online Tool",
     "metaDescription": "Convert PNG images to WebP instantly in your browser. No upload required.",
@@ -366,6 +371,20 @@ export const seoData: Record<string, {
       "Select your PNG files.",
       "Click 'Convert to WebP'.",
       "Download your WebP images."
+    ]
+  },
+  "webp-to-jpg": {
+    "seoTitle": "WebP to JPG Converter – Free Online Tool",
+    "metaDescription": "Convert WebP images to JPG instantly in your browser. No upload required.",
+    "faqs": [
+      { "question": "Can I convert many images?", "answer": "Yes, you can upload up to 12 files at once." },
+      { "question": "Will it work on my phone?", "answer": "Yes, it works on any device with a modern browser." },
+      { "question": "Is it fast?", "answer": "It is ultra-fast as it uses your device's hardware." }
+    ],
+    "howToUse": [
+      "Select your WebP files.",
+      "Click 'Convert to JPG'.",
+      "Download your JPG images."
     ]
   },
   "webp-to-png": {
@@ -424,18 +443,18 @@ export const seoData: Record<string, {
       "Download your PNG images."
     ]
   },
-  "image-resizer": {
-    "seoTitle": "Image Resizer - Resize Images Online Free",
-    "metaDescription": "Change image dimensions to any width and height. Maintain aspect ratio for professional results.",
+  "image-crop": {
+    "seoTitle": "Image Cropper - Crop Images Online Free",
+    "metaDescription": "Crop images with free or fixed aspect ratios. Maintain aspect ratio for professional results.",
     "faqs": [
-      { "question": "Can I keep aspect ratio?", "answer": "Yes, the tool can automatically calculate height based on width to avoid stretching." },
-      { "question": "What is the output format?", "answer": "Resized images are currently exported as PNG for maximum quality." },
+      { "question": "Can I crop with fixed aspect ratio?", "answer": "Yes, you can choose from common presets like 1:1, 4:3, 16:9, etc." },
+      { "question": "What is the output format?", "answer": "Cropped images are currently exported as PNG for maximum quality." },
       { "question": "Is it free?", "answer": "Yes, all our image tools are 100% free to use." }
     ],
     "howToUse": [
-      "Upload the image you want to resize.",
-      "Enter the new width and height.",
-      "Download the resized image."
+      "Upload the image you want to crop.",
+      "Select an aspect ratio or use free crop.",
+      "Adjust the crop area and click 'Apply Crop'."
     ]
   },
   "image-editor": {
@@ -450,20 +469,6 @@ export const seoData: Record<string, {
       "Upload your image.",
       "Use the buttons to rotate or flip.",
       "Download the edited version."
-    ]
-  },
-  "image-base64": {
-    "seoTitle": "Image to Base64 - Online Base64 Encoder",
-    "metaDescription": "Convert any image into a Base64 string for use in HTML, CSS, or JSON. Secure and instant conversion.",
-    "faqs": [
-      { "question": "Why use Base64 for images?", "answer": "It allows you to embed small images directly in code, reducing the number of HTTP requests." },
-      { "question": "Can I go from Base64 to Image?", "answer": "Yes, paste a Base64 string and our tool will render and let you download the image." },
-      { "question": "Is it private?", "answer": "Yes, conversion happens entirely on your machine." }
-    ],
-    "howToUse": [
-      "Upload an image or paste a Base64 string.",
-      "Copy the generated string or preview the image.",
-      "Download the result if needed."
     ]
   },
   "image-metadata": {
@@ -494,20 +499,6 @@ export const seoData: Record<string, {
       "Copy colors or download the black and white image."
     ]
   },
-  "thumbnail-generator": {
-    "seoTitle": "Thumbnail Generator - Create Image Thumbnails",
-    "metaDescription": "Generate custom-sized thumbnails from your images. Perfect for profile pictures and previews.",
-    "faqs": [
-      { "question": "Does it crop images?", "answer": "Yes, it uses a 'cover' crop to ensure the thumbnail is filled and looks professional." },
-      { "question": "Can I set the size?", "answer": "Yes, use the slider to choose any size from 50px to 500px." },
-      { "question": "What is the output?", "answer": "Thumbnails are exported as PNG files." }
-    ],
-    "howToUse": [
-      "Upload your original image.",
-      "Choose your thumbnail size.",
-      "Download the generated thumbnail."
-    ]
-  },
   "blur-detector": {
     "seoTitle": "Blur Detector - Check Image Sharpness",
     "metaDescription": "Analyze your photos to see if they are blurry or sharp. Uses edge detection to estimate clarity.",
@@ -522,6 +513,36 @@ export const seoData: Record<string, {
       "Review the sharpness analysis."
     ]
   },
+  "image-base64": {
+    "seoTitle": "Image to Base64 - Online Base64 Encoder",
+    "metaDescription": "Convert any image into a Base64 string for use in HTML, CSS, or JSON. Secure and instant conversion.",
+    "faqs": [
+      { "question": "Why use Base64 for images?", "answer": "It allows you to embed small images directly in code, reducing the number of HTTP requests." },
+      { "question": "Can I go from Base64 to Image?", "answer": "Yes, paste a Base64 string and our tool will render and let you download the image." },
+      { "question": "Is it private?", "answer": "Yes, conversion happens entirely on your machine." }
+    ],
+    "howToUse": [
+      "Upload an image or paste a Base64 string.",
+      "Copy the generated string or preview the image.",
+      "Download the result if needed."
+    ]
+  },
+  "thumbnail-generator": {
+    "seoTitle": "Thumbnail Generator - Create Image Thumbnails",
+    "metaDescription": "Generate custom-sized thumbnails from your images. Perfect for profile pictures and previews.",
+    "faqs": [
+      { "question": "Does it crop images?", "answer": "Yes, it uses a 'cover' crop to ensure the thumbnail is filled and looks professional." },
+      { "question": "Can I set the size?", "answer": "Yes, use the slider to choose any size from 50px to 500px." },
+      { "question": "What is the output?", "answer": "Thumbnails are exported as PNG files." }
+    ],
+    "howToUse": [
+      "Upload your original image.",
+      "Choose your thumbnail size.",
+      "Download the generated thumbnail."
+    ]
+  },
+
+  // PDF Tools
   "pdf-merge": {
     "seoTitle": "PDF Merge - Combine PDF Files Online",
     "metaDescription": "Merge multiple PDF documents into a single file securely. Fast, private, and 100% browser-based.",
@@ -606,6 +627,8 @@ export const seoData: Record<string, {
       "Download the smaller version."
     ]
   },
+
+  // Design Tools
   "color-picker": {
     "seoTitle": "Color Picker - Hex, RGB, HSL Selector",
     "metaDescription": "Pick colors and get instant Hex, RGB, and HSL values. Perfect for developers and designers.",
@@ -704,6 +727,8 @@ export const seoData: Record<string, {
       "Copy the CSS styles for your project."
     ]
   },
+
+  // Utility Tools
   "qr-code-generator": {
     "seoTitle": "QR Code Generator - Create Custom QR Codes",
     "metaDescription": "Generate high-quality QR codes for links or text instantly. Download as PNG for free.",

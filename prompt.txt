@@ -1,113 +1,56 @@
-Build a complete Image Crop Tool suite inside the existing image tool platform.
+Refactor and reorder the Image Tools list across the entire codebase.
 GOAL
-Provide multiple crop modes for images with a modern UX:
-
-- Free crop
-- Fixed aspect ratio crop
-- Preset social media crops
-
-All processing must run fully in-browser using canvas.
-TOOLS TO CREATE
-Create separate tools OR modes inside Image Cropper:
-
-1. Free Crop Tool
-2. Fixed Ratio Crop Tool
-   - 1:1 (Square)
-   - 4:3
-   - 3:4
-   - 16:9
-   - 9:16
-3. Social Media Crop Presets
-   - Instagram Post (1:1)
-   - Instagram Story (9:16)
-   - Facebook Cover (16:9)
-   - YouTube Thumbnail (16:9)
-UI LAYOUT (IMPORTANT)
-Use split layout:
-
-LEFT PANEL:
-- Image upload (single image only)
-- Crop mode selector
-- Aspect ratio selector
-- Crop controls
-
-RIGHT PANEL:
-- Live preview canvas
-- Cropped result preview
-- Download button
-- Download All (if multiple outputs)
-CROPPING ENGINE
-Use HTML5 Canvas or Cropper.js style logic:
-
-- Load image into canvas
-- Apply crop coordinates
-- Maintain aspect ratio when required
-- Export cropped image as Blob
-
-Example:
-canvas.toBlob("image/png")
-STATE MANAGEMENT
-Use:
-
-- selectedImage
-- cropMode
-- cropArea
-- resultImage
-
-States:
-"idle" | "ready" | "cropping" | "done"
-QUEUE LOGIC (if multiple crops enabled)
-If user selects multiple presets:
-
-- process sequentially (NO Promise.all)
-- show progress:
-
-"Processing 2/5 crops..."
-RESULT SCREEN (REQUIRED)
-After crop completion:
-
-Show:
-
-✓ Crop completed
-
-- preview list of cropped images
-- original size vs cropped size
-- download buttons:
-  - Download All (ZIP)
-  - Download per image
-
-Button:
-"Crop New Image"
-VALIDATION
-- Only 1 image per session (or warn if multiple selected)
-- Reject non-image files
-- Limit file size per image:
-  max 10–15MB
-UX REQUIREMENTS
-- Drag to crop (interactive box)
-- Show crop boundaries clearly
-- Show aspect ratio lock toggle
-- Smooth UI transitions
-PERFORMANCE
-- Downscale large images (>2500px) before rendering
-- Use object URLs instead of base64
-- Release memory after processing
-REUSABLE COMPONENTS
-/components/crop/
-- CropCanvas.tsx
-- CropControls.tsx
-- AspectRatioSelector.tsx
-- CropResultPanel.tsx
-INTEGRATION
-Integrate into existing image tool system:
-
-- Add route: /tools/image-crop
-- Add to tool registry
-- Use shared ResultScreen system if available
+Reorganize tool order to improve:
+- UX (most used tools first)
+- SEO clustering (conversion tools grouped)
+- discoverability (scan-friendly layout)
+NEW ORDER (STRICT)
+Update ALL places where tool list is defined (UI, config, sidebar, homepage):
+1. Image Compressor
+2. Image Resizer
+3. FORMAT CONVERSION CLUSTER (IMPORTANT GROUP)
+- PNG to JPG
+- JPG to PNG
+- JPG to WebP
+- PNG to WebP
+- WebP to JPG
+- WebP to PNG
+- HEIC to JPG
+- AVIF to JPG
+- SVG to PNG
+4. IMAGE EDITING TOOLS
+- Image Cropper
+- Image Editor (rotate, flip, basic edits)
+5. IMAGE ANALYSIS TOOLS
+- Image Metadata (EXIF view/remove)
+- Image Color Tool (extract colors, grayscale)
+- Blur Detector
+6. UTILITY TOOLS
+- Image to Base64
+- Thumbnail Generator
+IMPLEMENTATION REQUIREMENTS
+1. Update tool registry (tools/config.ts or equivalent)
+2. Update sidebar navigation order
+3. Update homepage tool grid order
+4. Update category grouping if exists
+CATEGORY STRUCTURE (IF APPLICABLE)
+Ensure tools are grouped as:
+- Optimize
+- Convert
+- Edit
+- Analyze
+- Utilities
+UI CONSISTENCY
+- Do NOT change tool logic
+- ONLY reorder display + config
+- Ensure no breaking changes
+SEO REQUIREMENT
+- Keep conversion tools grouped together
+- Ensure internal linking still works
+- Preserve slugs/URLs
 OUTPUT
 Return:
-
-1. ImageCropTool main component
-2. Crop engine logic (canvas-based)
-3. UI components listed above
-4. Example integration in tool system
+1. updated tool registry file
+2. updated sidebar/menu
+3. updated homepage tool list
+4. confirmation that no tool logic was changed
