@@ -1,7 +1,7 @@
 import { Tool } from './types';
 
 export const tools: Tool[] = [
-  // Developer Tools (Existing)
+  // Developer Tools
   { slug: 'json-formatter', title: 'JSON Formatter', description: 'Format and beautify JSON instantly.', component: 'JsonFormatter', category: 'dev' },
   { slug: 'json-validator', title: 'JSON Validator', description: 'Check your JSON syntax and validate.', component: 'JsonValidator', category: 'dev' },
   { slug: 'base64-tool', title: 'Base64 Tool', description: 'Encode/Decode text to Base64 format.', component: 'Base64Tool', category: 'dev' },
@@ -13,7 +13,7 @@ export const tools: Tool[] = [
   { slug: 'html-minifier', title: 'HTML Minifier', description: 'Compress HTML by removing whitespace.', component: 'HtmlMinifier', category: 'dev' },
   { slug: 'css-minifier', title: 'CSS Minifier', description: 'Minify CSS stylesheets instantly.', component: 'CssMinifier', category: 'dev' },
 
-  // Text Tools (Existing)
+  // Text Tools
   { slug: 'word-counter', title: 'Word Counter', description: 'Count words, chars, and sentences.', component: 'WordCounter', category: 'text' },
   { slug: 'case-converter', title: 'Case Converter', description: 'Convert text to UPPER, lower, etc.', component: 'CaseConverter', category: 'text' },
   { slug: 'slug-generator', title: 'Slug Generator', description: 'Create SEO-friendly URL slugs.', component: 'SlugGenerator', category: 'text' },
@@ -25,7 +25,7 @@ export const tools: Tool[] = [
   { slug: 'random-text-generator', title: 'Random Text Generator', description: 'Generate random strings for testing.', component: 'RandomTextGenerator', category: 'text' },
   { slug: 'lorem-ipsum-generator', title: 'Lorem Ipsum Generator', description: 'Generate placeholder text.', component: 'LoremIpsumGenerator', category: 'text' },
 
-  // Image Tools (New)
+  // Image Tools
   { slug: 'image-compressor', title: 'Image Compressor', description: 'Reduce image file size instantly.', component: 'ImageCompressor', category: 'image' },
   { slug: 'image-converter', title: 'Image Converter', description: 'Convert between JPG, PNG, and WebP.', component: 'ImageConverter', category: 'image' },
   { slug: 'image-resizer', title: 'Image Resizer', description: 'Resize images to any dimensions.', component: 'ImageResizer', category: 'image' },
@@ -36,7 +36,7 @@ export const tools: Tool[] = [
   { slug: 'thumbnail-generator', title: 'Thumbnail Generator', description: 'Create custom image thumbnails.', component: 'ThumbnailGenerator', category: 'image' },
   { slug: 'blur-detector', title: 'Blur Detector', description: 'Check image sharpness and blur.', component: 'BlurDetector', category: 'image' },
 
-  // PDF Tools (New)
+  // PDF Tools
   { slug: 'pdf-merge', title: 'PDF Merge', description: 'Combine multiple PDFs into one.', component: 'PdfMergeTool', category: 'pdf' },
   { slug: 'pdf-split', title: 'PDF Split', description: 'Split or extract pages from PDF.', component: 'PdfSplitTool', category: 'pdf' },
   { slug: 'image-to-pdf', title: 'Image to PDF', description: 'Convert JPG/PNG images to PDF.', component: 'ImageToPdf', category: 'pdf' },
@@ -44,7 +44,7 @@ export const tools: Tool[] = [
   { slug: 'pdf-rotate', title: 'PDF Rotate', description: 'Rotate all pages in a PDF file.', component: 'PdfRotateTool', category: 'pdf' },
   { slug: 'pdf-compress', title: 'PDF Compress', description: 'Reduce PDF file size securely.', component: 'PdfCompressTool', category: 'pdf' },
 
-  // Design Tools (New)
+  // Design Tools
   { slug: 'color-picker', title: 'Color Picker', description: 'Pick colors and get HEX/RGB values.', component: 'ColorPicker', category: 'design' },
   { slug: 'gradient-generator', title: 'Gradient Generator', description: 'Design custom CSS linear gradients.', component: 'GradientGenerator', category: 'design' },
   { slug: 'box-shadow-generator', title: 'Box Shadow Generator', description: 'Create custom CSS box shadows.', component: 'BoxShadowGenerator', category: 'design' },
@@ -53,7 +53,7 @@ export const tools: Tool[] = [
   { slug: 'contrast-checker', title: 'Contrast Checker', description: 'Check WCAG contrast accessibility.', component: 'ContrastChecker', category: 'design' },
   { slug: 'font-preview', title: 'Font Preview Tool', description: 'Preview text with different fonts.', component: 'FontPreviewTool', category: 'design' },
 
-  // Utility Tools (New)
+  // Utility Tools
   { slug: 'qr-code-generator', title: 'QR Code Generator', description: 'Generate custom QR codes instantly.', component: 'QrCodeGenerator', category: 'utility' },
   { slug: 'password-generator', title: 'Password Generator', description: 'Create strong, secure passwords.', component: 'PasswordGenerator', category: 'utility' },
   { slug: 'unit-converter', title: 'Unit Converter', description: 'Convert length and weight units.', component: 'UnitConverter', category: 'utility' },

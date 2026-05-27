@@ -1,0 +1,84 @@
+Enhance the homepage of this Next.js tool platform by adding a tool search system.
+
+GOAL
+
+Allow users to quickly find tools by typing keywords.
+
+FEATURES
+
+1. Search input (top of homepage)
+
+- Placeholder: "Search tools..."
+- Controlled input (useState)
+- Real-time filtering
+
+2. SEARCH LOGIC
+
+Filter tools from tools/config.ts based on:
+
+- tool.title
+- tool.slug
+- tool.description
+
+Case-insensitive matching
+
+3. COMBINE WITH CATEGORY FILTER
+
+- If category selected → filter by category first
+- Then apply search filter
+
+4. UI BEHAVIOR
+
+- Show filtered tools list
+- If no results:
+  → show "No tools found"
+
+5. OPTIONAL UX IMPROVEMENTS
+
+- Debounce input (optional)
+- Highlight matched keyword (optional)
+- Clear button (× icon)
+
+6. COMPONENT STRUCTURE
+
+Create:
+
+/components/ToolSearch.tsx
+
+- input field
+- search state
+
+7. HOMEPAGE UPDATE
+
+Update /app/page.tsx:
+
+- import ToolSearch
+- maintain state:
+  - searchQuery
+  - selectedCategory
+
+- filter tools like:
+
+tools
+  .filter(byCategory)
+  .filter(bySearch)
+
+8. TAILWIND UI
+
+Search input:
+
+- w-full border rounded-lg p-3
+- focus:outline-none focus:ring-2
+
+CONSTRAINTS
+
+- No backend
+- Must work with static export
+- Keep performance good (lightweight)
+
+OUTPUT
+
+Return:
+
+1. ToolSearch.tsx
+2. Updated homepage (page.tsx)
