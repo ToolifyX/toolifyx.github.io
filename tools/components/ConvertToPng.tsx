@@ -3,13 +3,13 @@
 import React from 'react';
 import ImageConvertBase from '@/components/tool-layout/ImageConvertBase';
 
-export default function PngToJpg() {
+export default function ConvertToPng() {
   return (
     <ImageConvertBase
-      fromFormat="image/png"
-      toFormat="image/jpeg"
-      toExtension="jpg"
-      title="PNG to JPG Converter"
+      fromFormat="image/*"
+      toFormat="image/png"
+      toExtension="png"
+      title="Convert to PNG"
     />
   );
 }

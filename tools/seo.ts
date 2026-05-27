@@ -298,130 +298,46 @@ export const seoData: Record<string, {
       "Click 'Compress' and download the result."
     ]
   },
-  "png-to-jpg": {
-    "seoTitle": "PNG to JPG Converter – Free Online Tool",
-    "metaDescription": "Convert PNG images to JPG instantly in your browser. No upload required.",
+  "convert-to-png": {
+    "seoTitle": "Convert to PNG - Free Online Image Converter",
+    "metaDescription": "Convert JPG, WebP, SVG, and other formats to PNG instantly in your browser. No upload required, 100% private.",
     "faqs": [
-      { "question": "How do I convert PNG to JPG?", "answer": "Upload your PNG images and click 'Convert to JPG'." },
-      { "question": "Will it lose quality?", "answer": "Converting to JPG involves compression, but we use high-quality settings." },
-      { "question": "Is it safe?", "answer": "Yes, processing is 100% local in your browser." }
+      { "question": "What formats can I convert to PNG?", "answer": "You can convert JPG, WebP, SVG, BMP, and more to high-quality PNG." },
+      { "question": "Is the conversion lossless?", "answer": "Yes, PNG is a lossless format, so the original quality is preserved." },
+      { "question": "Can I convert multiple images?", "answer": "Yes, you can batch convert multiple images at once." }
     ],
     "howToUse": [
-      "Select your PNG files.",
-      "Click 'Convert to JPG'.",
-      "Download your JPG images."
-    ]
-  },
-  "jpg-to-png": {
-    "seoTitle": "JPG to PNG Converter – Free Online Tool",
-    "metaDescription": "Convert JPG images to PNG instantly in your browser. No upload required.",
-    "faqs": [
-      { "question": "Is the conversion lossless?", "answer": "Yes, PNG is a lossless format, so quality is preserved." },
-      { "question": "Does it support transparency?", "answer": "JPG doesn't have transparency, but the output PNG will be high quality." },
-      { "question": "Is it private?", "answer": "Yes, no files are ever uploaded." }
-    ],
-    "howToUse": [
-      "Select your JPG files.",
+      "Select your source images.",
       "Click 'Convert to PNG'.",
-      "Download your PNG images."
+      "Download your converted PNG files."
     ]
   },
-  "jpg-to-webp": {
-    "seoTitle": "JPG to WebP Converter – Free Online Tool",
-    "metaDescription": "Convert JPG images to WebP format instantly in your browser. No upload required.",
+  "convert-to-jpg": {
+    "seoTitle": "Convert to JPG - Free Online Image Converter",
+    "metaDescription": "Convert PNG, WebP, HEIC, AVIF, and more to JPG instantly in your browser. Fast, secure, and private.",
     "faqs": [
-      { "question": "Why convert to WebP?", "answer": "WebP provides superior compression and smaller file sizes for the web." },
-      { "question": "Is it widely supported?", "answer": "Yes, all modern browsers support WebP." },
-      { "question": "Is it free?", "answer": "Yes, entirely free and browser-based." }
+      { "question": "What formats can I convert to JPG?", "answer": "You can convert PNG, WebP, HEIC, AVIF, SVG and more to JPG." },
+      { "question": "Does it support HEIC/AVIF?", "answer": "Yes, we support modern high-efficiency formats like HEIC and AVIF." },
+      { "question": "Is it private?", "answer": "Yes, everything happens locally on your device; no images are uploaded." }
     ],
     "howToUse": [
-      "Select your JPG files.",
+      "Select your source images.",
+      "Click 'Convert to JPG'.",
+      "Download your high-quality JPG files."
+    ]
+  },
+  "convert-to-webp": {
+    "seoTitle": "Convert to WebP - Modern Image Converter",
+    "metaDescription": "Convert JPG, PNG, and more to WebP for superior web performance. Smaller file sizes, better quality.",
+    "faqs": [
+      { "question": "Why use WebP?", "answer": "WebP provides much smaller file sizes than JPG or PNG with comparable quality." },
+      { "question": "Does it support transparency?", "answer": "Yes, when converting from PNG, WebP preserves alpha transparency." },
+      { "question": "Is it free?", "answer": "Yes, it's 100% free and works entirely in your browser." }
+    ],
+    "howToUse": [
+      "Select your source images.",
       "Click 'Convert to WebP'.",
-      "Download your WebP images."
-    ]
-  },
-  "webp-to-jpg": {
-    "seoTitle": "WebP to JPG Converter – Free Online Tool",
-    "metaDescription": "Convert WebP images to JPG instantly in your browser. No upload required.",
-    "faqs": [
-      { "question": "Can I convert many images?", "answer": "Yes, you can upload up to 12 files at once." },
-      { "question": "Will it work on my phone?", "answer": "Yes, it works on any device with a modern browser." },
-      { "question": "Is it fast?", "answer": "It is ultra-fast as it uses your device's hardware." }
-    ],
-    "howToUse": [
-      "Select your WebP files.",
-      "Click 'Convert to JPG'.",
-      "Download your JPG images."
-    ]
-  },
-  "png-to-webp": {
-    "seoTitle": "PNG to WebP Converter – Free Online Tool",
-    "metaDescription": "Convert PNG images to WebP instantly in your browser. No upload required.",
-    "faqs": [
-      { "question": "Does it keep transparency?", "answer": "Yes, WebP supports alpha transparency just like PNG." },
-      { "question": "Is it better than PNG?", "answer": "WebP usually produces much smaller files with similar quality." },
-      { "question": "How many can I convert?", "answer": "Up to 12 images per batch." }
-    ],
-    "howToUse": [
-      "Select your PNG files.",
-      "Click 'Convert to WebP'.",
-      "Download your WebP images."
-    ]
-  },
-  "webp-to-png": {
-    "seoTitle": "WebP to PNG Converter – Free Online Tool",
-    "metaDescription": "Convert WebP images to PNG instantly in your browser. No upload required.",
-    "faqs": [
-      { "question": "Is it lossless?", "answer": "Yes, if the source WebP was lossless, the PNG will be too." },
-      { "question": "Why use PNG?", "answer": "PNG is widely compatible with all image editors and viewers." },
-      { "question": "Are my files safe?", "answer": "Yes, they never leave your device." }
-    ],
-    "howToUse": [
-      "Select your WebP files.",
-      "Click 'Convert to PNG'.",
-      "Download your PNG images."
-    ]
-  },
-  "heic-to-jpg": {
-    "seoTitle": "HEIC to JPG Converter – Free Online Tool",
-    "metaDescription": "Convert HEIC images to JPG instantly in your browser. No upload required.",
-    "faqs": [
-      { "question": "What is HEIC?", "answer": "HEIC is a high-efficiency image format used by Apple devices." },
-      { "question": "Can all browsers convert HEIC?", "answer": "Browser support for HEIC varies; it works best in Safari and modern browsers." },
-      { "question": "Is it free?", "answer": "Yes, 100% free and private." }
-    ],
-    "howToUse": [
-      "Select your HEIC files.",
-      "Click 'Convert to JPG'.",
-      "Download your JPG images."
-    ]
-  },
-  "avif-to-jpg": {
-    "seoTitle": "AVIF to JPG Converter – Free Online Tool",
-    "metaDescription": "Convert AVIF images to JPG instantly in your browser. No upload required.",
-    "faqs": [
-      { "question": "What is AVIF?", "answer": "AVIF is a modern image format with superior compression." },
-      { "question": "Why convert to JPG?", "answer": "JPG has wider compatibility with older software and devices." },
-      { "question": "Is it secure?", "answer": "Yes, processing happens entirely on your device." }
-    ],
-    "howToUse": [
-      "Select your AVIF files.",
-      "Click 'Convert to JPG'.",
-      "Download your JPG images."
-    ]
-  },
-  "svg-to-png": {
-    "seoTitle": "SVG to PNG Converter – Free Online Tool",
-    "metaDescription": "Convert SVG images to PNG instantly in your browser. No upload required.",
-    "faqs": [
-      { "question": "Does it keep transparency?", "answer": "Yes, the resulting PNG will preserve the transparency of your SVG." },
-      { "question": "Can I scale the SVG?", "answer": "The tool converts the SVG at its original defined size." },
-      { "question": "Is it private?", "answer": "Yes, all processing is done locally." }
-    ],
-    "howToUse": [
-      "Select your SVG files.",
-      "Click 'Convert to PNG'.",
-      "Download your PNG images."
+      "Download your optimized WebP images."
     ]
   },
   "image-resizer": {

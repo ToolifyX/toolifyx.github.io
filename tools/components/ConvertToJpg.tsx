@@ -3,13 +3,13 @@
 import React from 'react';
 import ImageConvertBase from '@/components/tool-layout/ImageConvertBase';
 
-export default function HeicToJpg() {
+export default function ConvertToJpg() {
   return (
     <ImageConvertBase
-      fromFormat="image/heic"
+      fromFormat="image/*"
       toFormat="image/jpeg"
       toExtension="jpg"
-      title="HEIC to JPG Converter"
+      title="Convert to JPG"
     />
   );
 }

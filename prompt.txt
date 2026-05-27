@@ -1,113 +1,17 @@
-Build a complete Image Crop Tool suite inside the existing image tool platform.
-GOAL
-Provide multiple crop modes for images with a modern UX:
+PNG to JPG
+WebP to JPG
+HEIC to JPG
+AVIF to JPG
+---
+JPG to PNG
+WebP to PNG
+SVG to PNG
+---
+JPG to WebP
+PNG to WebP
 
-- Free crop
-- Fixed aspect ratio crop
-- Preset social media crops
+Gop cac tool tren lai cac tool sang
 
-All processing must run fully in-browser using canvas.
-TOOLS TO CREATE
-Create separate tools OR modes inside Image Cropper:
-
-1. Free Crop Tool
-2. Fixed Ratio Crop Tool
-   - 1:1 (Square)
-   - 4:3
-   - 3:4
-   - 16:9
-   - 9:16
-3. Social Media Crop Presets
-   - Instagram Post (1:1)
-   - Instagram Story (9:16)
-   - Facebook Cover (16:9)
-   - YouTube Thumbnail (16:9)
-UI LAYOUT (IMPORTANT)
-Use split layout:
-
-LEFT PANEL:
-- Image upload (single image only)
-- Crop mode selector
-- Aspect ratio selector
-- Crop controls
-
-RIGHT PANEL:
-- Live preview canvas
-- Cropped result preview
-- Download button
-- Download All (if multiple outputs)
-CROPPING ENGINE
-Use HTML5 Canvas or Cropper.js style logic:
-
-- Load image into canvas
-- Apply crop coordinates
-- Maintain aspect ratio when required
-- Export cropped image as Blob
-
-Example:
-canvas.toBlob("image/png")
-STATE MANAGEMENT
-Use:
-
-- selectedImage
-- cropMode
-- cropArea
-- resultImage
-
-States:
-"idle" | "ready" | "cropping" | "done"
-QUEUE LOGIC (if multiple crops enabled)
-If user selects multiple presets:
-
-- process sequentially (NO Promise.all)
-- show progress:
-
-"Processing 2/5 crops..."
-RESULT SCREEN (REQUIRED)
-After crop completion:
-
-Show:
-
-✓ Crop completed
-
-- preview list of cropped images
-- original size vs cropped size
-- download buttons:
-  - Download All (ZIP)
-  - Download per image
-
-Button:
-"Crop New Image"
-VALIDATION
-- Only 1 image per session (or warn if multiple selected)
-- Reject non-image files
-- Limit file size per image:
-  max 10–15MB
-UX REQUIREMENTS
-- Drag to crop (interactive box)
-- Show crop boundaries clearly
-- Show aspect ratio lock toggle
-- Smooth UI transitions
-PERFORMANCE
-- Downscale large images (>2500px) before rendering
-- Use object URLs instead of base64
-- Release memory after processing
-REUSABLE COMPONENTS
-/components/crop/
-- CropCanvas.tsx
-- CropControls.tsx
-- AspectRatioSelector.tsx
-- CropResultPanel.tsx
-INTEGRATION
-Integrate into existing image tool system:
-
-- Add route: /tools/image-crop
-- Add to tool registry
-- Use shared ResultScreen system if available
-OUTPUT
-Return:
-
-1. ImageCropTool main component
-2. Crop engine logic (canvas-based)
-3. UI components listed above
-4. Example integration in tool system
+Convert to PNG
+Convert to JPG
+Convert to WebP

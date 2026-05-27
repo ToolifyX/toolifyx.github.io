@@ -3,13 +3,13 @@
 import React from 'react';
 import ImageConvertBase from '@/components/tool-layout/ImageConvertBase';
 
-export default function JpgToPng() {
+export default function ConvertToWebp() {
   return (
     <ImageConvertBase
-      fromFormat="image/jpeg"
-      toFormat="image/png"
-      toExtension="png"
-      title="JPG to PNG Converter"
+      fromFormat="image/*"
+      toFormat="image/webp"
+      toExtension="webp"
+      title="Convert to WebP"
     />
   );
 }
