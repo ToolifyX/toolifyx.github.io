@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[8721],{98721:function(t,n,e){e.r(n),e.d(n,{default:function(){return u}});var r=e(57437);e(2265);var o=e(11891);function u(){return(0,r.jsx)(o.Z,{fromFormat:"image/*",toFormat:"image/png",toExtension:"png",title:"Convert to PNG"})}}}]);

@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[5332],{85332:function(t,e,n){n.r(e),n.d(e,{default:function(){return u}});var r=n(57437);n(2265);var o=n(11891);function u(){return(0,r.jsx)(o.Z,{fromFormat:"image/*",toFormat:"image/webp",toExtension:"webp",title:"Convert to WebP"})}}}]);
