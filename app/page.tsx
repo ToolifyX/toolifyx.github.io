@@ -38,18 +38,18 @@ export default function Home() {
 
   return (
     <div className="space-y-6 pb-12">
-      {/* Hero Section - Ultra Large Retro */}
-      <div className="text-center space-y-10 py-24 md:py-40 max-w-6xl mx-auto px-4">
-        <h1 className="text-7xl md:text-[12rem] font-black tracking-tighter leading-[0.8] uppercase italic">
+      {/* Hero Section - Compact Retro */}
+      <div className="text-center space-y-6 py-16 md:py-24 max-w-4xl mx-auto px-4">
+        <h1 className="text-5xl md:text-7xl font-black tracking-tighter leading-none uppercase">
           EVERY TOOL <br />
-          <span className="text-primary not-italic bg-black text-white dark:bg-white dark:text-black px-4 shadow-neo-lg md:shadow-neo-xl inline-block mt-4">INSTANTLY.</span>
+          <span className="text-primary bg-black text-white dark:bg-white dark:text-black px-3 shadow-neo inline-block mt-2">INSTANTLY.</span>
         </h1>
-        <p className="text-2xl md:text-4xl text-black dark:text-white max-w-4xl mx-auto font-black leading-tight tracking-tighter uppercase">
+        <p className="text-lg md:text-xl text-black dark:text-white max-w-2xl mx-auto font-bold leading-tight tracking-tight uppercase">
           FAST. PRIVATE. BROWSER-BASED. <br className="hidden md:block" />
           YOUR DATA NEVER LEAVES YOUR MACHINE.
         </p>
 
-        <div className="pt-16 max-w-4xl mx-auto">
+        <div className="pt-8 max-w-2xl mx-auto">
           <ToolSearch query={searchQuery} onChange={setSearchQuery} />
         </div>
       </div>
