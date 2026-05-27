@@ -9,6 +9,7 @@ import { Loader2, Zap, RotateCcw } from 'lucide-react';
 import ToolSplitLayout from '@/components/tool-layout/ToolSplitLayout';
 import UploadPanel from '@/components/tool-layout/UploadPanel';
 import ResultPanel from '@/components/tool-layout/ResultPanel';
+import ResultScreen from '@/components/tool-layout/ResultScreen';
 import { ProcessedResult } from '@/lib/imagePipeline';
 
 type ToolStatus = 'idle' | 'processing' | 'done';
@@ -83,6 +84,21 @@ export default function ImageConvertBase({ fromFormat, toFormat, toExtension, ti
     }
   };
 
+  if (status === 'done') {
+    return (
+      <div className="max-w-3xl mx-auto">
+        <ResultScreen
+          results={results}
+          onReset={handleReset}
+          onDownload={handleDownloadResult}
+          onDownloadAll={handleDownloadAll}
+          isZipping={isZipping}
+          title={title}
+        />
+      </div>
+    );
+  }
+
   const leftPanel = (
     <div className="space-y-4">
       <UploadPanel
@@ -112,16 +128,6 @@ export default function ImageConvertBase({ fromFormat, toFormat, toExtension, ti
             )}
           </button>
         </div>
-      )}
-
-      {status === 'done' && (
-        <button
-          onClick={handleReset}
-          className="flex items-center justify-center gap-2 w-full px-6 py-3 rounded-xl border-2 border-dashed border-muted-foreground/20 font-bold hover:bg-muted transition-all active:scale-95"
-        >
-          <RotateCcw className="w-4 h-4" />
-          Start Over
-        </button>
       )}
     </div>
   );

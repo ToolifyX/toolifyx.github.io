@@ -13,13 +13,14 @@ import { Loader2, Zap, Settings2 } from 'lucide-react';
 import ToolSplitLayout from '@/components/tool-layout/ToolSplitLayout';
 import UploadPanel from '@/components/tool-layout/UploadPanel';
 import ResultPanel from '@/components/tool-layout/ResultPanel';
+import ResultScreen from '@/components/tool-layout/ResultScreen';
 
 export default function ImageResizer() {
   const [files, setFiles] = useState<File[]>([]);
   const [width, setWidth] = useState(800);
   const [maintainAspect, setMaintainAspect] = useState(true);
   const [results, setResults] = useState<ProcessedResult[]>([]);
-  const [isProcessing, setIsProcessing] = useState(false);
+  const [status, setStatus] = useState<'idle' | 'processing' | 'done'>('idle');
   const [isZipping, setIsZipping] = useState(false);
   const [progress, setProgress] = useState({ current: 0, total: 0 });
   const [limits, setLimits] = useState<UploadLimits | null>(null);
@@ -30,7 +31,7 @@ export default function ImageResizer() {
 
   const handleProcessAll = async () => {
     if (files.length === 0 || !limits) return;
-    setIsProcessing(true);
+    setStatus('processing');
     setResults([]);
 
     try {
@@ -44,13 +45,20 @@ export default function ImageResizer() {
         (current, total) => setProgress({ current, total })
       );
       setResults(processedResults);
+      setStatus('done');
     } catch (error) {
       console.error("Batch processing failed:", error);
       alert("An error occurred during resizing.");
+      setStatus('idle');
     } finally {
-      setIsProcessing(false);
       setProgress({ current: 0, total: 0 });
     }
+  };
+
+  const handleReset = () => {
+    setFiles([]);
+    setResults([]);
+    setStatus('idle');
   };
 
   const handleDownloadResult = (res: ProcessedResult) => {
@@ -69,6 +77,21 @@ export default function ImageResizer() {
       setIsZipping(false);
     }
   };
+
+  if (status === 'done') {
+    return (
+      <div className="max-w-3xl mx-auto">
+        <ResultScreen
+          results={results}
+          onReset={handleReset}
+          onDownload={handleDownloadResult}
+          onDownloadAll={handleDownloadAll}
+          isZipping={isZipping}
+          title="Images Resized"
+        />
+      </div>
+    );
+  }
 
   const leftPanel = (
     <div className="space-y-4">
@@ -103,10 +126,10 @@ export default function ImageResizer() {
 
           <button
             onClick={handleProcessAll}
-            disabled={isProcessing}
+            disabled={status === 'processing'}
             className="bg-black text-white dark:bg-white dark:text-black px-4 py-3 rounded-xl w-full font-black text-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.01] active:scale-[0.98] disabled:opacity-50 shadow-lg shadow-primary/10"
           >
-            {isProcessing ? (
+            {status === 'processing' ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin" />
                 Resizing {progress.current}/{progress.total}...
@@ -125,12 +148,11 @@ export default function ImageResizer() {
 
   const rightPanel = (
     <ResultPanel
-      isProcessing={isProcessing}
-      results={results}
+      isProcessing={status === 'processing'}
+      results={[]}
       progress={progress}
-      onDownload={handleDownloadResult}
-      onDownloadAll={handleDownloadAll}
-      isZipping={isZipping}
+      onDownload={() => {}}
+      onDownloadAll={() => {}}
     />
   );
 

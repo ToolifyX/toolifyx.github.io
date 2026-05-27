@@ -9,11 +9,13 @@ import { PDFDocument } from 'pdf-lib';
 import { downloadFile } from '@/lib/utils';
 import { Loader2, Shrink, FileText, X, Zap } from 'lucide-react';
 import ToolSplitLayout from '@/components/tool-layout/ToolSplitLayout';
+import ResultScreen from '@/components/tool-layout/ResultScreen';
+import ResultPanel from '@/components/tool-layout/ResultPanel';
 
 export default function PdfCompressTool() {
   const [file, setFile] = useState<File | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [result, setResult] = useState<{ blob: Blob, name: string, originalSize: number, compressedSize: number } | null>(null);
+  const [result, setResult] = useState<{ blob: Blob, name: string, originalSize: number, compressedSize: number, url: string } | null>(null);
 
   const compressPdf = async () => {
     if (!file) return;
@@ -24,12 +26,14 @@ export default function PdfCompressTool() {
       const pdf = await PDFDocument.load(arrayBuffer);
 
       const pdfBytes = await pdf.save({ useObjectStreams: true });
+      const blob = new Blob([pdfBytes], { type: 'application/pdf' });
 
       setResult({
-        blob: new Blob([pdfBytes], { type: 'application/pdf' }),
+        blob,
         name: `compressed_${file.name}`,
         originalSize: file.size,
-        compressedSize: pdfBytes.length
+        compressedSize: pdfBytes.length,
+        url: URL.createObjectURL(blob)
       });
     } catch (err) {
       console.error(err);
@@ -38,6 +42,36 @@ export default function PdfCompressTool() {
       setIsProcessing(false);
     }
   };
+
+  const handleReset = () => {
+    setFile(null);
+    setResult(null);
+    setIsProcessing(false);
+  };
+
+  if (result && !isProcessing) {
+    const mockProcessedResult = {
+      blob: result.blob,
+      url: result.url,
+      name: result.name,
+      originalSize: result.originalSize,
+      compressedSize: result.compressedSize,
+      width: 0,
+      height: 0
+    };
+
+    return (
+      <div className="max-w-3xl mx-auto">
+        <ResultScreen
+          results={[mockProcessedResult]}
+          onReset={handleReset}
+          onDownload={(res) => downloadFile(res.blob, res.name)}
+          onDownloadAll={() => downloadFile(result.blob, result.name)}
+          title="PDF Compressed"
+        />
+      </div>
+    );
+  }
 
   const leftPanel = (
     <div className="space-y-4">
@@ -78,45 +112,13 @@ export default function PdfCompressTool() {
   );
 
   const rightPanel = (
-    <div className="card border rounded-lg p-4 bg-card shadow-sm min-h-[400px] flex flex-col items-center justify-center text-center">
-      {isProcessing && (
-        <div className="space-y-4">
-          <Loader2 className="w-10 h-10 animate-spin text-primary mx-auto" />
-          <p className="text-sm font-bold">Compressing file...</p>
-        </div>
-      )}
-
-      {!isProcessing && !result && (
-        <div className="opacity-30 space-y-2">
-          <Zap className="w-12 h-12 mx-auto" />
-          <p className="text-sm font-medium">Compressed PDF will appear here</p>
-        </div>
-      )}
-
-      {result && !isProcessing && (
-        <div className="space-y-6 w-full animate-in fade-in zoom-in-95">
-           <div className="p-8 bg-primary/5 rounded-2xl border border-primary/10 inline-block mx-auto relative">
-             <Shrink className="w-16 h-16 text-primary" />
-             <span className="absolute -top-2 -right-2 bg-green-600 text-white text-[10px] font-black px-2 py-1 rounded-full shadow-lg">
-               -{Math.round((1 - result.compressedSize / result.originalSize) * 100)}%
-             </span>
-           </div>
-           <div className="space-y-1">
-             <h3 className="text-lg font-bold">{result.name}</h3>
-             <div className="flex items-center justify-center gap-2 text-xs">
-               <span className="text-muted-foreground line-through">{(result.originalSize / 1024).toFixed(1)} KB</span>
-               <span className="font-bold text-green-600">{(result.compressedSize / 1024).toFixed(1)} KB</span>
-             </div>
-           </div>
-           <button
-             onClick={() => downloadFile(result.blob, result.name)}
-             className="bg-primary text-primary-foreground px-8 py-3 rounded-xl font-bold shadow-lg hover:brightness-110 transition-all flex items-center gap-2 mx-auto"
-           >
-             <FileText className="w-4 h-4" /> Download Compressed PDF
-           </button>
-        </div>
-      )}
-    </div>
+    <ResultPanel
+      isProcessing={isProcessing}
+      results={[]}
+      onDownload={() => {}}
+      onDownloadAll={() => {}}
+      emptyMessage="Compressed PDF will appear here"
+    />
   );
 
   return (

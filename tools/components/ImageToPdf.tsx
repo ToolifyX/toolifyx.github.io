@@ -10,11 +10,13 @@ import { downloadFile } from '@/lib/utils';
 import { Loader2, FileImage, FileText, Zap } from 'lucide-react';
 import ToolSplitLayout from '@/components/tool-layout/ToolSplitLayout';
 import UploadPanel from '@/components/tool-layout/UploadPanel';
+import ResultScreen from '@/components/tool-layout/ResultScreen';
+import ResultPanel from '@/components/tool-layout/ResultPanel';
 
 export default function ImageToPdf() {
   const [files, setFiles] = useState<File[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [result, setResult] = useState<{ blob: Blob, name: string } | null>(null);
+  const [result, setResult] = useState<{ blob: Blob, name: string, url: string } | null>(null);
 
   const convertToPdf = async () => {
     if (files.length === 0) return;
@@ -37,9 +39,11 @@ export default function ImageToPdf() {
         page.drawImage(image, { x: 0, y: 0, width: image.width, height: image.height });
       }
       const pdfBytes = await pdfDoc.save();
+      const blob = new Blob([pdfBytes], { type: 'application/pdf' });
       setResult({
-        blob: new Blob([pdfBytes], { type: 'application/pdf' }),
-        name: 'images-converted.pdf'
+        blob,
+        name: 'images-converted.pdf',
+        url: URL.createObjectURL(blob)
       });
     } catch (err) {
       console.error(err);
@@ -48,6 +52,36 @@ export default function ImageToPdf() {
       setIsProcessing(false);
     }
   };
+
+  const handleReset = () => {
+    setFiles([]);
+    setResult(null);
+    setIsProcessing(false);
+  };
+
+  if (result && !isProcessing) {
+    const mockProcessedResult = {
+      blob: result.blob,
+      url: result.url,
+      name: result.name,
+      originalSize: files.reduce((acc, f) => acc + f.size, 0),
+      compressedSize: result.blob.size,
+      width: 0,
+      height: 0
+    };
+
+    return (
+      <div className="max-w-3xl mx-auto">
+        <ResultScreen
+          results={[mockProcessedResult]}
+          onReset={handleReset}
+          onDownload={(res) => downloadFile(res.blob, res.name)}
+          onDownloadAll={() => downloadFile(result.blob, result.name)}
+          title="Image to PDF Converted"
+        />
+      </div>
+    );
+  }
 
   const leftPanel = (
     <div className="space-y-4">
@@ -66,39 +100,13 @@ export default function ImageToPdf() {
   );
 
   const rightPanel = (
-    <div className="card border rounded-lg p-4 bg-card shadow-sm min-h-[400px] flex flex-col items-center justify-center text-center">
-      {isProcessing && (
-        <div className="space-y-4">
-          <Loader2 className="w-10 h-10 animate-spin text-primary mx-auto" />
-          <p className="text-sm font-bold">Generating document...</p>
-        </div>
-      )}
-
-      {!isProcessing && !result && (
-        <div className="opacity-30 space-y-2">
-          <Zap className="w-12 h-12 mx-auto" />
-          <p className="text-sm font-medium">PDF result will appear here</p>
-        </div>
-      )}
-
-      {result && !isProcessing && (
-        <div className="space-y-6 w-full animate-in fade-in zoom-in-95">
-           <div className="p-8 bg-primary/5 rounded-2xl border border-primary/10 inline-block mx-auto">
-             <FileImage className="w-16 h-16 text-primary" />
-           </div>
-           <div className="space-y-1 text-center">
-             <h3 className="text-lg font-bold">{result.name}</h3>
-             <p className="text-xs text-muted-foreground">Successfully converted {files.length} images</p>
-           </div>
-           <button
-             onClick={() => downloadFile(result.blob, result.name)}
-             className="bg-primary text-primary-foreground px-8 py-3 rounded-xl font-bold shadow-lg hover:brightness-110 transition-all flex items-center gap-2 mx-auto"
-           >
-             <FileText className="w-4 h-4" /> Download PDF
-           </button>
-        </div>
-      )}
-    </div>
+    <ResultPanel
+      isProcessing={isProcessing}
+      results={[]}
+      onDownload={() => {}}
+      onDownloadAll={() => {}}
+      emptyMessage="PDF result will appear here"
+    />
   );
 
   return (

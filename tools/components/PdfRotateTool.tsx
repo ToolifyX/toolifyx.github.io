@@ -7,14 +7,16 @@
 import React, { useState } from 'react';
 import { PDFDocument, degrees } from 'pdf-lib';
 import { downloadFile } from '@/lib/utils';
-import { Loader2, RotateCw, FileText, X, Zap, Settings2 } from 'lucide-react';
+import { Loader2, RotateCw, FileText, X, Zap, Settings2, Download } from 'lucide-react';
 import ToolSplitLayout from '@/components/tool-layout/ToolSplitLayout';
+import ResultScreen from '@/components/tool-layout/ResultScreen';
+import ResultPanel from '@/components/tool-layout/ResultPanel';
 
 export default function PdfRotateTool() {
   const [file, setFile] = useState<File | null>(null);
   const [rotation, setRotation] = useState(90);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [result, setResult] = useState<{ blob: Blob, name: string } | null>(null);
+  const [result, setResult] = useState<{ blob: Blob, name: string, url: string } | null>(null);
 
   const rotatePdf = async () => {
     if (!file) return;
@@ -31,9 +33,11 @@ export default function PdfRotateTool() {
       });
 
       const pdfBytes = await pdf.save();
+      const blob = new Blob([pdfBytes], { type: 'application/pdf' });
       setResult({
-        blob: new Blob([pdfBytes], { type: 'application/pdf' }),
-        name: `rotated_${file.name}`
+        blob,
+        name: `rotated_${file.name}`,
+        url: URL.createObjectURL(blob)
       });
     } catch (err) {
       console.error(err);
@@ -42,6 +46,36 @@ export default function PdfRotateTool() {
       setIsProcessing(false);
     }
   };
+
+  const handleReset = () => {
+    setFile(null);
+    setResult(null);
+    setIsProcessing(false);
+  };
+
+  if (result && !isProcessing) {
+    const mockProcessedResult = {
+      blob: result.blob,
+      url: result.url,
+      name: result.name,
+      originalSize: file?.size || 0,
+      compressedSize: result.blob.size,
+      width: 0,
+      height: 0
+    };
+
+    return (
+      <div className="max-w-3xl mx-auto">
+        <ResultScreen
+          results={[mockProcessedResult]}
+          onReset={handleReset}
+          onDownload={(res) => downloadFile(res.blob, res.name)}
+          onDownloadAll={() => downloadFile(result.blob, result.name)}
+          title="PDF Rotated"
+        />
+      </div>
+    );
+  }
 
   const leftPanel = (
     <div className="space-y-4">
@@ -100,39 +134,13 @@ export default function PdfRotateTool() {
   );
 
   const rightPanel = (
-    <div className="card border rounded-lg p-4 bg-card shadow-sm min-h-[400px] flex flex-col items-center justify-center text-center">
-      {isProcessing && (
-        <div className="space-y-4">
-          <Loader2 className="w-10 h-10 animate-spin text-primary mx-auto" />
-          <p className="text-sm font-bold">Rotating pages...</p>
-        </div>
-      )}
-
-      {!isProcessing && !result && (
-        <div className="opacity-30 space-y-2">
-          <Zap className="w-12 h-12 mx-auto" />
-          <p className="text-sm font-medium">Rotated PDF will appear here</p>
-        </div>
-      )}
-
-      {result && !isProcessing && (
-        <div className="space-y-6 w-full animate-in fade-in zoom-in-95">
-           <div className="p-8 bg-primary/5 rounded-2xl border border-primary/10 inline-block mx-auto">
-             <RotateCw className="w-16 h-16 text-primary" />
-           </div>
-           <div className="space-y-1">
-             <h3 className="text-lg font-bold">{result.name}</h3>
-             <p className="text-xs text-muted-foreground">Successfully rotated</p>
-           </div>
-           <button
-             onClick={() => downloadFile(result.blob, result.name)}
-             className="bg-primary text-primary-foreground px-8 py-3 rounded-xl font-bold shadow-lg hover:brightness-110 transition-all flex items-center gap-2 mx-auto"
-           >
-             <Download className="w-4 h-4" /> Download PDF
-           </button>
-        </div>
-      )}
-    </div>
+    <ResultPanel
+      isProcessing={isProcessing}
+      results={[]}
+      onDownload={() => {}}
+      onDownloadAll={() => {}}
+      emptyMessage="Rotated PDF will appear here"
+    />
   );
 
   return (
