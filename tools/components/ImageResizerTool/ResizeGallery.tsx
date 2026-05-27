@@ -40,9 +40,9 @@ export default function ResizeGallery({ images, onDownload }: ResizeGalleryProps
             {/* Resolution Badge */}
             <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between pointer-events-none">
               <div className="px-2 py-1 bg-black/70 backdrop-blur-md text-[10px] text-white rounded-lg font-bold flex items-center gap-1.5 shadow-lg">
-                <span>{img.originalWidth}x{img.originalHeight}</span>
+                <span>{img.originalWidth > 0 ? `${img.originalWidth}x${img.originalHeight}` : '...'}</span>
                 <ArrowRight className="w-3 h-3 text-white/50" />
-                <span className="text-primary">{img.resizedWidth}x{img.resizedHeight}</span>
+                <span className="text-primary">{img.resizedWidth > 0 ? `${img.resizedWidth}x${img.resizedHeight}` : '...'}</span>
               </div>
             </div>
           </div>

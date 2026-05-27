@@ -20,7 +20,19 @@ export function useBatchResizeEngine(initialImages: ImageInfo[], settings: Resiz
     setImages(prev => {
       const newImages = initialImages.map(info => {
         const existing = prev.find(p => p.id === info.id);
-        if (existing) return existing;
+        if (existing) {
+          // Update original dimensions if they were previously 0
+          if (existing.originalWidth === 0 && info.originalWidth !== 0) {
+            return {
+              ...existing,
+              originalWidth: info.originalWidth,
+              originalHeight: info.originalHeight,
+              // If we didn't have dimensions before, we might need to re-calc resized dimensions
+              // though the effect below will trigger a processSingleImage which updates them.
+            };
+          }
+          return existing;
+        }
         return {
           ...info,
           resizedUrl: info.originalUrl,
@@ -101,7 +113,7 @@ export function useBatchResizeEngine(initialImages: ImageInfo[], settings: Resiz
     }, 400);
 
     return () => clearTimeout(timeoutId);
-  }, [settings, images.length, processSingleImage]);
+  }, [settings, images.length, images.some(img => img.resizedWidth === 0 && img.originalWidth > 0), processSingleImage]);
 
   // Cleanup URLs on unmount
   useEffect(() => {
