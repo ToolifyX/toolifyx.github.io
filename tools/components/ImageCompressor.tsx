@@ -2,7 +2,6 @@
 
 /**
  * SEO Title: Adaptive Batch Image Compressor - High Performance Online Compression
- * Meta Description: Compress multiple images safely with device-aware limits. Pro-level quality control, downscaling, and ultra-fast local processing.
  */
 
 import React, { useState, useEffect } from 'react';
@@ -14,12 +13,15 @@ import { Loader2, Zap, Settings2 } from 'lucide-react';
 import ToolSplitLayout from '@/components/tool-layout/ToolSplitLayout';
 import UploadPanel from '@/components/tool-layout/UploadPanel';
 import ResultPanel from '@/components/tool-layout/ResultPanel';
+import ResultScreen from '@/components/tool-layout/ResultScreen';
+
+type ToolStatus = 'idle' | 'processing' | 'done';
 
 export default function ImageCompressor() {
+  const [status, setStatus] = useState<ToolStatus>('idle');
   const [files, setFiles] = useState<File[]>([]);
-  const [quality, setQuality] = useState(0.7); // Medium default
+  const [quality, setQuality] = useState(0.7);
   const [results, setResults] = useState<ProcessedResult[]>([]);
-  const [isProcessing, setIsProcessing] = useState(false);
   const [isZipping, setIsZipping] = useState(false);
   const [progress, setProgress] = useState({ current: 0, total: 0 });
   const [limits, setLimits] = useState<UploadLimits | null>(null);
@@ -30,11 +32,10 @@ export default function ImageCompressor() {
 
   const handleProcessAll = async () => {
     if (files.length === 0 || !limits) return;
-    setIsProcessing(true);
+    setStatus('processing');
     setResults([]);
 
     try {
-      // Correct processing logic using queue (sequential)
       const processedResults = await processQueue(
         files,
         {
@@ -45,13 +46,21 @@ export default function ImageCompressor() {
         (current, total) => setProgress({ current, total })
       );
       setResults(processedResults);
+      setStatus('done');
     } catch (error) {
       console.error("Batch processing failed:", error);
       alert("An error occurred during compression.");
+      setStatus('idle');
     } finally {
-      setIsProcessing(false);
       setProgress({ current: 0, total: 0 });
     }
+  };
+
+  const handleReset = () => {
+    setFiles([]);
+    setResults([]);
+    setStatus('idle');
+    setQuality(0.7);
   };
 
   const handleDownloadResult = (res: ProcessedResult) => {
@@ -77,6 +86,23 @@ export default function ImageCompressor() {
     return "Low (Max Compression)";
   };
 
+  // 1. Result State: "done"
+  if (status === 'done') {
+    return (
+      <div className="max-w-3xl mx-auto">
+        <ResultScreen
+          results={results}
+          onReset={handleReset}
+          onDownload={handleDownloadResult}
+          onDownloadAll={handleDownloadAll}
+          isZipping={isZipping}
+          title="Images Compressed"
+        />
+      </div>
+    );
+  }
+
+  // 2. Idle or Processing States: "idle" | "processing"
   const leftPanel = (
     <div className="space-y-4">
       <UploadPanel
@@ -102,23 +128,24 @@ export default function ImageCompressor() {
               value={quality}
               onChange={(e) => setQuality(parseFloat(e.target.value))}
               className="w-full accent-primary"
+              disabled={status === 'processing'}
             />
           </div>
 
           <button
             onClick={handleProcessAll}
-            disabled={isProcessing}
-            className="bg-black text-white dark:bg-white dark:text-black px-4 py-3 rounded-xl w-full font-black text-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.01] active:scale-[0.98] disabled:opacity-50 shadow-lg shadow-primary/10"
+            disabled={status === 'processing'}
+            className="bg-black text-white dark:bg-white dark:text-black px-4 py-3 rounded-xl w-full font-black text-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.01] active:scale-[0.98] disabled:opacity-50 shadow-lg"
           >
-            {isProcessing ? (
+            {status === 'processing' ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin" />
-                Processing {progress.current} of {progress.total} files...
+                Processing {progress.current} of {progress.total}...
               </>
             ) : (
               <>
                 <Zap className="w-4 h-4 fill-current" />
-                Process {files.length} files
+                Process {files.length} {files.length === 1 ? 'file' : 'files'}
               </>
             )}
           </button>
@@ -129,12 +156,11 @@ export default function ImageCompressor() {
 
   const rightPanel = (
     <ResultPanel
-      isProcessing={isProcessing}
-      results={results}
+      isProcessing={status === 'processing'}
+      results={[]} // Don't show results list in the side panel anymore, wait for full screen
       progress={progress}
-      onDownload={handleDownloadResult}
-      onDownloadAll={handleDownloadAll}
-      isZipping={isZipping}
+      onDownload={() => {}}
+      onDownloadAll={() => {}}
     />
   );
 

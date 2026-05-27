@@ -1,130 +1,89 @@
-Refactor ALL file-processing tools (image, pdf, batch tools) to use a consistent and correct file handling system.
+Refactor Image Converter into multiple specific tools.
 
 GOAL
 
-Ensure:
-- No mismatch between selected files and processed files
-- Clear UX for valid vs invalid files
-- Consistent behavior across ALL tools
+Replace generic "Image Converter" with specific conversion tools for better UX and SEO.
 
-APPLY TO ALL TOOLS
+TOOLS TO CREATE
 
-- Image tools
-- PDF tools
-- Any batch processing tools
+Create separate tools:
 
-1. FILE CLASSIFICATION (CRITICAL)
+1. PNG to JPG
+2. JPG to PNG
+3. JPG to WebP
+4. WebP to JPG
+5. PNG to WebP
+6. WebP to PNG
 
-When user selects files:
+OPTIONAL TOOLS
 
-Split into:
+7. HEIC to JPG
+8. AVIF to JPG
+9. SVG to PNG
 
-const validFiles = []
-const invalidFiles = []
+IMPLEMENTATION
 
-Validation rules:
-- file size
-- total size
-- file type
+Each tool:
 
-2. DO NOT SILENTLY DROP FILES
+- Has its own route:
+/tools/png-to-jpg
+/tools/jpg-to-png
+...
 
-- NEVER auto-ignore files
-- ALWAYS show rejected files
+- Has its own component
 
-3. UI FEEDBACK (REQUIRED)
+UI
 
-If invalidFiles.length > 0:
+Reuse same layout:
 
-Show:
+LEFT:
+- upload
+- file list
 
-"{validFiles.length} valid • {invalidFiles.length} skipped"
+RIGHT:
+- result
+- download
 
-List each invalid file:
+LOGIC
 
-- filename
-- reason:
-  - "Too large"
-  - "Unsupported format"
-  - "Exceeds total size"
+Use canvas:
 
-4. BUTTON LABEL (FIX BUG)
+- draw image
+- export with target format
 
-Button MUST reflect validFiles only:
+Example:
 
-- If all valid:
-  "Process {validFiles.length} files"
+canvas.toBlob("image/jpeg", quality)
 
-- If some skipped:
-  Show warning above
-  Button:
-  "Process {validFiles.length} files"
+FILE NAMING
 
-5. PROCESSING LOGIC
+input.png → output.jpg
 
-- ONLY process validFiles
-- Use queue processing (NO Promise.all)
+SEO
 
-for (const file of validFiles) {
-  await process(file)
-}
+Each tool must have:
 
-6. PROGRESS UI
+Title:
+"PNG to JPG Converter – Free Online Tool"
 
-Replace any:
+Description:
+"Convert PNG images to JPG instantly in your browser. No upload required."
 
-"Queue (x/y)"
+CONFIG UPDATE
 
-With:
+Update tools/config.ts:
 
-"Processing x of {validFiles.length} files..."
+- add all tools
+- category: "image"
 
-7. RESULT COUNT
+REMOVE OLD TOOL
 
-Ensure:
-
-results.length === validFiles.length
-
-8. DOWNLOAD ALL (SYNC)
-
-- Only include processed files
-- Use results array
-
-9. OPTIONAL AUTO-FIX (BONUS)
-
-Instead of rejecting:
-
-- If file too large:
-  → auto resize
-
-- If unsupported format:
-  → convert if possible
-
-10. REUSABLE LOGIC
-
-Create:
-
-/lib/fileValidation.ts
-
-Export:
-
-- validateFiles(files, limits)
-- returns { validFiles, invalidFiles }
-
-11. CONSISTENCY (IMPORTANT)
-
-Apply SAME logic to:
-
-- ImageUploader
-- PDFUploader
-- Any batch tool uploader
+Delete generic "Image Converter"
 
 OUTPUT
 
 Return:
 
-1. fileValidation.ts
-2. Updated ImageUploader
-3. Updated PDFUploader
-4. Example integration in 1 image tool
-5. Example integration in 1 PDF tool
+1. all new tool components
+2. updated config.ts
+3. reusable conversion helper
