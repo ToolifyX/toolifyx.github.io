@@ -42,27 +42,27 @@ export default function ToolPage({ params }: Props) {
     .slice(0, 4);
 
   return (
-    <div className="max-w-6xl mx-auto space-y-8 pb-20 px-4">
+    <div className="max-w-6xl mx-auto space-y-6 pb-12 px-4">
       {/* Header & Breadcrumb */}
-      <div className="space-y-3 pt-6">
-        <nav className="flex items-center space-x-2 text-[12px] text-muted-foreground font-medium">
+      <div className="space-y-2 pt-4">
+        <nav className="flex items-center space-x-2 text-[11px] text-muted-foreground font-medium">
           <Link href="/" className="hover:text-foreground transition-colors">Home</Link>
           <span className="opacity-40">/</span>
           <span className="text-foreground">{tool.title}</span>
         </nav>
 
-        <div className="flex items-start md:items-end gap-5">
+        <div className="flex items-start md:items-end gap-4">
           <div className="space-y-1 flex-1">
-            <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground leading-none">
+            <h1 className="text-xl md:text-2xl font-bold tracking-tight text-foreground leading-none">
               {tool.title}
             </h1>
-            <p className="text-[14px] md:text-[16px] text-muted-foreground font-medium leading-relaxed max-w-2xl">
+            <p className="text-[13px] md:text-[14px] text-muted-foreground font-medium leading-relaxed max-w-2xl">
               {tool.description}
             </p>
           </div>
           <div className="hidden md:block">
-             <div className="w-12 h-12 rounded-lg bg-card border border-border text-muted-foreground flex items-center justify-center shadow-sm">
-                <DynamicIcon name={tool.icon || 'HelpCircle'} size={24} strokeWidth={2} />
+             <div className="w-10 h-10 rounded-lg bg-card border border-border text-muted-foreground flex items-center justify-center shadow-sm">
+                <DynamicIcon name={tool.icon || 'HelpCircle'} size={20} strokeWidth={2} />
              </div>
           </div>
         </div>

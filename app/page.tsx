@@ -37,23 +37,23 @@ export default function Home() {
   const isFiltering = searchQuery !== '' || selectedCategory !== 'all';
 
   return (
-    <div className="space-y-12 pb-20 max-w-7xl mx-auto px-4">
+    <div className="space-y-8 pb-12 max-w-7xl mx-auto px-4">
       {/* Hero Section - Professional & Minimalist */}
-      <div className="text-center space-y-4 pt-10 md:pt-16 max-w-3xl mx-auto">
-        <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground">
+      <div className="text-center space-y-3 pt-6 md:pt-10 max-w-3xl mx-auto">
+        <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">
           Every tool for <br />
           <span className="text-primary">everyone.</span>
         </h1>
-        <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-xl mx-auto">
+        <p className="text-sm md:text-base text-muted-foreground leading-relaxed max-w-xl mx-auto">
           Fast, private, browser-native tools. Your data never leaves your device.
         </p>
 
-        <div className="pt-8 max-w-xl mx-auto">
+        <div className="pt-4 max-w-xl mx-auto">
           <ToolSearch query={searchQuery} onChange={setSearchQuery} />
         </div>
       </div>
 
-      <div className="space-y-8">
+      <div className="space-y-6">
         <div className="flex items-center justify-center pb-1">
           <CategoryMenu
             activeCategory={selectedCategory}
@@ -90,18 +90,18 @@ export default function Home() {
           </div>
         ) : (
           /* Default Discovery View: Compact Categories */
-          <div className="space-y-16">
+          <div className="space-y-10">
             {categories.map((cat) => {
               const categoryTools = tools.filter((t) => t.category === cat.id);
               if (categoryTools.length === 0) return null;
 
               return (
-                <section key={cat.id} className="space-y-4">
-                  <div className="flex items-center justify-between px-1">
+                <section key={cat.id} className="space-y-3">
+                  <div className="flex items-center justify-between px-1 border-b border-border/50 pb-1.5">
                     <div className="flex items-center gap-2">
-                      <h2 className="text-sm font-bold uppercase tracking-widest text-foreground">{cat.label}</h2>
-                      <div className="h-px w-8 bg-border" />
-                      <span className="text-xs text-muted-foreground font-medium">{categoryTools.length}</span>
+                      <h2 className="text-xs font-bold uppercase tracking-widest text-foreground">{cat.label}</h2>
+                      <div className="h-px w-6 bg-border" />
+                      <span className="text-[10px] text-muted-foreground font-semibold">{categoryTools.length}</span>
                     </div>
                   </div>
 
