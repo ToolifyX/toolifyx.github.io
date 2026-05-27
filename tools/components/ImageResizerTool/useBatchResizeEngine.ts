@@ -15,6 +15,12 @@ export function useBatchResizeEngine(initialImages: ImageInfo[], settings: Resiz
   const processingRef = useRef<Set<string>>(new Set());
   const allGeneratedUrls = useRef<Set<string>>(new Set());
 
+  // Keep a ref to the latest images to avoid closure issues in async callbacks
+  const imagesRef = useRef<ResizedImage[]>([]);
+  useEffect(() => {
+    imagesRef.current = images;
+  }, [images]);
+
   // Initialize or update images when initialImages changes
   useEffect(() => {
     setImages(prev => {
@@ -40,7 +46,6 @@ export function useBatchResizeEngine(initialImages: ImageInfo[], settings: Resiz
         };
       });
 
-      // Cleanup removed images from imageElements cache
       const initialIds = new Set(initialImages.map(i => i.id));
       Array.from(imageElements.current.keys()).forEach(id => {
         if (!initialIds.has(id)) {
@@ -53,7 +58,7 @@ export function useBatchResizeEngine(initialImages: ImageInfo[], settings: Resiz
   }, [initialImages]);
 
   const processSingleImage = useCallback(async (id: string, currentSettings: ResizeSettings): Promise<ResizedImage | null> => {
-    const imgInfo = images.find(img => img.id === id);
+    const imgInfo = imagesRef.current.find(img => img.id === id);
     if (!imgInfo || processingRef.current.has(id)) return null;
 
     processingRef.current.add(id);
@@ -75,25 +80,26 @@ export function useBatchResizeEngine(initialImages: ImageInfo[], settings: Resiz
       const result = await resizeImage(imgElement, currentSettings);
       allGeneratedUrls.current.add(result.url);
 
-      let updatedImg: ResizedImage | null = null;
+      const updatedImg: ResizedImage = {
+        ...imgInfo,
+        resizedUrl: result.url,
+        resizedWidth: result.width,
+        resizedHeight: result.height,
+        resizedBlob: result.blob,
+        isProcessing: false
+      };
+
       setImages(prev => prev.map(img => {
         if (img.id === id) {
           if (img.resizedUrl !== img.originalUrl) {
             URL.revokeObjectURL(img.resizedUrl);
             allGeneratedUrls.current.delete(img.resizedUrl);
           }
-          updatedImg = {
-            ...img,
-            resizedUrl: result.url,
-            resizedWidth: result.width,
-            resizedHeight: result.height,
-            resizedBlob: result.blob,
-            isProcessing: false
-          };
           return updatedImg;
         }
         return img;
       }));
+
       return updatedImg;
     } catch (error) {
       console.error(`Error processing image ${id}:`, error);
@@ -102,14 +108,18 @@ export function useBatchResizeEngine(initialImages: ImageInfo[], settings: Resiz
     } finally {
       processingRef.current.delete(id);
     }
-  }, [images]);
+  }, []);
 
   const processAll = useCallback(async (currentSettings: ResizeSettings) => {
-    const results = await Promise.all(images.map(img => processSingleImage(img.id, currentSettings)));
-    return results.filter((r): r is ResizedImage => r !== null);
-  }, [images, processSingleImage]);
+    // Process images sequentially or in small chunks to avoid memory/canvas issues
+    const results: ResizedImage[] = [];
+    for (const img of imagesRef.current) {
+      const res = await processSingleImage(img.id, currentSettings);
+      if (res) results.push(res);
+    }
+    return results;
+  }, [processSingleImage]);
 
-  // Cleanup URLs on unmount
   useEffect(() => {
     return () => {
       allGeneratedUrls.current.forEach(url => URL.revokeObjectURL(url));

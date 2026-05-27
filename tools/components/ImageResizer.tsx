@@ -11,7 +11,7 @@ import ResizeGallery from './ImageResizerTool/ResizeGallery';
 import ResizeControls from './ImageResizerTool/ResizeControls';
 import { useBatchResizeEngine, ResizedImage } from './ImageResizerTool/useBatchResizeEngine';
 import { ResizeSettings, ImageInfo } from './ImageResizerTool/resizeUtils';
-import { downloadFile } from '@/lib/utils';
+import { downloadFile, formatBytes } from '@/lib/utils';
 import { downloadAllAsZip } from '@/lib/download';
 import { X, Plus, Loader2 } from 'lucide-react';
 
@@ -69,8 +69,11 @@ export default function ImageResizer() {
     try {
       const processed = await processSingleImage(img.id, settings);
       if (processed && processed.resizedBlob) {
-        downloadFile(processed.resizedBlob, `resized_${img.file.name.replace(/\.[^/.]+$/, "")}.${settings.format}`);
+        const ext = settings.format === 'jpeg' ? 'jpg' : settings.format;
+        downloadFile(processed.resizedBlob, `resized_${img.file.name.replace(/\.[^/.]+$/, "")}.${ext}`);
       }
+    } catch (error) {
+      console.error("Single download failed:", error);
     } finally {
       setIsProcessing(false);
     }
@@ -84,12 +87,22 @@ export default function ImageResizer() {
       const processedImages = await processAll(settings);
       const zipItems = processedImages
         .filter(img => img.resizedBlob)
-        .map(img => ({
-          name: `resized_${img.file.name.replace(/\.[^/.]+$/, "")}.${settings.format}`,
-          blob: img.resizedBlob!
-        }));
+        .map(img => {
+          const ext = settings.format === 'jpeg' ? 'jpg' : settings.format;
+          return {
+            name: `resized_${img.file.name.replace(/\.[^/.]+$/, "")}.${ext}`,
+            blob: img.resizedBlob!
+          };
+        });
 
-      await downloadAllAsZip(zipItems, "toolifyx-resized-images.zip");
+      if (zipItems.length > 0) {
+        await downloadAllAsZip(zipItems, "toolifyx-resized-images.zip");
+      } else {
+        alert("Failed to process images for download.");
+      }
+    } catch (error) {
+      console.error("Batch download failed:", error);
+      alert("An error occurred during batch processing.");
     } finally {
       setIsZipping(false);
       setIsProcessing(false);
@@ -109,9 +122,17 @@ export default function ImageResizer() {
       {/* Processing Overlay */}
       {(isProcessing || isZipping) && (
         <div className="absolute inset-0 z-[100] bg-background/50 backdrop-blur-sm flex items-center justify-center">
-          <div className="bg-card p-6 rounded-2xl shadow-2xl border flex flex-col items-center gap-4">
-            <Loader2 className="w-10 h-10 animate-spin text-primary" />
-            <p className="font-bold text-sm uppercase tracking-widest">Processing Images...</p>
+          <div className="bg-card p-8 rounded-3xl shadow-2xl border flex flex-col items-center gap-6 min-w-[300px]">
+            <div className="relative">
+              <Loader2 className="w-12 h-12 animate-spin text-primary" />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-2 h-2 bg-primary rounded-full animate-ping" />
+              </div>
+            </div>
+            <div className="text-center space-y-1">
+              <p className="font-black text-lg uppercase tracking-wider">Processing Batch</p>
+              <p className="text-xs text-muted-foreground font-medium uppercase tracking-widest">Applying settings to {images.length} images</p>
+            </div>
           </div>
         </div>
       )}
@@ -120,19 +141,20 @@ export default function ImageResizer() {
       <div className="absolute top-4 left-4 z-10 flex items-center gap-2">
         <button
           onClick={clearImages}
-          className="p-2 bg-black/50 hover:bg-black/70 text-white rounded-full transition-colors backdrop-blur-sm shadow-xl"
+          className="p-2.5 bg-black/80 hover:bg-black text-white rounded-full transition-all backdrop-blur-md shadow-xl active:scale-90"
           title="Clear all images"
         >
           <X className="w-5 h-5" />
         </button>
-        <div className="h-10 px-4 bg-black/50 backdrop-blur-sm text-white rounded-2xl flex items-center gap-2 border border-white/10 shadow-xl">
-          <span className="text-xs font-black uppercase tracking-widest">{initialImages.length} Images</span>
+        <div className="h-10 px-4 bg-black/80 backdrop-blur-md text-white rounded-2xl flex items-center gap-3 border border-white/10 shadow-xl">
+          <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+          <span className="text-xs font-black uppercase tracking-widest">{initialImages.length} Images Ready</span>
         </div>
       </div>
 
       {/* Main Workspace (Left) */}
       <div className="flex-1 relative bg-muted/20 overflow-y-auto custom-scrollbar">
-        <div className="min-h-full pb-20 pt-20">
+        <div className="min-h-full pb-28 pt-20">
           <ResizeGallery
             images={images}
             settings={settings}
@@ -143,7 +165,7 @@ export default function ImageResizer() {
         {/* Floating Add More Button */}
         <label className="fixed bottom-8 left-1/2 -translate-x-1/2 md:left-[calc(50%-160px)] z-20 cursor-pointer">
            <input type="file" multiple className="hidden" onChange={(e) => handleFileChange(Array.from(e.target.files || []))} />
-           <div className="flex items-center gap-3 px-6 py-3 bg-white border-2 border-primary text-primary hover:bg-primary hover:text-white rounded-full font-black text-sm transition-all shadow-2xl active:scale-95 group">
+           <div className="flex items-center gap-3 px-8 py-3.5 bg-white dark:bg-zinc-900 border-2 border-primary text-primary hover:bg-primary hover:text-white rounded-full font-black text-sm transition-all shadow-2xl active:scale-95 group">
               <Plus className="w-5 h-5 group-hover:rotate-90 transition-transform" />
               Add More Images
            </div>
