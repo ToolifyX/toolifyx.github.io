@@ -2,14 +2,14 @@
 
 import React, { useState, useEffect } from 'react';
 import { downloadFile } from '@/lib/utils';
-import { processQueue, ProcessedResult } from '@/lib/imagePipeline';
+import { convertImage, ConversionResult } from '@/lib/imageConverter';
 import { getUploadLimits, UploadLimits } from '@/lib/adaptiveUpload';
 import { downloadAllAsZip } from '@/lib/download';
-import { Loader2, Zap } from 'lucide-react';
+import { Loader2, Zap, RotateCcw } from 'lucide-react';
 import ToolSplitLayout from '@/components/tool-layout/ToolSplitLayout';
 import UploadPanel from '@/components/tool-layout/UploadPanel';
 import ResultPanel from '@/components/tool-layout/ResultPanel';
-import ResultScreen from '@/components/tool-layout/ResultScreen';
+import { ProcessedResult } from '@/lib/imagePipeline';
 
 type ToolStatus = 'idle' | 'processing' | 'done';
 
@@ -33,36 +33,31 @@ export default function ImageConvertBase({ fromFormat, toFormat, toExtension, ti
   }, []);
 
   const handleProcessAll = async () => {
-    if (files.length === 0 || !limits) return;
+    if (files.length === 0) return;
     setStatus('processing');
     setResults([]);
 
-    try {
-      const processedResults = await processQueue(
-        files,
-        {
-          maxResolution: limits.maxResolution,
-          quality: 0.9,
-          format: toFormat
-        },
-        (current, total) => setProgress({ current, total })
-      );
-
-      // Update names to match target extension
-      const renamedResults = processedResults.map(res => ({
-        ...res,
-        name: res.name.replace(/\.[^/.]+$/, "") + `.${toExtension}`
-      }));
-
-      setResults(renamedResults);
-      setStatus('done');
-    } catch (error) {
-      console.error("Batch processing failed:", error);
-      alert("An error occurred during conversion.");
-      setStatus('idle');
-    } finally {
-      setProgress({ current: 0, total: 0 });
+    const newResults: ProcessedResult[] = [];
+    for (let i = 0; i < files.length; i++) {
+      setProgress({ current: i + 1, total: files.length });
+      try {
+        const result: ConversionResult = await convertImage(files[i], toFormat);
+        newResults.push({
+          blob: result.blob,
+          name: result.name,
+          url: URL.createObjectURL(result.blob),
+          originalSize: files[i].size,
+          compressedSize: result.blob.size,
+          width: result.width,
+          height: result.height
+        });
+      } catch (error) {
+        console.error("Conversion failed for file:", files[i].name, error);
+      }
     }
+
+    setResults(newResults);
+    setStatus('done');
   };
 
   const handleReset = () => {
@@ -88,30 +83,16 @@ export default function ImageConvertBase({ fromFormat, toFormat, toExtension, ti
     }
   };
 
-  if (status === 'done') {
-    return (
-      <div className="max-w-3xl mx-auto">
-        <ResultScreen
-          results={results}
-          onReset={handleReset}
-          onDownload={handleDownloadResult}
-          onDownloadAll={handleDownloadAll}
-          isZipping={isZipping}
-          title={title}
-        />
-      </div>
-    );
-  }
-
   const leftPanel = (
     <div className="space-y-4">
       <UploadPanel
         files={files}
         onChange={setFiles}
         maxFiles={limits?.maxFiles}
+        disabled={status === 'processing'}
       />
 
-      {files.length > 0 && (
+      {files.length > 0 && status !== 'done' && (
         <div className="card border rounded-lg p-4 bg-card shadow-sm space-y-4 animate-in fade-in duration-300">
           <button
             onClick={handleProcessAll}
@@ -132,16 +113,27 @@ export default function ImageConvertBase({ fromFormat, toFormat, toExtension, ti
           </button>
         </div>
       )}
+
+      {status === 'done' && (
+        <button
+          onClick={handleReset}
+          className="flex items-center justify-center gap-2 w-full px-6 py-3 rounded-xl border-2 border-dashed border-muted-foreground/20 font-bold hover:bg-muted transition-all active:scale-95"
+        >
+          <RotateCcw className="w-4 h-4" />
+          Start Over
+        </button>
+      )}
     </div>
   );
 
   const rightPanel = (
     <ResultPanel
       isProcessing={status === 'processing'}
-      results={[]}
+      results={results}
       progress={progress}
-      onDownload={() => {}}
-      onDownloadAll={() => {}}
+      onDownload={handleDownloadResult}
+      onDownloadAll={handleDownloadAll}
+      isZipping={isZipping}
       emptyMessage={`Your ${toExtension.toUpperCase()} files will appear here`}
     />
   );

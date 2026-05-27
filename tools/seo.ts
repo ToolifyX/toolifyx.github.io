@@ -314,7 +314,7 @@ export const seoData: Record<string, {
   },
   "jpg-to-png": {
     "seoTitle": "JPG to PNG Converter – Free Online Tool",
-    "metaDescription": "Convert JPG images to PNG instantly in your browser. Lossless quality conversion.",
+    "metaDescription": "Convert JPG images to PNG instantly in your browser. No upload required.",
     "faqs": [
       { "question": "Is the conversion lossless?", "answer": "Yes, PNG is a lossless format, so quality is preserved." },
       { "question": "Does it support transparency?", "answer": "JPG doesn't have transparency, but the output PNG will be high quality." },
@@ -328,7 +328,7 @@ export const seoData: Record<string, {
   },
   "jpg-to-webp": {
     "seoTitle": "JPG to WebP Converter – Free Online Tool",
-    "metaDescription": "Convert JPG images to WebP format instantly for better web performance.",
+    "metaDescription": "Convert JPG images to WebP format instantly in your browser. No upload required.",
     "faqs": [
       { "question": "Why convert to WebP?", "answer": "WebP provides superior compression and smaller file sizes for the web." },
       { "question": "Is it widely supported?", "answer": "Yes, all modern browsers support WebP." },
@@ -342,7 +342,7 @@ export const seoData: Record<string, {
   },
   "webp-to-jpg": {
     "seoTitle": "WebP to JPG Converter – Free Online Tool",
-    "metaDescription": "Convert WebP images back to JPG format for maximum compatibility.",
+    "metaDescription": "Convert WebP images to JPG instantly in your browser. No upload required.",
     "faqs": [
       { "question": "Can I convert many images?", "answer": "Yes, you can upload up to 12 files at once." },
       { "question": "Will it work on my phone?", "answer": "Yes, it works on any device with a modern browser." },
@@ -356,7 +356,7 @@ export const seoData: Record<string, {
   },
   "png-to-webp": {
     "seoTitle": "PNG to WebP Converter – Free Online Tool",
-    "metaDescription": "Convert PNG images to WebP for smaller, faster-loading web images.",
+    "metaDescription": "Convert PNG images to WebP instantly in your browser. No upload required.",
     "faqs": [
       { "question": "Does it keep transparency?", "answer": "Yes, WebP supports alpha transparency just like PNG." },
       { "question": "Is it better than PNG?", "answer": "WebP usually produces much smaller files with similar quality." },
@@ -370,7 +370,7 @@ export const seoData: Record<string, {
   },
   "webp-to-png": {
     "seoTitle": "WebP to PNG Converter – Free Online Tool",
-    "metaDescription": "Convert WebP images to PNG format instantly and securely.",
+    "metaDescription": "Convert WebP images to PNG instantly in your browser. No upload required.",
     "faqs": [
       { "question": "Is it lossless?", "answer": "Yes, if the source WebP was lossless, the PNG will be too." },
       { "question": "Why use PNG?", "answer": "PNG is widely compatible with all image editors and viewers." },
@@ -378,6 +378,48 @@ export const seoData: Record<string, {
     ],
     "howToUse": [
       "Select your WebP files.",
+      "Click 'Convert to PNG'.",
+      "Download your PNG images."
+    ]
+  },
+  "heic-to-jpg": {
+    "seoTitle": "HEIC to JPG Converter – Free Online Tool",
+    "metaDescription": "Convert HEIC images to JPG instantly in your browser. No upload required.",
+    "faqs": [
+      { "question": "What is HEIC?", "answer": "HEIC is a high-efficiency image format used by Apple devices." },
+      { "question": "Can all browsers convert HEIC?", "answer": "Browser support for HEIC varies; it works best in Safari and modern browsers." },
+      { "question": "Is it free?", "answer": "Yes, 100% free and private." }
+    ],
+    "howToUse": [
+      "Select your HEIC files.",
+      "Click 'Convert to JPG'.",
+      "Download your JPG images."
+    ]
+  },
+  "avif-to-jpg": {
+    "seoTitle": "AVIF to JPG Converter – Free Online Tool",
+    "metaDescription": "Convert AVIF images to JPG instantly in your browser. No upload required.",
+    "faqs": [
+      { "question": "What is AVIF?", "answer": "AVIF is a modern image format with superior compression." },
+      { "question": "Why convert to JPG?", "answer": "JPG has wider compatibility with older software and devices." },
+      { "question": "Is it secure?", "answer": "Yes, processing happens entirely on your device." }
+    ],
+    "howToUse": [
+      "Select your AVIF files.",
+      "Click 'Convert to JPG'.",
+      "Download your JPG images."
+    ]
+  },
+  "svg-to-png": {
+    "seoTitle": "SVG to PNG Converter – Free Online Tool",
+    "metaDescription": "Convert SVG images to PNG instantly in your browser. No upload required.",
+    "faqs": [
+      { "question": "Does it keep transparency?", "answer": "Yes, the resulting PNG will preserve the transparency of your SVG." },
+      { "question": "Can I scale the SVG?", "answer": "The tool converts the SVG at its original defined size." },
+      { "question": "Is it private?", "answer": "Yes, all processing is done locally." }
+    ],
+    "howToUse": [
+      "Select your SVG files.",
       "Click 'Convert to PNG'.",
       "Download your PNG images."
     ]
