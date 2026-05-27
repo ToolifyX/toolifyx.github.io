@@ -48,8 +48,6 @@ export default function ToolPage({ params }: Props) {
         <nav className="flex items-center space-x-2 text-[13px] text-muted-foreground font-medium">
           <Link href="/" className="hover:text-foreground transition-colors">Home</Link>
           <span className="opacity-40">/</span>
-          <span className="capitalize">{tool.category}</span>
-          <span className="opacity-40">/</span>
           <span className="text-foreground">{tool.title}</span>
         </nav>
 
@@ -80,7 +78,7 @@ export default function ToolPage({ params }: Props) {
             <div className="w-3 h-3 rounded-full bg-border" />
           </div>
           <span className="text-[11px] font-bold uppercase tracking-[0.15em] text-muted-foreground/60">
-            {tool.category} Utility
+            Web Utility
           </span>
         </div>
 
@@ -122,7 +120,7 @@ export default function ToolPage({ params }: Props) {
         </div>
 
         <div className="md:col-span-4 space-y-6">
-          <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground">Related {tool.category} Tools</h2>
+          <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground">Related Tools</h2>
           <div className="flex flex-col gap-3">
             {relatedTools.map((related) => (
               <ToolCard key={related.slug} tool={related} />

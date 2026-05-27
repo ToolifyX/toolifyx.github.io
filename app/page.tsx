@@ -42,7 +42,7 @@ export default function Home() {
       <div className="text-center space-y-4 pt-16 md:pt-24 max-w-3xl mx-auto">
         <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground sm:text-6xl">
           Every tool for <br />
-          <span className="text-primary">developers & designers.</span>
+          <span className="text-primary">everyone.</span>
         </h1>
         <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-xl mx-auto">
           Fast, private, browser-native tools. Your data never leaves your device.
