@@ -69,18 +69,17 @@ export default function ImageUploader({ files: externalFiles, onChange, showFile
   return (
     <div className="space-y-6 w-full">
       <div
-        className="border-8 border-dashed rounded-[2rem] p-12 transition-all flex flex-col items-center justify-center space-y-4 cursor-pointer group border-black dark:border-white hover:bg-primary/5 hover:shadow-neo-lg"
+        className="border-2 border-dashed rounded-3xl p-12 transition-all flex flex-col items-center justify-center space-y-4 cursor-pointer group hover:border-primary hover:bg-primary/5"
         onClick={() => document.getElementById('file-input')?.click()}
       >
-        <div className="p-6 rounded-2xl border-4 border-black dark:border-white bg-white dark:bg-black group-hover:bg-primary group-hover:text-white transition-all shadow-neo group-hover:shadow-none group-hover:translate-x-1 group-hover:translate-y-1">
-          <Upload className="w-12 h-12 stroke-[3]" />
+        <div className="p-4 rounded-2xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-all">
+          <Upload className="w-10 h-10" />
         </div>
-        <div className="text-center space-y-2">
-          <p className="text-2xl font-black uppercase tracking-tighter">CLICK TO UPLOAD OR DRAG</p>
-          <div className="flex items-center justify-center gap-2 text-xs font-black uppercase tracking-widest bg-black text-white dark:bg-white dark:text-black px-4 py-1 rounded shadow-neo-sm">
-            <Info className="w-4 h-4" />
-            MAX {limits.maxFiles} FILES • {limits.maxFileSizeMB}MB EACH
-          </div>
+        <div className="text-center space-y-1">
+          <p className="text-xl font-bold">Click to upload or drag and drop</p>
+          <p className="text-sm text-muted-foreground">
+            Up to {limits.maxFiles} files • {limits.maxFileSizeMB}MB each
+          </p>
         </div>
         <input
           id="file-input"

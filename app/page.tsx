@@ -38,22 +38,17 @@ export default function Home() {
 
   return (
     <div className="space-y-6 pb-12">
-      {/* Hero Section - Refined Compact Retro */}
-      <div className="text-center space-y-6 py-12 md:py-16 max-w-2xl mx-auto px-4">
-        <h1 className="text-4xl md:text-5xl font-black tracking-tighter leading-[0.9] uppercase">
-          EVERY TOOL <br />
-          <span className="text-primary italic">INSTANTLY.</span>
+      {/* Hero Section - Simple Modern */}
+      <div className="text-center space-y-4 py-20 md:py-28 max-w-3xl mx-auto px-4">
+        <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight">
+          Every Tool <span className="text-primary">Instantly.</span>
         </h1>
-        <div className="space-y-1">
-          <p className="text-sm md:text-lg font-black tracking-tighter uppercase italic text-black dark:text-white">
-            FAST. PRIVATE. BROWSER-BASED.
-          </p>
-          <p className="text-[10px] md:text-xs font-bold text-muted-foreground uppercase tracking-[0.2em]">
-            YOUR DATA NEVER LEAVES YOUR MACHINE.
-          </p>
-        </div>
+        <p className="text-lg md:text-xl text-muted-foreground font-medium leading-relaxed">
+          Fast, private, browser-based utilities for designers and developers. <br className="hidden md:block" />
+          Your data never leaves your machine.
+        </p>
 
-        <div className="pt-4 max-w-xl mx-auto">
+        <div className="pt-8">
           <ToolSearch query={searchQuery} onChange={setSearchQuery} />
         </div>
       </div>

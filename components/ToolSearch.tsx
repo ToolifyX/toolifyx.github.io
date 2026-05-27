@@ -10,24 +10,24 @@ interface ToolSearchProps {
 
 export default function ToolSearch({ query, onChange }: ToolSearchProps) {
   return (
-    <div className="relative w-full group">
-      <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-black dark:text-white group-focus-within:text-primary transition-colors z-10">
-        <Search className="w-6 h-6 stroke-[3]" />
+    <div className="relative w-full max-w-2xl mx-auto group">
+      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-muted-foreground group-focus-within:text-primary transition-colors">
+        <Search className="w-5 h-5" />
       </div>
       <input
         type="text"
-        placeholder="WHAT TOOL DO YOU NEED?"
-        className="w-full border-2 border-black dark:border-white rounded-lg py-4 pl-14 pr-12 bg-white dark:bg-black focus:outline-none focus:ring-0 shadow-neo focus:shadow-neo-lg transition-all text-xl font-black placeholder:text-black/30 dark:placeholder:white/30 tracking-tight uppercase"
+        placeholder="Search for tools..."
+        className="w-full bg-muted/50 border border-transparent focus:bg-background focus:border-primary/20 focus:ring-4 focus:ring-primary/5 rounded-2xl py-4 pl-12 pr-12 transition-all text-base outline-none"
         value={query}
         onChange={(e) => onChange(e.target.value)}
       />
       {query && (
         <button
           onClick={() => onChange('')}
-          className="absolute inset-y-0 right-0 pr-5 flex items-center text-black dark:text-white hover:text-primary transition-colors z-10"
+          className="absolute inset-y-0 right-0 pr-4 flex items-center text-muted-foreground hover:text-foreground transition-colors"
           aria-label="Clear search"
         >
-          <X className="w-6 h-6 stroke-[3]" />
+          <X className="w-5 h-5" />
         </button>
       )}
     </div>

@@ -52,9 +52,9 @@ export default function FileList({ files, onRemove, onClear, maxFiles }: FileLis
             </div>
             <button
               onClick={() => onRemove(i)}
-              className="p-3 rounded-xl border-4 border-black dark:border-white bg-white dark:bg-black hover:bg-destructive hover:text-white transition-all shadow-neo-sm hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5"
+              className="p-2 rounded-lg hover:bg-destructive hover:text-white transition-all text-muted-foreground"
             >
-              <X className="w-6 h-6 stroke-[4]" />
+              <X className="w-5 h-5" />
             </button>
           </div>
         ))}

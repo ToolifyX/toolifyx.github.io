@@ -17,24 +17,24 @@ export default function ResultList({
   onDownload,
   onDownloadAll,
   isZipping = false,
-  title = "RESULTS"
+  title = "Results"
 }: ResultListProps) {
   if (results.length === 0) return null;
 
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
       <div className="flex items-center justify-between px-1">
-        <h3 className="text-sm font-black uppercase tracking-[0.2em] text-black dark:text-white underline decoration-4 underline-offset-4">
+        <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
           {title} ({results.length})
         </h3>
         {results.length > 1 && (
           <button
             onClick={onDownloadAll}
             disabled={isZipping}
-            className="text-xs font-black bg-primary text-primary-foreground px-4 py-2 rounded-lg flex items-center gap-2 border-2 border-black dark:border-white shadow-neo hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5 disabled:opacity-50 transition-all uppercase tracking-tighter"
+            className="text-xs font-bold bg-primary/10 text-primary px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-primary hover:text-white transition-all transition-colors"
           >
-            {isZipping ? <Loader2 className="w-4 h-4 animate-spin" /> : <Archive className="w-4 h-4 stroke-[3]" />}
-            ZIP EVERYTHING
+            {isZipping ? <Loader2 className="w-4 h-4 animate-spin" /> : <Archive className="w-4 h-4" />}
+            Download All
           </button>
         )}
       </div>
@@ -44,41 +44,37 @@ export default function ResultList({
           const isReduced = res.compressedSize < res.originalSize;
 
           return (
-            <div key={i} className="flex items-center justify-between p-4 bg-white dark:bg-black border-4 border-black dark:border-white rounded-2xl shadow-neo group transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none animate-in fade-in slide-in-from-top-1">
+            <div key={i} className="flex items-center justify-between p-4 bg-muted/30 border rounded-2xl group transition-all hover:bg-muted/50 animate-in fade-in slide-in-from-top-1">
               <div className="flex items-center space-x-4 min-w-0">
                 <div className="relative flex-shrink-0">
                   <img
                     src={res.url}
                     alt="result"
-                    className="w-20 h-20 rounded-xl object-cover border-4 border-black dark:border-white shadow-neo-sm bg-card"
+                    className="w-16 h-16 rounded-xl object-cover border bg-card shadow-sm"
                   />
-                  <div className="absolute -top-2 -right-2 p-1 bg-green-400 dark:bg-green-600 rounded-lg border-2 border-black dark:border-white shadow-neo-sm">
-                    <CheckCircle2 className="w-4 h-4 text-black dark:text-white" />
+                  <div className="absolute -top-1.5 -right-1.5 p-1 bg-green-500 rounded-full border-2 border-background">
+                    <CheckCircle2 className="w-3 h-3 text-white" />
                   </div>
                 </div>
                 <div className="min-w-0 space-y-1">
-                  <p className="text-lg font-black truncate uppercase tracking-tight">{res.name}</p>
-                  <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+                  <p className="text-base font-semibold truncate">{res.name}</p>
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
                     {isReduced && (
-                      <span className="text-xs font-black bg-green-400 dark:bg-green-600 text-black dark:text-white px-2 py-0.5 rounded border-2 border-black dark:border-white">SAVED {savings}%</span>
+                      <span className="text-[10px] font-bold bg-green-500/10 text-green-600 px-2 py-0.5 rounded-full uppercase">Saved {savings}%</span>
                     )}
-                    <div className="flex items-center gap-2 font-black text-xs uppercase tracking-tighter">
-                      <span className="text-black dark:text-white">
-                        {(res.compressedSize / 1024).toFixed(1)} KB
-                      </span>
-                      <span className="text-black/30 dark:text-white/30 line-through">
-                        {(res.originalSize / 1024).toFixed(1)} KB
-                      </span>
+                    <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
+                      <span>{(res.compressedSize / 1024).toFixed(1)} KB</span>
+                      <span className="opacity-40 line-through">{(res.originalSize / 1024).toFixed(1)} KB</span>
                     </div>
                   </div>
                 </div>
               </div>
               <button
                 onClick={() => onDownload(res)}
-                className="p-4 rounded-xl bg-primary text-primary-foreground border-4 border-black dark:border-white shadow-neo hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all"
+                className="p-3 rounded-xl bg-background border shadow-sm hover:shadow-md hover:border-primary transition-all text-primary"
                 title="Download Result"
               >
-                <Download className="w-6 h-6 stroke-[3]" />
+                <Download className="w-5 h-5" />
               </button>
             </div>
           );

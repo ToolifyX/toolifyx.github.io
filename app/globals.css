@@ -52,30 +52,8 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
   }
-}
-
-.shadow-neo {
-  box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1);
-}
-
-.shadow-neo-sm {
-  box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 1);
-}
-
-.shadow-neo-lg {
-  box-shadow: 8px 8px 0px 0px rgba(0, 0, 0, 1);
-}
-
-.shadow-neo-xl {
-  box-shadow: 12px 12px 0px 0px rgba(0, 0, 0, 1);
-}
-
-.dark .shadow-neo,
-.dark .shadow-neo-lg,
-.dark .shadow-neo-xl {
-  box-shadow: 4px 4px 0px 0px rgba(255, 255, 255, 0.2);
 }
 
 .no-scrollbar::-webkit-scrollbar {
