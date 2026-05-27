@@ -16,11 +16,11 @@ export default function ToolCard({ tool }: ToolCardProps) {
             <div className="p-1.5 rounded-md bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
               <DynamicIcon name={tool.icon || 'HelpCircle'} size={16} strokeWidth={2.5} />
             </div>
-            <h3 className="text-sm font-semibold truncate group-hover:text-primary transition-colors">
+            <h3 className="text-base font-bold truncate group-hover:text-primary transition-colors">
               {tool.title}
             </h3>
           </div>
-          <p className="text-xs text-muted-foreground line-clamp-1">
+          <p className="text-sm text-muted-foreground line-clamp-1">
             {tool.description}
           </p>
         </div>

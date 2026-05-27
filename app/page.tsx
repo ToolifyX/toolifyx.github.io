@@ -61,9 +61,9 @@ export default function Home() {
         {isFiltering ? (
           <div className="space-y-4">
             <div className="flex items-center justify-between px-1">
-              <h2 className="text-lg font-bold">
+              <h2 className="text-xl font-bold">
                 {searchQuery ? `Results for "${searchQuery}"` : 'Filtered Tools'}
-                <span className="ml-2 text-xs font-normal text-muted-foreground">({filteredTools.length})</span>
+                <span className="ml-2 text-sm font-normal text-muted-foreground">({filteredTools.length})</span>
               </h2>
               <button
                 onClick={() => { setSearchQuery(''); setSelectedCategory('all'); }}
@@ -102,8 +102,8 @@ export default function Home() {
                 <section key={cat.id} className="space-y-3">
                   <div className="flex items-end justify-between border-b pb-2 px-1">
                     <div className="flex items-baseline gap-2">
-                      <h2 className="text-lg font-bold tracking-tight">{cat.label}</h2>
-                      <span className="text-[10px] text-muted-foreground uppercase font-medium tracking-wider">{categoryTools.length} tools</span>
+                      <h2 className="text-xl font-bold tracking-tight">{cat.label}</h2>
+                      <span className="text-xs text-muted-foreground uppercase font-medium tracking-wider">{categoryTools.length} tools</span>
                     </div>
                     <Link
                       href={cat.href}
