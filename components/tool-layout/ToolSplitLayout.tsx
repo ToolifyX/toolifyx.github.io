@@ -9,13 +9,16 @@ interface ToolSplitLayoutProps {
 
 export default function ToolSplitLayout({ left, right }: ToolSplitLayoutProps) {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-      <div className="space-y-4">
+    <div className="flex flex-col lg:flex-row gap-6 w-full">
+      {/* LEFT PANEL (Secondary/Controls) - Max 25% on desktop */}
+      <aside className="w-full lg:w-[300px] shrink-0 space-y-4">
         {left}
-      </div>
-      <div className="space-y-4 lg:sticky lg:top-20 self-start">
+      </aside>
+
+      {/* RIGHT PANEL (Primary Workspace) - flex-grow to take majority space */}
+      <main className="flex-1 min-w-0 space-y-4">
         {right}
-      </div>
+      </main>
     </div>
   );
 }

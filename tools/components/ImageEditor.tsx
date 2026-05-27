@@ -13,9 +13,11 @@ import {
   Loader2,
   CheckCircle2,
   Layers,
+  Crop,
   Search,
   ZoomIn,
-  ZoomOut
+  ZoomOut,
+  Maximize
 } from 'lucide-react';
 import EditorLayout from '@/components/tool-layout/EditorLayout';
 import { downloadFile } from '@/lib/utils';
@@ -41,8 +43,6 @@ export default function ImageEditor() {
   });
   const [resultUrl, setResultUrl] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [showOriginal, setShowOriginal] = useState(false);
 
   useEffect(() => {
     if (selectedImage) {
@@ -63,11 +63,6 @@ export default function ImageEditor() {
       setTransform({ rotation: 0, flipH: false, flipV: false, zoom: 1 });
       setResultUrl(null);
     }
-  };
-
-  const handleTransformChange = (changes: Partial<TransformState>) => {
-    setTransform(prev => ({ ...prev, ...changes }));
-    setResultUrl(null); // Clear previous result if any
   };
 
   const applyTransforms = useCallback((): Promise<Blob | null> => {
@@ -114,14 +109,6 @@ export default function ImageEditor() {
     setIsProcessing(false);
   };
 
-  const handleDownload = () => {
-    if (resultUrl && selectedImage) {
-      fetch(resultUrl)
-        .then(r => r.blob())
-        .then(blob => downloadFile(blob, `edited_${selectedImage.name}`));
-    }
-  };
-
   const handleReset = () => {
     setSelectedImage(null);
     setImageUrl(null);
@@ -131,83 +118,95 @@ export default function ImageEditor() {
   };
 
   const leftPanel = (
-    <div className="space-y-8">
+    <div className="flex flex-col gap-2">
+      <button className="flex flex-col items-center justify-center p-3 rounded-xl hover:bg-muted text-muted-foreground transition-all">
+        <Crop className="w-5 h-5 mb-1" />
+        <span className="text-[10px] font-black uppercase">Crop</span>
+      </button>
+      <button
+        onClick={() => setTransform(t => ({ ...t, rotation: t.rotation + 90 }))}
+        className="flex flex-col items-center justify-center p-3 rounded-xl bg-primary/10 text-primary border border-primary/20 transition-all"
+      >
+        <RotateCw className="w-5 h-5 mb-1" />
+        <span className="text-[10px] font-black uppercase">Rotate</span>
+      </button>
+      <button
+        onClick={() => setTransform(t => ({ ...t, flipH: !t.flipH }))}
+        className={`flex flex-col items-center justify-center p-3 rounded-xl transition-all ${transform.flipH ? 'bg-primary/10 text-primary border border-primary/20' : 'hover:bg-muted text-muted-foreground'}`}
+      >
+        <FlipHorizontal className="w-5 h-5 mb-1" />
+        <span className="text-[10px] font-black uppercase">Flip H</span>
+      </button>
+      <button
+        onClick={() => setTransform(t => ({ ...t, flipV: !t.flipV }))}
+        className={`flex flex-col items-center justify-center p-3 rounded-xl transition-all ${transform.flipV ? 'bg-primary/10 text-primary border border-primary/20' : 'hover:bg-muted text-muted-foreground'}`}
+      >
+        <FlipVertical className="w-5 h-5 mb-1" />
+        <span className="text-[10px] font-black uppercase">Flip V</span>
+      </button>
+      <div className="h-px bg-border my-2" />
+      <button onClick={handleReset} className="flex flex-col items-center justify-center p-3 rounded-xl hover:bg-destructive/10 text-destructive transition-all">
+        <Undo2 className="w-5 h-5 mb-1" />
+        <span className="text-[10px] font-black uppercase">Reset</span>
+      </button>
+    </div>
+  );
+
+  const rightPanel = (
+    <div className="space-y-6">
       <div className="space-y-4">
-        <h3 className="text-xs font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">
-          <RotateCw className="w-3 h-3" /> Transformation
-        </h3>
-
-        <div className="grid grid-cols-2 gap-3">
-          <button
-            onClick={() => handleTransformChange({ rotation: transform.rotation - 90 })}
-            className="flex flex-col items-center justify-center p-4 bg-card border rounded-2xl hover:bg-muted transition-all group"
-          >
-            <RotateCcw className="w-5 h-5 mb-2 group-hover:scale-110 transition-transform" />
-            <span className="text-[10px] font-black uppercase tracking-widest">Rotate -90°</span>
-          </button>
-          <button
-            onClick={() => handleTransformChange({ rotation: transform.rotation + 90 })}
-            className="flex flex-col items-center justify-center p-4 bg-card border rounded-2xl hover:bg-muted transition-all group"
-          >
-            <RotateCw className="w-5 h-5 mb-2 group-hover:scale-110 transition-transform" />
-            <span className="text-[10px] font-black uppercase tracking-widest">Rotate +90°</span>
-          </button>
-        </div>
-
-        <div className="grid grid-cols-2 gap-3">
-          <button
-            onClick={() => handleTransformChange({ flipH: !transform.flipH })}
-            className={`flex flex-col items-center justify-center p-4 border rounded-2xl transition-all group ${transform.flipH ? 'bg-primary text-primary-foreground border-primary' : 'bg-card hover:bg-muted'}`}
-          >
-            <FlipHorizontal className="w-5 h-5 mb-2 group-hover:scale-110 transition-transform" />
-            <span className="text-[10px] font-black uppercase tracking-widest">Flip Horizontal</span>
-          </button>
-          <button
-            onClick={() => handleTransformChange({ flipV: !transform.flipV })}
-            className={`flex flex-col items-center justify-center p-4 border rounded-2xl transition-all group ${transform.flipV ? 'bg-primary text-primary-foreground border-primary' : 'bg-card hover:bg-muted'}`}
-          >
-            <FlipVertical className="w-5 h-5 mb-2 group-hover:scale-110 transition-transform" />
-            <span className="text-[10px] font-black uppercase tracking-widest">Flip Vertical</span>
+        <h3 className="text-[10px] font-black uppercase tracking-[0.15em] text-muted-foreground border-b pb-2">Canvas Control</h3>
+        <div className="space-y-4">
+          <div className="flex items-center justify-between gap-4 bg-muted/50 p-3 rounded-xl border border-border">
+             <button onClick={() => setTransform(t => ({ ...t, zoom: Math.max(0.1, t.zoom - 0.1) }))} className="p-1 hover:bg-background rounded shadow-sm">
+               <ZoomOut className="w-4 h-4" />
+             </button>
+             <span className="text-xs font-black">{Math.round(transform.zoom * 100)}%</span>
+             <button onClick={() => setTransform(t => ({ ...t, zoom: Math.min(3, t.zoom + 0.1) }))} className="p-1 hover:bg-background rounded shadow-sm">
+               <ZoomIn className="w-4 h-4" />
+             </button>
+          </div>
+          <button onClick={() => setTransform(t => ({ ...t, zoom: 1 }))} className="w-full py-2 bg-muted text-[10px] font-black uppercase tracking-widest rounded-lg flex items-center justify-center gap-2 hover:bg-border transition-colors">
+             <Maximize className="w-3 h-3" /> Fit to screen
           </button>
         </div>
       </div>
 
-      <div className="space-y-4 pt-4 border-t">
-        <h3 className="text-xs font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">
-           <Search className="w-3 h-3" /> Canvas Zoom
-        </h3>
-        <div className="flex items-center gap-4">
-          <ZoomOut className="w-4 h-4 text-muted-foreground" />
-          <input
-            type="range"
-            min="0.1"
-            max="3"
-            step="0.1"
-            value={transform.zoom}
-            onChange={(e) => handleTransformChange({ zoom: parseFloat(e.target.value) })}
-            className="flex-1 accent-primary"
-          />
-          <ZoomIn className="w-4 h-4 text-muted-foreground" />
+      <div className="space-y-4">
+        <h3 className="text-[10px] font-black uppercase tracking-[0.15em] text-muted-foreground border-b pb-2">Properties</h3>
+        <div className="p-4 bg-muted/30 rounded-xl space-y-3">
+          <div className="flex justify-between items-center">
+            <span className="text-[10px] font-bold text-muted-foreground uppercase">Rotation</span>
+            <span className="text-xs font-black">{transform.rotation}°</span>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-[10px] font-bold text-muted-foreground uppercase">Flip H</span>
+            <span className="text-xs font-black">{transform.flipH ? 'Yes' : 'No'}</span>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-[10px] font-bold text-muted-foreground uppercase">Flip V</span>
+            <span className="text-xs font-black">{transform.flipV ? 'Yes' : 'No'}</span>
+          </div>
         </div>
-        <p className="text-center text-[10px] font-bold text-muted-foreground uppercase">{Math.round(transform.zoom * 100)}% Scale</p>
       </div>
 
-      <div className="pt-4 space-y-3">
+      <div className="pt-6">
         <button
-          onClick={() => handleTransformChange({ rotation: 0, flipH: false, flipV: false, zoom: 1 })}
-          className="w-full py-2.5 rounded-xl border border-border text-xs font-bold hover:bg-muted transition-colors flex items-center justify-center gap-2"
+          onClick={handleApplyChanges}
+          disabled={status !== 'ready' || isProcessing}
+          className="w-full py-4 rounded-2xl bg-primary text-primary-foreground font-black uppercase tracking-widest text-xs flex items-center justify-center gap-2 hover:opacity-90 transition-all shadow-xl shadow-primary/20 disabled:opacity-50"
         >
-          <Undo2 className="w-3.5 h-3.5" /> Reset Transforms
+          {isProcessing ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Apply Changes'}
         </button>
       </div>
     </div>
   );
 
   const mainCanvas = (
-    <div className="w-full h-full flex items-center justify-center overflow-hidden">
-       {!selectedImage ? (
-         <div
-          className="w-full max-w-xl border-2 border-dashed border-border rounded-3xl p-16 text-center space-y-6 hover:border-primary transition-all cursor-pointer bg-card/50 hover:bg-card group"
+    <div className="w-full h-full flex items-center justify-center relative overflow-hidden">
+      {!selectedImage ? (
+        <div
+          className="w-full max-w-lg border-2 border-dashed border-border rounded-3xl p-16 text-center space-y-6 hover:border-primary transition-all cursor-pointer bg-card/50 hover:bg-card group"
           onClick={() => document.getElementById('edit-upload')?.click()}
         >
           <div className="w-20 h-20 bg-primary/10 text-primary rounded-3xl flex items-center justify-center mx-auto transition-transform group-hover:scale-110 group-hover:rotate-3">
@@ -215,137 +214,32 @@ export default function ImageEditor() {
           </div>
           <div className="space-y-2">
             <h4 className="text-xl font-bold">Upload image to edit</h4>
-            <p className="text-sm text-muted-foreground font-medium">Simple & fast rotation and flipping</p>
+            <p className="text-sm text-muted-foreground font-medium">Rotate, Flip and transform instantly</p>
           </div>
-          <input
-            id="edit-upload"
-            type="file"
-            className="hidden"
-            accept="image/*"
-            onChange={handleFileChange}
-          />
+          <input id="edit-upload" type="file" className="hidden" accept="image/*" onChange={handleFileChange} />
         </div>
-       ) : (
-         <div className="relative w-full h-full flex items-center justify-center p-8 bg-black/5 dark:bg-white/5 rounded-3xl border border-border shadow-inner">
-            <div
-              className="relative transition-transform duration-200 ease-out shadow-2xl bg-white"
-              style={{
-                transform: `scale(${transform.zoom}) rotate(${transform.rotation}deg) scaleX(${transform.flipH ? -1 : 1}) scaleY(${transform.flipV ? -1 : 1})`,
-              }}
-            >
-              <img
-                src={imageUrl!}
-                alt="Editing"
-                className="max-w-[70vw] max-h-[70vh] object-contain select-none pointer-events-none"
-              />
-            </div>
-         </div>
-       )}
-    </div>
-  );
-
-  const rightPanel = (
-    <div className="space-y-8">
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h3 className="text-xs font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">
-            <Layers className="w-3 h-3" /> Result Preview
-          </h3>
-          {status === 'done' && (
-            <button
-              onMouseDown={() => setShowOriginal(true)}
-              onMouseUp={() => setShowOriginal(false)}
-              onMouseLeave={() => setShowOriginal(false)}
-              className="text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded bg-muted hover:bg-border transition-colors"
-            >
-              Hold for Original
-            </button>
-          )}
-        </div>
-
-        <div className="aspect-square bg-muted/30 border border-border rounded-2xl flex items-center justify-center overflow-hidden relative">
-          {status === 'done' && resultUrl ? (
-            <img
-              src={showOriginal ? imageUrl! : resultUrl}
-              alt="Result"
-              className="max-w-full max-h-full object-contain animate-in fade-in duration-300"
-            />
-          ) : (
-            <div className="text-center space-y-2">
-              <ImageIcon className="w-8 h-8 text-muted/30 mx-auto" />
-              <p className="text-[10px] text-muted-foreground uppercase font-black tracking-widest">Awaiting changes</p>
-            </div>
-          )}
-        </div>
-      </div>
-
-      <div className="space-y-4 pt-4 border-t">
-        {status === 'done' ? (
-          <button
-            onClick={handleDownload}
-            className="w-full py-4 rounded-2xl bg-primary text-primary-foreground font-black uppercase tracking-widest text-xs flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
-          >
-            <Download className="w-4 h-4" />
-            Download Edited Image
-          </button>
-        ) : (
-          <button
-            onClick={handleApplyChanges}
-            disabled={status !== 'ready' || isProcessing}
-            className="w-full py-4 rounded-2xl bg-primary text-primary-foreground font-black uppercase tracking-widest text-xs flex items-center justify-center gap-2 hover:opacity-90 transition-opacity disabled:opacity-50 disabled:grayscale"
-          >
-            {isProcessing ? (
-              <>
-                <Loader2 className="w-4 h-4 animate-spin" />
-                Processing...
-              </>
-            ) : (
-              'Apply Changes'
-            )}
-          </button>
-        )}
-      </div>
-
-      {selectedImage && (
-        <div className="p-4 bg-muted/20 border border-dashed border-border rounded-xl">
-           <div className="flex items-center gap-3">
-              <CheckCircle2 className="w-4 h-4 text-primary" />
-              <span className="text-[10px] font-bold uppercase tracking-wider">Browser-Native processing active</span>
-           </div>
+      ) : (
+        <div className="relative transition-transform duration-200 ease-out flex items-center justify-center w-full h-full" style={{ transform: `scale(${transform.zoom})` }}>
+          <div className="relative shadow-2xl bg-white p-1 rounded-sm border border-border/50 overflow-hidden flex items-center justify-center" style={{ transform: `rotate(${transform.rotation}deg) scaleX(${transform.flipH ? -1 : 1}) scaleY(${transform.flipV ? -1 : 1})` }}>
+            <img src={imageUrl!} alt="Editing" className="max-w-full max-h-full object-contain select-none pointer-events-none" />
+          </div>
         </div>
       )}
     </div>
   );
 
-  const bottomBar = selectedImage ? (
-    <>
-      <div className="flex items-center gap-6">
-        <div className="flex flex-col">
-          <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Original Size</span>
-          <span className="text-xs font-bold">{(selectedImage.size / 1024 / 1024).toFixed(2)} MB</span>
-        </div>
-      </div>
-      <div className="flex items-center gap-3">
-         <button onClick={handleReset} className="px-4 py-2 text-xs font-bold hover:bg-muted rounded-lg transition-colors">
-            Discard
-         </button>
-         <button
-          onClick={handleApplyChanges}
-          disabled={isProcessing}
-          className="px-6 py-2 bg-black dark:bg-white dark:text-black text-white rounded-lg text-xs font-black uppercase tracking-widest hover:opacity-90 transition-opacity"
-         >
-           Apply & Export
-         </button>
-      </div>
-    </>
-  ) : null;
-
   return (
     <EditorLayout
+      toolName="Image Editor"
+      fileName={selectedImage?.name}
       leftPanel={leftPanel}
       mainCanvas={mainCanvas}
       rightPanel={rightPanel}
-      bottomBar={bottomBar}
+      onDownload={status === 'done' ? () => {
+        if (resultUrl && selectedImage) {
+          fetch(resultUrl).then(r => r.blob()).then(blob => downloadFile(blob, `edited_${selectedImage.name}`));
+        }
+      } : undefined}
     />
   );
 }

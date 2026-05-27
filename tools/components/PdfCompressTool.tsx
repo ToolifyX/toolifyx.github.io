@@ -26,7 +26,7 @@ export default function PdfCompressTool() {
       const pdf = await PDFDocument.load(arrayBuffer);
 
       const pdfBytes = await pdf.save({ useObjectStreams: true });
-      const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+      const blob = new Blob([pdfBytes as any], { type: 'application/pdf' });
 
       setResult({
         blob,

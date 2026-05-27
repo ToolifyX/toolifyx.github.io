@@ -9,11 +9,12 @@ interface UploadPanelProps {
   onChange: (files: File[]) => void;
   maxFiles?: number;
   className?: string;
+  disabled?: boolean;
 }
 
-export default function UploadPanel({ files, onChange, maxFiles, className = "" }: UploadPanelProps) {
+export default function UploadPanel({ files, onChange, maxFiles, className = "", disabled = false }: UploadPanelProps) {
   return (
-    <div className={`bg-card border border-border rounded-lg p-3 space-y-6 ${className}`}>
+    <div className={`bg-card border border-border rounded-lg p-3 space-y-6 ${className} ${disabled ? 'opacity-50 pointer-events-none' : ''}`}>
       <ImageUploader files={files} onChange={onChange} showFileList={false} />
       <FileList
         files={files}

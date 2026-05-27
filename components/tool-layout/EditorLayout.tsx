@@ -3,48 +3,86 @@
 import React from 'react';
 
 interface EditorLayoutProps {
-  leftPanel: React.ReactNode;
+  toolName: string;
+  fileName?: string;
+  topBarActions?: React.ReactNode;
+  leftPanel?: React.ReactNode;
   mainCanvas: React.ReactNode;
-  rightPanel: React.ReactNode;
-  bottomBar?: React.ReactNode;
+  rightPanel?: React.ReactNode;
+  onDownload?: () => void;
 }
 
-export default function EditorLayout({ leftPanel, mainCanvas, rightPanel, bottomBar }: EditorLayoutProps) {
+export default function EditorLayout({
+  toolName,
+  fileName,
+  topBarActions,
+  leftPanel,
+  mainCanvas,
+  rightPanel,
+  onDownload
+}: EditorLayoutProps) {
   return (
-    <div className="flex flex-col min-h-[700px] w-full bg-background relative border border-border rounded-3xl overflow-hidden shadow-2xl">
-      {/* Three Panel Layout */}
-      <div className="flex flex-col lg:flex-row flex-1 w-full overflow-hidden">
+    <div className="flex flex-col h-[calc(100vh-120px)] min-h-[600px] w-full bg-background border border-border rounded-3xl overflow-hidden shadow-2xl">
+      {/* TOP BAR */}
+      <header className="h-14 border-b border-border bg-card flex items-center justify-between px-6 shrink-0 z-30">
+        <div className="flex items-center gap-4">
+          <h2 className="text-sm font-black uppercase tracking-tight">{toolName}</h2>
+          {fileName && (
+            <>
+              <div className="h-4 w-px bg-border mx-1" />
+              <span className="text-xs text-muted-foreground font-medium truncate max-w-[200px]">{fileName}</span>
+            </>
+          )}
+        </div>
 
-        {/* Main Area: The Canvas (First on mobile) */}
-        <main className="order-1 lg:order-2 flex-1 bg-muted/10 overflow-hidden relative flex flex-col min-h-[500px] lg:min-h-[700px] border-b lg:border-b-0 lg:border-x border-border">
-          <div className="flex-1 relative flex items-center justify-center p-6 md:p-12">
+        <div className="flex items-center gap-3">
+          {topBarActions}
+          {onDownload && (
+            <button
+              onClick={onDownload}
+              className="bg-primary text-primary-foreground px-4 py-1.5 rounded-lg text-xs font-bold hover:opacity-90 transition-opacity flex items-center gap-2"
+            >
+              Download
+            </button>
+          )}
+        </div>
+      </header>
+
+      {/* WORKSPACE AREA */}
+      <div className="flex flex-1 overflow-hidden relative">
+        {/* LEFT PANEL (Secondary Tools) */}
+        {leftPanel && (
+          <aside className="hidden lg:flex w-full max-w-[240px] border-r border-border bg-card flex-col shrink-0 overflow-y-auto z-20">
+            <div className="p-4 space-y-6">
+              {leftPanel}
+            </div>
+          </aside>
+        )}
+
+        {/* MAIN CANVAS (Primary Workspace - 70%+) */}
+        <main className="flex-1 min-w-[70vw] max-w-[80vw] bg-muted/20 relative overflow-hidden flex flex-col h-full">
+          <div className="flex-1 overflow-auto flex items-center justify-center p-4">
             {mainCanvas}
           </div>
         </main>
 
-        {/* Left Panel: Controls (Second on mobile) */}
-        <aside className="order-2 lg:order-1 w-full lg:w-[320px] bg-card overflow-y-auto border-b lg:border-b-0 border-border">
-          <div className="p-6 space-y-8">
-            {leftPanel}
-          </div>
-        </aside>
-
-        {/* Right Panel: Result & Preview (Third on mobile) */}
-        <aside className="order-3 w-full lg:w-[320px] bg-card overflow-y-auto">
-          <div className="p-6 space-y-8">
-            {rightPanel}
-          </div>
-        </aside>
+        {/* RIGHT PANEL (Secondary Options) */}
+        {rightPanel && (
+          <aside className="hidden xl:flex w-full max-w-[280px] border-l border-border bg-card flex-col shrink-0 overflow-y-auto z-20">
+            <div className="p-6 space-y-8">
+              {rightPanel}
+            </div>
+          </aside>
+        )}
       </div>
 
-      {/* Optional Sticky Bottom Bar */}
-      {bottomBar && (
-        <div className="sticky bottom-0 left-0 right-0 border-t bg-background/95 backdrop-blur-md z-20 px-6 py-4">
-          <div className="max-w-screen-2xl mx-auto flex items-center justify-between gap-4">
-            {bottomBar}
-          </div>
+      {/* MOBILE DRAWER/CONTROLS */}
+      <div className="lg:hidden border-t border-border bg-card p-4 shrink-0 overflow-x-auto whitespace-nowrap scrollbar-hide">
+        <div className="flex items-center gap-4">
+          {leftPanel}
+          {rightPanel}
         </div>
-      )}
+      </div>
     </div>
   );
 }

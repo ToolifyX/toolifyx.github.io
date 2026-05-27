@@ -1,131 +1,87 @@
-Refactor ALL image tools (Crop, Resize, Editor, Compressor preview) to use a FULL-WORKSPACE EDITOR LAYOUT similar to iLoveIMG.
+Refactor ALL image tools to enforce a strict layout rule:
+CRITICAL UX RULE
 
-GOAL
+The IMAGE WORKSPACE (canvas / preview / crop / editor area)
+MUST ALWAYS occupy at least 70% of screen width on desktop.
+GLOBAL LAYOUT CONSTRAINT
 
-The current UI is too small and form-like.
+DESKTOP LAYOUT:----------------------
+| LEFT TOOL PANEL |   IMAGE WORKSPACE (70%+)        |
+| (max 20%)       |   (main focus area)             |
+|                 |                                 |----------------------
+| RIGHT PANEL (optional, max 15–20%)                |----------------------
+IMPLEMENTATION REQUIREMENTS
 
-Upgrade to a professional editor layout where:
+1. MAIN CANVAS AREA
 
-- image workspace is LARGE (primary focus)
-- controls are secondary sidebar
-- user focuses on image, not UI
+Apply:
 
-GLOBAL LAYOUT CHANGE
+- flex-grow: 1
+- width: 70vw minimum
+- max-width: 80vw
+- height: 100vh minus header
 
-Replace current layout with:
+OR Tailwind:
 
-DESKTOP STRUCTURE:
---------------------
-| TOP BAR (tool name + actions)                    |--------------------
-| LEFT PANEL |        MAIN CANVAS (LARGE)          |
-| (tools)    |        IMAGE WORKSPACE              |
-|            |                                     |
-|            |                                     |--------------------
-| RIGHT PANEL (OPTIONS / PROPERTIES)               |--------------------
+className="
+  flex-1
+  min-w-[70vw]
+  max-w-[80vw]
+  h-[calc(100vh-64px)]
+"
+2. PANELS MUST BE SECONDARY
 
-MAIN CANVAS (CRITICAL)
+LEFT PANEL:
+- max width: 240px
+- shrinkable
+- overflow-y scroll
 
-- MUST take 70–80% screen width
-- min height: 600px+
-- centered image
-- zoomable workspace
-- crop/selection overlay visible clearly
+RIGHT PANEL:
+- max width: 280px
+- optional / collapsible
+3. REMOVE SMALL CANVAS PROBLEM
 
-DO NOT shrink canvas inside cards.
+DO NOT:
 
-LEFT PANEL (TOOLS)
+- wrap canvas inside small card
+- restrict width with container max-w
+- center inside narrow div
+4. IMAGE WORKSPACE RULE
 
-Move editing tools here:
+Inside workspace:
 
-- Crop
-- Rotate
-- Flip
-- Reset
-- Mode switch
+- canvas MUST expand full available space
+- image MUST scale to fit container
+- maintain aspect ratio
+- center image
+5. CROPPER / EDITOR FIX
 
-Make it:
-
-- narrow (200–260px)
-- icon + label
-- compact spacing
-
-RIGHT PANEL (OPTIONS)
-
-Move settings here:
-
-Crop tool:
-- width
-- height
-- position X/Y
-- aspect ratio presets
-
-Resize tool:
-- width/height input
-- scale %
-
-Keep it secondary UI only.
-
-TOP BAR
-
-Add sticky top bar:
-
-- Tool name
-- File name
-- Undo / Redo (optional)
-- Download button
-
-CROP TOOL SPECIFIC FIX
-
-Fix crop UI:
-
-- crop box MUST be large and draggable
-- overlay dim outside crop area
-- show handles clearly
-- no cramped preview
-
-VISUAL PRIORITY RULE
-
-PRIORITY ORDER:
-
-1. IMAGE CANVAS (MOST IMPORTANT)
-2. LEFT TOOL PANEL
-3. RIGHT SETTINGS PANEL
-4. TOP BAR
-
-SPACING FIX
-
-- remove unnecessary padding around canvas
-- reduce empty whitespace
-- ensure full screen utilization
-
-RESPONSIVE
+Crop box must scale relative to workspace size:
+- no fixed small container crop area
+- use percentage-based sizing
+6. RESPONSIVE RULE
 
 MOBILE:
-- stack vertically
-- canvas first
-- tools collapse into drawer
-
-APPLY TO ALL IMAGE TOOLS
+- workspace becomes full width (100%)
+- panels collapse into drawers
+7. APPLY TO ALL IMAGE TOOLS
 
 - Image Cropper
 - Image Editor
 - Image Resizer
-- Image Compressor preview mode
-- Any tool using canvas preview
+- Image Compressor preview
+- Thumbnail Generator preview
+8. TOP PRIORITY FIX
 
-RESULT SCREEN MUST REMAIN UNCHANGED
+Fix any layout that causes:
 
-Do NOT modify:
-- ResultScreen logic
-- download flow
-
-ONLY UI layout changes.
-
+- canvas < 60% width ❌
+- image appears "small in box" ❌
 OUTPUT
 
 Return:
 
-1. Shared EditorLayout.tsx (new core layout)
-2. Updated Crop tool page
-3. Updated ImageEditor page
-4. Layout integration guide
+1. SharedEditorLayout.tsx (updated)
+2. CSS/Tailwind layout fix
+3. Updated Cropper page example
+4. Updated Editor page example

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { Loader2 } from 'lucide-react';
+import { Loader2, ZoomIn, ZoomOut, Maximize } from 'lucide-react';
 
 export interface CropArea {
   x: number;
@@ -21,6 +21,7 @@ export default function CropCanvas({ image, aspectRatio, onCropChange, status }:
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [imgSize, setImgSize] = useState({ width: 0, height: 0 });
   const [crop, setCrop] = useState<CropArea>({ x: 10, y: 10, width: 80, height: 80 }); // Percentages
+  const [zoom, setZoom] = useState(1);
   const containerRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const isDragging = useRef(false);
@@ -43,18 +44,21 @@ export default function CropCanvas({ image, aspectRatio, onCropChange, status }:
 
     if (aspectRatio && imgSize.width > 0) {
       // Maintain aspect ratio logic
-      const currentAspectRatio = (newCrop.width * imgSize.width) / (newCrop.height * imgSize.height);
-      if (Math.abs(currentAspectRatio - aspectRatio) > 0.01) {
-          // Adjust height based on width and aspectRatio
-          constrained.height = (newCrop.width * imgSize.width) / (aspectRatio * imgSize.height);
+      const targetRatio = aspectRatio;
+      const currentWidthPx = (newCrop.width / 100) * imgSize.width;
+      const currentHeightPx = (newCrop.height / 100) * imgSize.height;
+
+      if (dragType.current === 'se' || dragType.current === 'nw' || dragType.current === 'ne' || dragType.current === 'sw') {
+          // Adjust based on the direction of drag
+          constrained.height = (newCrop.width * imgSize.width) / (targetRatio * imgSize.height);
       }
     }
 
     constrained = {
       x: Math.max(0, Math.min(constrained.x, 100 - constrained.width)),
       y: Math.max(0, Math.min(constrained.y, 100 - constrained.height)),
-      width: Math.max(5, Math.min(constrained.width, 100 - constrained.x)),
-      height: Math.max(5, Math.min(constrained.height, 100 - constrained.y)),
+      width: Math.max(1, Math.min(constrained.width, 100 - constrained.x)),
+      height: Math.max(1, Math.min(constrained.height, 100 - constrained.y)),
     };
 
     setCrop(constrained);
@@ -62,24 +66,23 @@ export default function CropCanvas({ image, aspectRatio, onCropChange, status }:
   }, [onCropChange, aspectRatio, imgSize]);
 
   useEffect(() => {
-    // Reset crop when aspect ratio changes
     if (aspectRatio && imgSize.width > 0) {
         const initialWidth = 80;
-        const initialHeight = (initialWidth * imgSize.width) / (aspectRatio * imgSize.height);
+        let initialHeight = (initialWidth * imgSize.width) / (aspectRatio * imgSize.height);
 
-        const finalHeight = initialHeight > 80 ? 80 : initialHeight;
-        const finalWidth = initialHeight > 80 ? (80 * aspectRatio * imgSize.height) / imgSize.width : 80;
-
-        const newCrop = {
-            x: (100 - finalWidth) / 2,
-            y: (100 - finalHeight) / 2,
-            width: finalWidth,
-            height: finalHeight
-        };
-        setCrop(newCrop);
-        onCropChange(newCrop);
+        if (initialHeight > 80) {
+            initialHeight = 80;
+            const adjustedWidth = (80 * aspectRatio * imgSize.height) / imgSize.width;
+            const newCrop = { x: (100 - adjustedWidth) / 2, y: 10, width: adjustedWidth, height: 80 };
+            setCrop(newCrop);
+            onCropChange(newCrop);
+        } else {
+            const newCrop = { x: 10, y: (100 - initialHeight) / 2, width: 80, height: initialHeight };
+            setCrop(newCrop);
+            onCropChange(newCrop);
+        }
     }
-  }, [aspectRatio, imgSize, onCropChange]);
+  }, [aspectRatio, imgSize.width, imgSize.height, onCropChange]);
 
   const handleMouseDown = (e: React.MouseEvent, type: 'move' | 'nw' | 'ne' | 'sw' | 'se') => {
     e.preventDefault();
@@ -92,8 +95,8 @@ export default function CropCanvas({ image, aspectRatio, onCropChange, status }:
   const handleMouseMove = useCallback((e: MouseEvent) => {
     if (!isDragging.current || !containerRef.current) return;
 
-    const dx = ((e.clientX - startPos.current.x) / containerRef.current.offsetWidth) * 100;
-    const dy = ((e.clientY - startPos.current.y) / containerRef.current.offsetHeight) * 100;
+    const dx = ((e.clientX - startPos.current.x) / (containerRef.current.offsetWidth * zoom)) * 100;
+    const dy = ((e.clientY - startPos.current.y) / (containerRef.current.offsetHeight * zoom)) * 100;
 
     let newCrop = { ...startCrop.current };
 
@@ -103,11 +106,23 @@ export default function CropCanvas({ image, aspectRatio, onCropChange, status }:
     } else if (dragType.current === 'se') {
       newCrop.width += dx;
       newCrop.height += dy;
+    } else if (dragType.current === 'nw') {
+        newCrop.x += dx;
+        newCrop.y += dy;
+        newCrop.width -= dx;
+        newCrop.height -= dy;
+    } else if (dragType.current === 'ne') {
+        newCrop.y += dy;
+        newCrop.width += dx;
+        newCrop.height -= dy;
+    } else if (dragType.current === 'sw') {
+        newCrop.x += dx;
+        newCrop.width -= dx;
+        newCrop.height += dy;
     }
-    // Add other handles if needed
 
     updateCrop(newCrop);
-  }, [updateCrop]);
+  }, [updateCrop, zoom]);
 
   const handleMouseUp = useCallback(() => {
     isDragging.current = false;
@@ -123,69 +138,91 @@ export default function CropCanvas({ image, aspectRatio, onCropChange, status }:
     };
   }, [handleMouseMove, handleMouseUp]);
 
-  if (!imageUrl) {
-    return (
-      <div className="w-full h-[400px] bg-muted/30 border border-dashed rounded-2xl flex flex-col items-center justify-center text-muted-foreground gap-4">
-        <p className="text-sm font-medium">Upload an image to start cropping</p>
-      </div>
-    );
-  }
+  if (!imageUrl) return null;
 
   return (
-    <div className="relative w-full h-full flex items-center justify-center overflow-hidden bg-black/5 dark:bg-white/5 rounded-2xl p-4">
+    <div className="flex flex-col items-center justify-center w-full h-full relative overflow-hidden">
+      {/* Zoom Controls Overlay */}
+      <div className="absolute top-4 right-4 flex items-center gap-2 bg-card/80 backdrop-blur-md border border-border p-2 rounded-xl z-10 shadow-lg">
+        <button onClick={() => setZoom(z => Math.max(0.2, z - 0.1))} className="p-1.5 hover:bg-muted rounded-lg transition-colors">
+          <ZoomOut className="w-4 h-4" />
+        </button>
+        <span className="text-[10px] font-black w-10 text-center">{Math.round(zoom * 100)}%</span>
+        <button onClick={() => setZoom(z => Math.min(3, z + 0.1))} className="p-1.5 hover:bg-muted rounded-lg transition-colors">
+          <ZoomIn className="w-4 h-4" />
+        </button>
+        <button onClick={() => setZoom(1)} className="p-1.5 hover:bg-muted rounded-lg transition-colors border-l pl-2 ml-1">
+          <Maximize className="w-4 h-4" />
+        </button>
+      </div>
+
       <div
-        ref={containerRef}
-        className="relative max-w-full max-h-full shadow-2xl"
-        style={{ aspectRatio: imgSize.width ? `${imgSize.width}/${imgSize.height}` : 'auto' }}
+        className="relative transition-transform duration-200 ease-out flex items-center justify-center w-full h-full"
+        style={{ transform: `scale(${zoom})` }}
       >
-        <img
-          ref={imageRef}
-          src={imageUrl}
-          alt="To crop"
-          className="max-w-full max-h-[600px] select-none pointer-events-none"
-          onLoad={(e) => {
-            const img = e.currentTarget;
-            setImgSize({ width: img.naturalWidth, height: img.naturalHeight });
-          }}
-        />
-
-        {/* Backdrop overlay */}
-        <div className="absolute inset-0 bg-black/60 pointer-events-none" />
-
-        {/* Crop area preview */}
         <div
-          className="absolute border-2 border-white shadow-[0_0_0_9999px_rgba(0,0,0,0)]"
+          ref={containerRef}
+          className="relative shadow-2xl bg-muted rounded-sm overflow-hidden flex items-center justify-center"
           style={{
-            left: `${crop.x}%`,
-            top: `${crop.y}%`,
-            width: `${crop.width}%`,
-            height: `${crop.height}%`,
-            boxShadow: '0 0 0 9999px rgba(0,0,0,0.6)',
-            cursor: 'move',
+            width: '100%',
+            height: '100%'
           }}
-          onMouseDown={(e) => handleMouseDown(e, 'move')}
         >
-          {/* Grid lines */}
-          <div className="absolute inset-0 grid grid-cols-3 grid-rows-3 pointer-events-none opacity-30">
-            <div className="border-r border-white/50" />
-            <div className="border-r border-white/50" />
-            <div />
-            <div className="border-b border-white/50 col-span-3" />
-            <div className="border-b border-white/50 col-span-3" />
-          </div>
-
-          {/* Resize handle SE */}
-          <div
-            className="absolute bottom-[-4px] right-[-4px] w-4 h-4 bg-white border border-primary rounded-full cursor-se-resize shadow-lg"
-            onMouseDown={(e) => handleMouseDown(e, 'se')}
+          <img
+            ref={imageRef}
+            src={imageUrl}
+            alt="To crop"
+            className="block max-w-full max-h-full object-contain select-none"
+            onLoad={(e) => {
+              const img = e.currentTarget;
+              setImgSize({ width: img.naturalWidth, height: img.naturalHeight });
+            }}
           />
+
+          {/* Backdrop overlay */}
+          <div className="absolute inset-0 bg-black/50 pointer-events-none" />
+
+          {/* Crop area preview */}
+          <div
+            className="absolute border-2 border-white/80 shadow-[0_0_0_9999px_rgba(0,0,0,0.5)] cursor-move"
+            style={{
+              left: `${crop.x}%`,
+              top: `${crop.y}%`,
+              width: `${crop.width}%`,
+              height: `${crop.height}%`,
+            }}
+            onMouseDown={(e) => handleMouseDown(e, 'move')}
+          >
+            {/* Grid lines */}
+            <div className="absolute inset-0 grid grid-cols-3 grid-rows-3 pointer-events-none">
+              <div className="border-r border-white/30" />
+              <div className="border-r border-white/30" />
+              <div />
+              <div className="border-b border-white/30 col-span-3" />
+              <div className="border-b border-white/30 col-span-3" />
+            </div>
+
+            {/* Resize handles */}
+            {[
+              { type: 'nw', class: 'top-[-6px] left-[-6px] cursor-nw-resize' },
+              { type: 'ne', class: 'top-[-6px] right-[-6px] cursor-ne-resize' },
+              { type: 'sw', class: 'bottom-[-6px] left-[-6px] cursor-sw-resize' },
+              { type: 'se', class: 'bottom-[-6px] right-[-6px] cursor-se-resize' },
+            ].map((handle) => (
+              <div
+                key={handle.type}
+                className={`absolute w-3 h-3 bg-white border-2 border-primary rounded-full shadow-md z-20 ${handle.class}`}
+                onMouseDown={(e) => handleMouseDown(e, handle.type as any)}
+              />
+            ))}
+          </div>
         </div>
       </div>
 
       {status === 'cropping' && (
-        <div className="absolute inset-0 bg-background/60 backdrop-blur-sm flex flex-col items-center justify-center gap-3">
-          <Loader2 className="w-8 h-8 animate-spin text-primary" />
-          <p className="text-sm font-bold uppercase tracking-widest">Applying Crop...</p>
+        <div className="absolute inset-0 bg-background/40 backdrop-blur-[2px] z-50 flex flex-col items-center justify-center gap-3">
+          <Loader2 className="w-10 h-10 animate-spin text-primary" />
+          <p className="text-sm font-bold uppercase tracking-[0.2em] animate-pulse">Processing...</p>
         </div>
       )}
     </div>
