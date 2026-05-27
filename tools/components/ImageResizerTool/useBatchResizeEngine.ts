@@ -21,14 +21,11 @@ export function useBatchResizeEngine(initialImages: ImageInfo[], settings: Resiz
       const newImages = initialImages.map(info => {
         const existing = prev.find(p => p.id === info.id);
         if (existing) {
-          // Update original dimensions if they were previously 0
           if (existing.originalWidth === 0 && info.originalWidth !== 0) {
             return {
               ...existing,
               originalWidth: info.originalWidth,
               originalHeight: info.originalHeight,
-              // If we didn't have dimensions before, we might need to re-calc resized dimensions
-              // though the effect below will trigger a processSingleImage which updates them.
             };
           }
           return existing;
@@ -55,14 +52,15 @@ export function useBatchResizeEngine(initialImages: ImageInfo[], settings: Resiz
     });
   }, [initialImages]);
 
-  const processSingleImage = useCallback(async (imgInfo: ResizedImage, currentSettings: ResizeSettings) => {
-    if (processingRef.current.has(imgInfo.id)) return;
-    processingRef.current.add(imgInfo.id);
+  const processSingleImage = useCallback(async (id: string, currentSettings: ResizeSettings): Promise<ResizedImage | null> => {
+    const imgInfo = images.find(img => img.id === id);
+    if (!imgInfo || processingRef.current.has(id)) return null;
 
-    setImages(prev => prev.map(img => img.id === imgInfo.id ? { ...img, isProcessing: true } : img));
+    processingRef.current.add(id);
+    setImages(prev => prev.map(img => img.id === id ? { ...img, isProcessing: true } : img));
 
     try {
-      let imgElement = imageElements.current.get(imgInfo.id);
+      let imgElement = imageElements.current.get(id);
       if (!imgElement) {
         imgElement = await new Promise<HTMLImageElement>((resolve, reject) => {
           const img = new Image();
@@ -71,19 +69,20 @@ export function useBatchResizeEngine(initialImages: ImageInfo[], settings: Resiz
           img.onerror = reject;
           img.src = imgInfo.originalUrl;
         });
-        imageElements.current.set(imgInfo.id, imgElement);
+        imageElements.current.set(id, imgElement);
       }
 
       const result = await resizeImage(imgElement, currentSettings);
       allGeneratedUrls.current.add(result.url);
 
+      let updatedImg: ResizedImage | null = null;
       setImages(prev => prev.map(img => {
-        if (img.id === imgInfo.id) {
+        if (img.id === id) {
           if (img.resizedUrl !== img.originalUrl) {
             URL.revokeObjectURL(img.resizedUrl);
             allGeneratedUrls.current.delete(img.resizedUrl);
           }
-          return {
+          updatedImg = {
             ...img,
             resizedUrl: result.url,
             resizedWidth: result.width,
@@ -91,29 +90,24 @@ export function useBatchResizeEngine(initialImages: ImageInfo[], settings: Resiz
             resizedBlob: result.blob,
             isProcessing: false
           };
+          return updatedImg;
         }
         return img;
       }));
+      return updatedImg;
     } catch (error) {
-      console.error(`Error processing image ${imgInfo.id}:`, error);
-      setImages(prev => prev.map(img => img.id === imgInfo.id ? { ...img, isProcessing: false } : img));
+      console.error(`Error processing image ${id}:`, error);
+      setImages(prev => prev.map(img => img.id === id ? { ...img, isProcessing: false } : img));
+      return null;
     } finally {
-      processingRef.current.delete(imgInfo.id);
+      processingRef.current.delete(id);
     }
-  }, []);
+  }, [images]);
 
-  // Re-process all images when settings change or new images are added
-  useEffect(() => {
-    if (images.length === 0) return;
-
-    const timeoutId = setTimeout(() => {
-      images.forEach(img => {
-        processSingleImage(img, settings);
-      });
-    }, 400);
-
-    return () => clearTimeout(timeoutId);
-  }, [settings, images.length, images.some(img => img.resizedWidth === 0 && img.originalWidth > 0), processSingleImage]);
+  const processAll = useCallback(async (currentSettings: ResizeSettings) => {
+    const results = await Promise.all(images.map(img => processSingleImage(img.id, currentSettings)));
+    return results.filter((r): r is ResizedImage => r !== null);
+  }, [images, processSingleImage]);
 
   // Cleanup URLs on unmount
   useEffect(() => {
@@ -125,6 +119,7 @@ export function useBatchResizeEngine(initialImages: ImageInfo[], settings: Resiz
 
   return {
     images,
-    setImages
+    processSingleImage,
+    processAll
   };
 }

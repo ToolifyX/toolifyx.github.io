@@ -3,15 +3,6 @@
 /**
  * SEO Title: Professional Image Resizer - Resize Multiple Images Online
  * Meta Description: Resize your images to any dimension or percentage instantly. Bulk image resizing with real-time preview. 100% free and private.
- *
- * FAQ 1: Can I resize multiple images at once?
- * Yes, you can upload dozens of images and apply the same resize settings to all of them simultaneously.
- *
- * FAQ 2: Is my privacy protected?
- * Absolutely. All image processing is done locally in your browser. Your images are never uploaded to our servers.
- *
- * FAQ 3: What formats are supported?
- * We support JPG, PNG, and WebP formats for both input and output.
  */
 
 import React, { useState, useCallback, useEffect } from 'react';
@@ -22,11 +13,12 @@ import { useBatchResizeEngine, ResizedImage } from './ImageResizerTool/useBatchR
 import { ResizeSettings, ImageInfo } from './ImageResizerTool/resizeUtils';
 import { downloadFile } from '@/lib/utils';
 import { downloadAllAsZip } from '@/lib/download';
-import { X, Plus } from 'lucide-react';
+import { X, Plus, Loader2 } from 'lucide-react';
 
 export default function ImageResizer() {
   const [initialImages, setInitialImages] = useState<ImageInfo[]>([]);
   const [isZipping, setIsZipping] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const [settings, setSettings] = useState<ResizeSettings>({
     mode: 'percentage',
@@ -39,7 +31,7 @@ export default function ImageResizer() {
     quality: 90
   });
 
-  const { images } = useBatchResizeEngine(initialImages, settings);
+  const { images, processSingleImage, processAll } = useBatchResizeEngine(initialImages, settings);
 
   const handleFileChange = (files: File[]) => {
     const newInfos = files.map(file => ({
@@ -72,17 +64,25 @@ export default function ImageResizer() {
     setInitialImages([]);
   };
 
-  const handleDownload = (img: ResizedImage) => {
-    if (img.resizedBlob) {
-      downloadFile(img.resizedBlob, `resized_${img.file.name}`);
+  const handleDownload = async (img: ResizedImage) => {
+    setIsProcessing(true);
+    try {
+      const processed = await processSingleImage(img.id, settings);
+      if (processed && processed.resizedBlob) {
+        downloadFile(processed.resizedBlob, `resized_${img.file.name.replace(/\.[^/.]+$/, "")}.${settings.format}`);
+      }
+    } finally {
+      setIsProcessing(false);
     }
   };
 
   const handleDownloadAll = async () => {
     if (images.length === 0) return;
+    setIsProcessing(true);
     setIsZipping(true);
     try {
-      const zipItems = images
+      const processedImages = await processAll(settings);
+      const zipItems = processedImages
         .filter(img => img.resizedBlob)
         .map(img => ({
           name: `resized_${img.file.name.replace(/\.[^/.]+$/, "")}.${settings.format}`,
@@ -92,6 +92,7 @@ export default function ImageResizer() {
       await downloadAllAsZip(zipItems, "toolifyx-resized-images.zip");
     } finally {
       setIsZipping(false);
+      setIsProcessing(false);
     }
   };
 
@@ -103,10 +104,18 @@ export default function ImageResizer() {
     );
   }
 
-  const isAnyProcessing = images.some(img => img.isProcessing);
-
   return (
     <div className="fixed inset-0 z-50 bg-background flex flex-col md:flex-row overflow-hidden mt-16 lg:mt-0">
+      {/* Processing Overlay */}
+      {(isProcessing || isZipping) && (
+        <div className="absolute inset-0 z-[100] bg-background/50 backdrop-blur-sm flex items-center justify-center">
+          <div className="bg-card p-6 rounded-2xl shadow-2xl border flex flex-col items-center gap-4">
+            <Loader2 className="w-10 h-10 animate-spin text-primary" />
+            <p className="font-bold text-sm uppercase tracking-widest">Processing Images...</p>
+          </div>
+        </div>
+      )}
+
       {/* Header for mobile or tool identifier */}
       <div className="absolute top-4 left-4 z-10 flex items-center gap-2">
         <button
@@ -126,6 +135,7 @@ export default function ImageResizer() {
         <div className="min-h-full pb-20 pt-20">
           <ResizeGallery
             images={images}
+            settings={settings}
             onDownload={handleDownload}
           />
         </div>
@@ -146,7 +156,7 @@ export default function ImageResizer() {
           settings={settings}
           setSettings={setSettings}
           onDownloadAll={handleDownloadAll}
-          isProcessing={isZipping || isAnyProcessing}
+          isProcessing={isZipping || isProcessing}
           hasImages={images.length > 0}
         />
       </div>
