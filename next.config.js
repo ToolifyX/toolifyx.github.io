@@ -1,16 +1,15 @@
-const isProd = process.env.NODE_ENV === "production";
+const repo = "toolifyx.github.io";
 
-/** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: "export", // 🔥 bắt buộc static export
+  output: "export",
   trailingSlash: true,
 
-  images: {
-    unoptimized: true, // GitHub Pages không support Image Optimization
-  },
+  basePath: `/${repo}`,
+  assetPrefix: `/${repo}/`,
 
-  basePath: isProd ? "/toolifyx.github.io" : "",
-  assetPrefix: isProd ? "/toolifyx.github.io/" : "",
+  images: {
+    unoptimized: true,
+  },
 };
 
 module.exports = nextConfig;
