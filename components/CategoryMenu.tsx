@@ -10,13 +10,13 @@ interface CategoryMenuProps {
 }
 
 const categories: { id: ToolCategory | 'all'; label: string }[] = [
-  { id: 'all', label: 'All Tools' },
-  { id: 'dev', label: 'Dev Tools' },
-  { id: 'text', label: 'Text Tools' },
-  { id: 'image', label: 'Image Tools' },
-  { id: 'pdf', label: 'PDF Tools' },
-  { id: 'design', label: 'Design Tools' },
-  { id: 'utility', label: 'Utility Tools' },
+  { id: 'all', label: 'All' },
+  { id: 'dev', label: 'Dev' },
+  { id: 'text', label: 'Text' },
+  { id: 'image', label: 'Image' },
+  { id: 'pdf', label: 'PDF' },
+  { id: 'design', label: 'Design' },
+  { id: 'utility', label: 'Utility' },
 ];
 
 export default function CategoryMenu({ activeCategory, onCategoryChange }: CategoryMenuProps) {
@@ -26,21 +26,21 @@ export default function CategoryMenu({ activeCategory, onCategoryChange }: Categ
   };
 
   return (
-    <div className="flex overflow-x-auto pb-4 mb-8 no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0">
-      <div className="flex space-x-2">
+    <div className="flex overflow-x-auto pb-2 no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0">
+      <div className="flex space-x-1">
         {categories.map((cat) => (
           <button
             key={cat.id}
             onClick={() => onCategoryChange(cat.id)}
             className={`
-              whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium transition-all
+              whitespace-nowrap px-3 py-1.5 rounded-lg text-sm font-medium transition-all
               ${activeCategory === cat.id
-                ? 'bg-black text-white'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}
+                ? 'bg-black text-white shadow-sm'
+                : 'bg-muted/50 text-muted-foreground hover:bg-muted'}
             `}
           >
             {cat.label}
-            <span className={`ml-2 text-xs ${activeCategory === cat.id ? 'text-gray-400' : 'text-gray-400'}`}>
+            <span className={`ml-1.5 text-[10px] font-bold ${activeCategory === cat.id ? 'text-gray-400' : 'text-gray-400'}`}>
               {getCount(cat.id)}
             </span>
           </button>

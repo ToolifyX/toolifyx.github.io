@@ -19,12 +19,12 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} min-h-screen bg-background text-foreground`}>
         <Navbar />
-        <main className="container mx-auto px-4 py-8">
+        <main className="container mx-auto px-2 md:px-4 py-4 md:py-6">
           {children}
         </main>
-        <footer className="border-t py-8 mt-auto">
-          <div className="container mx-auto px-4 text-center text-muted-foreground text-sm">
-            © {new Date().getFullYear()} ToolifyX. Built with Next.js.
+        <footer className="border-t py-4 mt-auto">
+          <div className="container mx-auto px-4 text-center text-muted-foreground text-[10px] uppercase font-bold tracking-widest">
+            © {new Date().getFullYear()} ToolifyX. All processing is local.
           </div>
         </footer>
       </body>
