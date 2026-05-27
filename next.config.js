@@ -1,11 +1,8 @@
-const repo = "toolifyx.github.io";
-
+/** @type {import('next').NextConfig} */
 const nextConfig = {
   output: "export",
-  trailingSlash: true,
 
-  basePath: `/${repo}`,
-  assetPrefix: `/${repo}/`,
+  trailingSlash: true,
 
   images: {
     unoptimized: true,
