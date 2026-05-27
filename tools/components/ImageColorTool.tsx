@@ -2,35 +2,35 @@
 
 /**
  * SEO Title: Batch Image Color Tools - Extract Palette & Grayscale
- * Meta Description: Extract colors or convert multiple images to grayscale at once. Secure, browser-based batch processing.
- *
- * FAQ 1: Can I extract colors from multiple images?
- * Yes, you can upload up to 5 images and see the dominant color palette for each.
- *
- * FAQ 2: Does grayscale work on multiple files?
- * Yes, you can convert all uploaded images to black and white in one click and download them individually.
- *
- * FAQ 3: How many colors are extracted?
- * The tool identifies the top 6 most prominent colors from each image.
  */
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { downloadFile, copyToClipboard } from '@/lib/utils';
-import ImageUploader from '@/components/ImageUploader';
-import { Loader2, Download, Pipette, Ghost } from 'lucide-react';
+import { downloadAllAsZip } from '@/lib/download';
+import { Loader2, Zap, Pipette, Ghost, Download } from 'lucide-react';
+import ToolSplitLayout from '@/components/tool-layout/ToolSplitLayout';
+import UploadPanel from '@/components/tool-layout/UploadPanel';
+import { getUploadLimits, UploadLimits } from '@/lib/adaptiveUpload';
 
 interface ColorResult {
   name: string;
   colors: string[];
-  grayscaleDataUrl: string;
+  grayscaleBlob: Blob;
+  grayscaleUrl: string;
 }
 
 export default function ImageColorTool() {
   const [files, setFiles] = useState<File[]>([]);
   const [results, setResults] = useState<ColorResult[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isZipping, setIsZipping] = useState(false);
   const [copied, setCopied] = useState<string | null>(null);
+  const [limits, setLimits] = useState<UploadLimits | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    setLimits(getUploadLimits());
+  }, []);
 
   const processFile = (file: File): Promise<ColorResult> => {
     return new Promise((resolve) => {
@@ -38,8 +38,7 @@ export default function ImageColorTool() {
       reader.onload = (e) => {
         const img = new Image();
         img.onload = () => {
-          const canvas = canvasRef.current;
-          if (!canvas) return;
+          const canvas = document.createElement("canvas");
           const ctx = canvas.getContext('2d');
 
           // Palette Extraction
@@ -68,13 +67,17 @@ export default function ImageColorTool() {
             data[i] = data[i+1] = data[i+2] = avg;
           }
           ctx!.putImageData(imageData, 0, 0);
-          const grayscaleUrl = canvas.toDataURL('image/png');
 
-          resolve({
-            name: file.name,
-            colors: extractedColors,
-            grayscaleDataUrl: grayscaleUrl
-          });
+          canvas.toBlob((blob) => {
+            if (blob) {
+              resolve({
+                name: file.name,
+                colors: extractedColors,
+                grayscaleBlob: blob,
+                grayscaleUrl: URL.createObjectURL(blob)
+              });
+            }
+          }, 'image/png');
         };
         img.src = e.target?.result as string;
       };
@@ -102,35 +105,77 @@ export default function ImageColorTool() {
   };
 
   const handleDownloadGrayscale = (res: ColorResult) => {
-    const byteString = atob(res.grayscaleDataUrl.split(',')[1]);
-    const ab = new ArrayBuffer(byteString.length);
-    const ia = new Uint8Array(ab);
-    for (let i = 0; i < byteString.length; i++) ia[i] = byteString.charCodeAt(i);
-    downloadFile(new Blob([ab], { type: 'image/png' }), `bw_${res.name}`);
+    downloadFile(res.grayscaleBlob, `bw_${res.name}`);
   };
 
-  return (
-    <div className="max-w-2xl mx-auto p-6 space-y-6">
-      <div className="card border rounded-lg p-4 space-y-6">
-        <ImageUploader maxFiles={5} onChange={setFiles} />
+  const handleDownloadAll = async () => {
+    if (results.length === 0) return;
+    setIsZipping(true);
+    try {
+      await downloadAllAsZip(
+        results.map(r => ({ name: `bw_${r.name}`, blob: r.grayscaleBlob })),
+        "grayscale-images.zip"
+      );
+    } finally {
+      setIsZipping(false);
+    }
+  };
 
-        {files.length > 0 && (
-          <button
-            onClick={handleProcessAll}
-            disabled={isProcessing}
-            className="bg-black text-white px-4 py-2.5 rounded-xl w-full font-bold flex items-center justify-center gap-2"
-          >
-            {isProcessing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Pipette className="w-4 h-4" />}
-            Analyze {files.length} Images
-          </button>
-        )}
+  const leftPanel = (
+    <div className="space-y-4">
+      <UploadPanel files={files} onChange={setFiles} maxFiles={limits?.maxFiles} />
+      {files.length > 0 && (
+        <button
+          onClick={handleProcessAll}
+          disabled={isProcessing}
+          className="bg-black text-white dark:bg-white dark:text-black px-4 py-3 rounded-xl w-full font-black text-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.01] active:scale-[0.98] disabled:opacity-50 shadow-lg shadow-primary/10"
+        >
+          {isProcessing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Pipette className="w-4 h-4 fill-current" />}
+          Analyze {files.length} Images
+        </button>
+      )}
+    </div>
+  );
 
-        {results.length > 0 && (
-          <div className="space-y-6 pt-4 border-t">
+  const rightPanel = (
+    <div className="card border rounded-lg p-4 bg-card shadow-sm min-h-[400px]">
+      {isProcessing && (
+        <div className="flex flex-col items-center justify-center h-full py-20 space-y-4">
+          <Loader2 className="w-10 h-10 animate-spin text-primary" />
+          <p className="text-sm font-bold">Analyzing images...</p>
+        </div>
+      )}
+
+      {!isProcessing && results.length === 0 && (
+        <div className="flex flex-col items-center justify-center h-full py-20 text-center space-y-2 opacity-30">
+          <Zap className="w-12 h-12" />
+          <p className="text-sm font-medium">Analysis results will appear here</p>
+        </div>
+      )}
+
+      {results.length > 0 && !isProcessing && (
+        <div className="space-y-6">
+          <div className="flex items-center justify-between px-1">
+            <h3 className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Results ({results.length})</h3>
+            {results.length > 1 && (
+              <button
+                onClick={handleDownloadAll}
+                disabled={isZipping}
+                className="text-[10px] font-bold bg-primary text-primary-foreground px-3 py-1 rounded-full flex items-center gap-1.5 hover:brightness-110 disabled:opacity-50 transition-all shadow-sm"
+              >
+                {isZipping ? <Loader2 className="w-3 h-3 animate-spin" /> : <Download className="w-3 h-3" />}
+                Download All B&W (ZIP)
+              </button>
+            )}
+          </div>
+          <div className="grid gap-4">
             {results.map((res, i) => (
-              <div key={i} className="p-4 bg-muted/20 border rounded-xl space-y-4">
+              <div key={i} className="p-4 bg-muted/20 border rounded-xl space-y-4 animate-in fade-in slide-in-from-top-1">
                 <div className="flex items-center justify-between">
-                   <p className="text-xs font-bold truncate pr-4">{res.name}</p>
+                   <div className="flex items-center space-x-3 min-w-0">
+                     <img src={res.grayscaleUrl} alt="bw" className="w-10 h-10 rounded border object-cover bg-card shadow-sm" />
+                     <p className="text-xs font-bold truncate">{res.name}</p>
+                   </div>
                    <button
                      onClick={() => handleDownloadGrayscale(res)}
                      className="text-[10px] font-bold uppercase flex items-center gap-1 text-primary hover:underline"
@@ -155,9 +200,14 @@ export default function ImageColorTool() {
               </div>
             ))}
           </div>
-        )}
-      </div>
-      <canvas ref={canvasRef} className="hidden" />
+        </div>
+      )}
+    </div>
+  );
+
+  return (
+    <div className="max-w-6xl mx-auto">
+      <ToolSplitLayout left={leftPanel} right={rightPanel} />
     </div>
   );
 }

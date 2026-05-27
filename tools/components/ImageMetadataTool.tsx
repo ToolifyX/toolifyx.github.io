@@ -2,26 +2,20 @@
 
 /**
  * SEO Title: Batch Image Metadata Remover - Strip EXIF Data
- * Meta Description: View info and remove metadata (EXIF) from multiple images at once for better privacy.
- *
- * FAQ 1: Can I strip metadata from many photos?
- * Yes, you can upload and process up to 5 images at once to remove hidden EXIF data.
- *
- * FAQ 2: What is removed?
- * All camera settings, timestamps, software info, and GPS location data are stripped by re-encoding the image.
- *
- * FAQ 3: Is it secure?
- * Yes, all processing is done locally in your browser. Your photos never leave your device.
  */
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { downloadFile } from '@/lib/utils';
-import ImageUploader from '@/components/ImageUploader';
-import { Loader2, Download, CheckCircle2, ShieldAlert } from 'lucide-react';
+import { downloadAllAsZip } from '@/lib/download';
+import { Loader2, Zap, Download, CheckCircle2, ShieldAlert } from 'lucide-react';
+import ToolSplitLayout from '@/components/tool-layout/ToolSplitLayout';
+import UploadPanel from '@/components/tool-layout/UploadPanel';
+import { getUploadLimits, UploadLimits } from '@/lib/adaptiveUpload';
 
 interface MetadataResult {
   name: string;
   type: string;
+  blob: Blob;
   dataUrl: string;
 }
 
@@ -29,7 +23,12 @@ export default function ImageMetadataTool() {
   const [files, setFiles] = useState<File[]>([]);
   const [results, setResults] = useState<MetadataResult[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [isZipping, setIsZipping] = useState(false);
+  const [limits, setLimits] = useState<UploadLimits | null>(null);
+
+  useEffect(() => {
+    setLimits(getUploadLimits());
+  }, []);
 
   const stripMetadataFile = (file: File): Promise<MetadataResult> => {
     return new Promise((resolve) => {
@@ -37,19 +36,23 @@ export default function ImageMetadataTool() {
       reader.onload = (e) => {
         const img = new Image();
         img.onload = () => {
-          const canvas = canvasRef.current;
-          if (!canvas) return;
+          const canvas = document.createElement("canvas");
           canvas.width = img.width;
           canvas.height = img.height;
           const ctx = canvas.getContext('2d');
           ctx?.drawImage(img, 0, 0);
 
           const dataUrl = canvas.toDataURL(file.type, 0.95);
-          resolve({
-            name: `clean_${file.name}`,
-            type: file.type,
-            dataUrl: dataUrl
-          });
+          canvas.toBlob((blob) => {
+            if (blob) {
+              resolve({
+                name: `clean_${file.name}`,
+                type: file.type,
+                blob: blob,
+                dataUrl: dataUrl
+              });
+            }
+          }, file.type, 0.95);
         };
         img.src = e.target?.result as string;
       };
@@ -73,69 +76,99 @@ export default function ImageMetadataTool() {
   };
 
   const handleDownloadResult = (res: MetadataResult) => {
-    const byteString = atob(res.dataUrl.split(',')[1]);
-    const ab = new ArrayBuffer(byteString.length);
-    const ia = new Uint8Array(ab);
-    for (let i = 0; i < byteString.length; i++) ia[i] = byteString.charCodeAt(i);
-    downloadFile(new Blob([ab], { type: res.type }), res.name);
+    downloadFile(res.blob, res.name);
   };
 
-  return (
-    <div className="max-w-2xl mx-auto p-6 space-y-6">
-      <div className="card border rounded-lg p-4 space-y-6">
-        <ImageUploader
-          maxFiles={5}
-          maxSizeMB={5}
-          totalSizeMB={20}
-          onChange={setFiles}
-        />
+  const handleDownloadAll = async () => {
+    if (results.length === 0) return;
+    setIsZipping(true);
+    try {
+      await downloadAllAsZip(
+        results.map(r => ({ name: r.name, blob: r.blob })),
+        "cleaned-images.zip"
+      );
+    } finally {
+      setIsZipping(false);
+    }
+  };
 
-        {files.length > 0 && (
-          <div className="space-y-4 pt-2 border-t">
-            <div className="flex items-center gap-2 p-3 bg-blue-50/50 border border-blue-100 rounded-lg text-[10px] text-blue-700">
-               <ShieldAlert className="w-4 h-4 flex-shrink-0" />
-               Re-encoding will strip all EXIF metadata (Location, Camera Info, etc.)
-            </div>
-            <button
-              onClick={handleProcessAll}
-              disabled={isProcessing}
-              className="bg-black text-white px-4 py-2.5 rounded-xl w-full font-bold flex items-center justify-center gap-2 disabled:opacity-50"
-            >
-              {isProcessing ? (
-                <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  Stripping Metadata...
-                </>
-              ) : (
-                `Strip Metadata from ${files.length} Images`
-              )}
-            </button>
+  const leftPanel = (
+    <div className="space-y-4">
+      <UploadPanel files={files} onChange={setFiles} maxFiles={limits?.maxFiles} />
+      {files.length > 0 && (
+        <div className="space-y-4">
+          <div className="flex items-center gap-2 p-3 bg-blue-50/50 border border-blue-100 rounded-lg text-[10px] text-blue-700">
+             <ShieldAlert className="w-4 h-4 flex-shrink-0" />
+             Re-encoding will strip all EXIF metadata (Location, Camera Info, etc.)
           </div>
-        )}
+          <button
+            onClick={handleProcessAll}
+            disabled={isProcessing}
+            className="bg-black text-white dark:bg-white dark:text-black px-4 py-3 rounded-xl w-full font-black text-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.01] active:scale-[0.98] disabled:opacity-50 shadow-lg shadow-primary/10"
+          >
+            {isProcessing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Zap className="w-4 h-4 fill-current" />}
+            Strip Metadata from {files.length} Images
+          </button>
+        </div>
+      )}
+    </div>
+  );
 
-        {results.length > 0 && (
-          <div className="space-y-3 pt-4 border-t">
-            <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Cleaned Images</h3>
-            <div className="grid gap-2">
-              {results.map((res, i) => (
-                <div key={i} className="flex items-center justify-between p-3 bg-muted/30 border rounded-xl">
-                  <div className="flex items-center space-x-3 min-w-0">
-                    <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0" />
-                    <p className="text-xs font-bold truncate">{res.name}</p>
-                  </div>
-                  <button
-                    onClick={() => handleDownloadResult(res)}
-                    className="p-2 rounded-lg bg-card border hover:bg-muted transition-colors"
-                  >
-                    <Download className="w-4 h-4" />
-                  </button>
+  const rightPanel = (
+    <div className="card border rounded-lg p-4 bg-card shadow-sm min-h-[400px]">
+      {isProcessing && (
+        <div className="flex flex-col items-center justify-center h-full py-20 space-y-4">
+          <Loader2 className="w-10 h-10 animate-spin text-primary" />
+          <p className="text-sm font-bold">Cleaning images...</p>
+        </div>
+      )}
+
+      {!isProcessing && results.length === 0 && (
+        <div className="flex flex-col items-center justify-center h-full py-20 text-center space-y-2 opacity-30">
+          <Zap className="w-12 h-12" />
+          <p className="text-sm font-medium">Cleaned files will appear here</p>
+        </div>
+      )}
+
+      {results.length > 0 && !isProcessing && (
+        <div className="space-y-4">
+          <div className="flex items-center justify-between px-1">
+            <h3 className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Cleaned ({results.length})</h3>
+            {results.length > 1 && (
+              <button
+                onClick={handleDownloadAll}
+                disabled={isZipping}
+                className="text-[10px] font-bold bg-primary text-primary-foreground px-3 py-1 rounded-full flex items-center gap-1.5 hover:brightness-110 disabled:opacity-50 transition-all shadow-sm"
+              >
+                {isZipping ? <Loader2 className="w-3 h-3 animate-spin" /> : <Download className="w-3 h-3" />}
+                Download All (ZIP)
+              </button>
+            )}
+          </div>
+          <div className="grid gap-2">
+            {results.map((res, i) => (
+              <div key={i} className="flex items-center justify-between p-2 bg-green-50/10 border border-green-200 rounded-xl group animate-in fade-in slide-in-from-top-1">
+                <div className="flex items-center space-x-3 min-w-0">
+                  <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0" />
+                  <p className="text-xs font-bold truncate pr-4">{res.name}</p>
                 </div>
-              ))}
-            </div>
+                <button
+                  onClick={() => handleDownloadResult(res)}
+                  className="p-2 rounded-lg bg-card border hover:bg-muted transition-colors text-primary shadow-sm"
+                >
+                  <Download className="w-4 h-4" />
+                </button>
+              </div>
+            ))}
           </div>
-        )}
-      </div>
-      <canvas ref={canvasRef} className="hidden" />
+        </div>
+      )}
+    </div>
+  );
+
+  return (
+    <div className="max-w-6xl mx-auto">
+      <ToolSplitLayout left={leftPanel} right={rightPanel} />
     </div>
   );
 }

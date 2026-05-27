@@ -1,81 +1,130 @@
-Upgrade all IMAGE tools to support multiple file uploads with limits.
+Refactor ALL file-processing tools (image, pdf, batch tools) to use a consistent and correct file handling system.
+
 GOAL
 
-Allow users to upload multiple images while preventing performance issues.
-REQUIREMENTS
+Ensure:
+- No mismatch between selected files and processed files
+- Clear UX for valid vs invalid files
+- Consistent behavior across ALL tools
 
-1. MULTI FILE INPUT
+APPLY TO ALL TOOLS
 
-- Use:
-  <input type="file" multiple accept="image/*" />
+- Image tools
+- PDF tools
+- Any batch processing tools
 
-- Store files in state:
-  const [files, setFiles] = useState<File[]>([])
-2. LIMIT RULES
+1. FILE CLASSIFICATION (CRITICAL)
 
-Implement:
+When user selects files:
 
-- Max files: 5
-- Max file size: 5MB per file
-- Total size limit: 20MB
-3. VALIDATION
+Split into:
 
-On file selection:
+const validFiles = []
+const invalidFiles = []
 
-- Reject files if:
-  - too many files
-  - file too large
-  - unsupported type
+Validation rules:
+- file size
+- total size
+- file type
 
-- Show error messages:
-  - "Max 5 files allowed"
-  - "File too large (max 5MB)"
-  - "Invalid file type"
-4. FILE PREVIEW
+2. DO NOT SILENTLY DROP FILES
 
-- Show list of selected files:
-  - file name
-  - file size (KB/MB)
+- NEVER auto-ignore files
+- ALWAYS show rejected files
 
-- Optional:
-  - image thumbnail preview
-5. REMOVE FILE
+3. UI FEEDBACK (REQUIRED)
 
-- Add remove button per file
-- Allow clearing all files
-6. PROCESSING
+If invalidFiles.length > 0:
 
-- Loop through files:
+Show:
 
-for (const file of files) {
-  // process using canvas
+"{validFiles.length} valid • {invalidFiles.length} skipped"
+
+List each invalid file:
+
+- filename
+- reason:
+  - "Too large"
+  - "Unsupported format"
+  - "Exceeds total size"
+
+4. BUTTON LABEL (FIX BUG)
+
+Button MUST reflect validFiles only:
+
+- If all valid:
+  "Process {validFiles.length} files"
+
+- If some skipped:
+  Show warning above
+  Button:
+  "Process {validFiles.length} files"
+
+5. PROCESSING LOGIC
+
+- ONLY process validFiles
+- Use queue processing (NO Promise.all)
+
+for (const file of validFiles) {
+  await process(file)
 }
-7. UX
 
-- Show loading state
-- Disable button if no file
-- Show result per file OR batch result
-8. REUSABLE COMPONENT
+6. PROGRESS UI
+
+Replace any:
+
+"Queue (x/y)"
+
+With:
+
+"Processing x of {validFiles.length} files..."
+
+7. RESULT COUNT
+
+Ensure:
+
+results.length === validFiles.length
+
+8. DOWNLOAD ALL (SYNC)
+
+- Only include processed files
+- Use results array
+
+9. OPTIONAL AUTO-FIX (BONUS)
+
+Instead of rejecting:
+
+- If file too large:
+  → auto resize
+
+- If unsupported format:
+  → convert if possible
+
+10. REUSABLE LOGIC
 
 Create:
 
-/components/ImageUploader.tsx
+/lib/fileValidation.ts
 
-Props:
-- maxFiles
-- maxSize
-- onChange(files)
-9. INTEGRATION
+Export:
 
-Update all image tools to use ImageUploader
-10. ERROR HANDLING
+- validateFiles(files, limits)
+- returns { validFiles, invalidFiles }
 
-- Do not crash if invalid files
-- Always show feedback
+11. CONSISTENCY (IMPORTANT)
+
+Apply SAME logic to:
+
+- ImageUploader
+- PDFUploader
+- Any batch tool uploader
+
 OUTPUT
 
 Return:
 
-1. ImageUploader.tsx
-2. Example usage in ImageCompressor
-3. Updated logic for multi-file processing
+1. fileValidation.ts
+2. Updated ImageUploader
+3. Updated PDFUploader
+4. Example integration in 1 image tool
+5. Example integration in 1 PDF tool
