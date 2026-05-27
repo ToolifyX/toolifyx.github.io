@@ -3,3 +3,4 @@
 /.idea/*
 /next-env.d.ts
 /package-lock.json
+/tools/registry.tsx
