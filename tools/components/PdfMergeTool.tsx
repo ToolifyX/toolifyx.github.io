@@ -141,7 +141,7 @@ export default function PdfMergeTool({ tool }: { tool?: Tool }) {
       {files.length === 0 ? (
         <div
           className="w-full max-w-lg border-2 border-dashed border-border rounded-3xl p-16 text-center space-y-6 hover:border-primary transition-all cursor-pointer bg-card/50 hover:bg-card group"
-          onClick={() => document.querySelector('input[type="file"]')?.dispatchEvent(new MouseEvent('click'))}
+          onClick={() => document.getElementById('merge-upload')?.click()}
         >
           <div className="w-20 h-20 bg-primary/10 text-primary rounded-3xl flex items-center justify-center mx-auto transition-transform group-hover:scale-110 group-hover:rotate-3">
              <Combine className="w-10 h-10" />
@@ -150,20 +150,35 @@ export default function PdfMergeTool({ tool }: { tool?: Tool }) {
             <h4 className="text-xl font-bold">Upload PDFs to merge</h4>
             <p className="text-sm text-muted-foreground font-medium">Combine multiple documents into one</p>
           </div>
+          <input id="merge-upload" type="file" multiple className="hidden" accept=".pdf" onChange={(e) => {
+            const newFiles = Array.from(e.target.files || []);
+            if (newFiles.length > 0) setFiles(prev => [...prev, ...newFiles]);
+          }} />
         </div>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full h-full overflow-y-auto p-6">
-          {files.map((file, i) => (
-            <div key={i} className="bg-white border border-border rounded-xl p-4 shadow-sm relative group flex flex-col items-center justify-center gap-3">
-              <div className="w-16 h-16 bg-primary/5 rounded-lg flex items-center justify-center border border-primary/10">
-                 <FileText className="w-8 h-8 text-primary" />
+        <div className="flex flex-col items-center gap-6 animate-in fade-in zoom-in-95">
+           <div className="w-32 h-32 bg-primary/5 rounded-3xl flex items-center justify-center border border-primary/10 relative">
+              <FileText className="w-16 h-16 text-primary" />
+              <div className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-xs font-black px-2 py-1 rounded-full shadow-lg">
+                {files.length}
               </div>
-              <div className="text-center space-y-1 w-full">
-                <p className="text-[10px] font-black uppercase truncate w-full">{file.name}</p>
-                <p className="text-[9px] text-muted-foreground font-bold uppercase">{(file.size / 1024).toFixed(1)} KB</p>
-              </div>
-            </div>
-          ))}
+           </div>
+           <div className="text-center space-y-1">
+              <h4 className="text-xl font-bold uppercase tracking-tight">PDFs ready for merging</h4>
+              <p className="text-sm text-muted-foreground font-medium uppercase">
+                {files.length} documents selected
+              </p>
+           </div>
+           <button
+             onClick={() => document.getElementById('merge-upload')?.click()}
+             className="text-xs font-bold text-primary hover:underline uppercase tracking-widest"
+           >
+             Add more files
+           </button>
+           <input id="merge-upload" type="file" multiple className="hidden" accept=".pdf" onChange={(e) => {
+             const newFiles = Array.from(e.target.files || []);
+             if (newFiles.length > 0) setFiles(prev => [...prev, ...newFiles]);
+           }} />
         </div>
       )}
     </div>

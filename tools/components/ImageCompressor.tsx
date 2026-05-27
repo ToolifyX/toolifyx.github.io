@@ -160,16 +160,29 @@ export default function ImageCompressor({ tool }: { tool?: Tool }) {
           <input id="compress-upload" type="file" multiple className="hidden" accept="image/*" onChange={handleFileChange} />
         </div>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 w-full h-full overflow-y-auto p-6">
-          {files.map((file, i) => (
-            <div key={i} className="aspect-square bg-white border border-border rounded-xl p-2 shadow-sm relative group flex items-center justify-center overflow-hidden">
-              <img src={URL.createObjectURL(file)} alt="Preview" className="max-w-full max-h-full object-contain rounded-lg" />
-              <div className="absolute inset-x-2 bottom-2 bg-black/80 backdrop-blur-md p-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
-                <p className="text-[9px] font-black text-white truncate uppercase">{file.name}</p>
-                <p className="text-[8px] text-white/60 font-bold uppercase">Size: {(file.size / 1024).toFixed(1)} KB</p>
+        <div className="flex flex-col items-center gap-6 animate-in fade-in zoom-in-95">
+           <div className="w-32 h-32 bg-primary/5 rounded-3xl flex items-center justify-center border border-primary/10 relative">
+              <ImageIcon className="w-16 h-16 text-primary" />
+              <div className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-xs font-black px-2 py-1 rounded-full shadow-lg">
+                {files.length}
               </div>
-            </div>
-          ))}
+           </div>
+           <div className="text-center space-y-1">
+              <h4 className="text-xl font-bold uppercase tracking-tight">Images ready to compress</h4>
+              <p className="text-sm text-muted-foreground font-medium uppercase">
+                Total size: {(files.reduce((acc, f) => acc + f.size, 0) / 1024 / 1024).toFixed(2)} MB
+              </p>
+           </div>
+           <button
+             onClick={() => document.getElementById('compress-upload')?.click()}
+             className="text-xs font-bold text-primary hover:underline uppercase tracking-widest"
+           >
+             Add more files
+           </button>
+           <input id="compress-upload" type="file" multiple className="hidden" accept="image/*" onChange={(e) => {
+             const newFiles = Array.from(e.target.files || []);
+             if (newFiles.length > 0) setFiles(prev => [...prev, ...newFiles]);
+           }} />
         </div>
       )}
     </div>

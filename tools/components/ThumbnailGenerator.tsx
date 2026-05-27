@@ -180,15 +180,29 @@ export default function ThumbnailGenerator({ tool }: { tool?: Tool }) {
           <input id="thumb-upload" type="file" multiple className="hidden" accept="image/*" onChange={handleFileChange} />
         </div>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full max-w-5xl overflow-y-auto max-h-full p-4">
-          {files.map((file, i) => (
-            <div key={i} className="aspect-square bg-white border border-border rounded-xl p-2 shadow-sm relative group">
-              <img src={URL.createObjectURL(file)} alt="Preview" className="w-full h-full object-cover rounded-lg" />
-              <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-lg">
-                <p className="text-[10px] font-black text-white uppercase tracking-widest">{size}x{size}</p>
+        <div className="flex flex-col items-center gap-6 animate-in fade-in zoom-in-95">
+           <div className="w-32 h-32 bg-primary/5 rounded-3xl flex items-center justify-center border border-primary/10 relative">
+              <LayoutGrid className="w-16 h-16 text-primary" />
+              <div className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-xs font-black px-2 py-1 rounded-full shadow-lg">
+                {files.length}
               </div>
-            </div>
-          ))}
+           </div>
+           <div className="text-center space-y-1">
+              <h4 className="text-xl font-bold uppercase tracking-tight">Images ready for thumbnails</h4>
+              <p className="text-sm text-muted-foreground font-medium uppercase">
+                Size: {size}x{size}px
+              </p>
+           </div>
+           <button
+             onClick={() => document.getElementById('thumb-upload')?.click()}
+             className="text-xs font-bold text-primary hover:underline uppercase tracking-widest"
+           >
+             Add more files
+           </button>
+           <input id="thumb-upload" type="file" multiple className="hidden" accept="image/*" onChange={(e) => {
+             const newFiles = Array.from(e.target.files || []);
+             if (newFiles.length > 0) setFiles(prev => [...prev, ...newFiles]);
+           }} />
         </div>
       )}
     </div>
