@@ -42,9 +42,9 @@ export default function ToolPage({ params }: Props) {
     .slice(0, 4);
 
   return (
-    <div className="max-w-6xl mx-auto space-y-6 pb-12 px-4">
+    <div className="w-full space-y-6 pb-12">
       {/* Header & Breadcrumb */}
-      <div className="space-y-2 pt-4">
+      <div className="max-w-7xl mx-auto w-full space-y-2 pt-4 px-4 md:px-6 lg:px-8">
         <nav className="flex items-center space-x-2 text-[11px] text-muted-foreground font-medium">
           <Link href="/" className="hover:text-foreground transition-colors">Home</Link>
           <span className="opacity-40">/</span>
@@ -68,10 +68,10 @@ export default function ToolPage({ params }: Props) {
         </div>
       </div>
 
-      {/* Workspace Canvas (App Window) */}
-      <div className="bg-card border border-border rounded-lg overflow-hidden shadow-sm">
+      {/* Workspace Canvas (App Window) - Full Screen Width */}
+      <div className="w-full bg-card border-y border-border md:border md:rounded-xl overflow-hidden shadow-sm">
         {/* macOS Style Bar */}
-        <div className="px-4 py-3 bg-muted border-b border-border flex items-center justify-between">
+        <div className="px-6 py-3 bg-muted border-b border-border flex items-center justify-between">
           <div className="flex space-x-1.5">
             <div className="w-3 h-3 rounded-full bg-border" />
             <div className="w-3 h-3 rounded-full bg-border" />
@@ -83,12 +83,12 @@ export default function ToolPage({ params }: Props) {
         </div>
 
         {/* Actual Tool Canvas */}
-        <div className="p-4 md:p-8 min-h-[400px]">
+        <div className="min-h-[600px]">
           <ToolRenderer componentName={tool.component} />
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-12 pt-10 border-t border-border">
+      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 md:grid-cols-12 gap-12 pt-10 border-t border-border px-4 md:px-6 lg:px-8">
         <div className="md:col-span-8 space-y-10">
           <section className="space-y-6">
             <h2 className="text-xl font-bold tracking-tight text-foreground">How to use {tool.title}</h2>

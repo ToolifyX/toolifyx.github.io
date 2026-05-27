@@ -22,7 +22,7 @@ export default function EditorLayout({
   onDownload
 }: EditorLayoutProps) {
   return (
-    <div className="flex flex-col h-[calc(100vh-120px)] min-h-[600px] w-full bg-background border border-border rounded-3xl overflow-hidden shadow-2xl">
+    <div className="flex flex-col h-[calc(100vh-180px)] min-h-[600px] w-full bg-background overflow-hidden">
       {/* TOP BAR */}
       <header className="h-14 border-b border-border bg-card flex items-center justify-between px-6 shrink-0 z-30">
         <div className="flex items-center gap-4">
@@ -52,7 +52,7 @@ export default function EditorLayout({
       <div className="flex flex-1 overflow-hidden relative">
         {/* LEFT PANEL (Secondary Tools) */}
         {leftPanel && (
-          <aside className="hidden lg:flex w-full max-w-[240px] border-r border-border bg-card flex-col shrink-0 overflow-y-auto z-20">
+          <aside className="hidden lg:flex w-[240px] border-r border-border bg-card flex-col shrink overflow-y-auto z-20">
             <div className="p-4 space-y-6">
               {leftPanel}
             </div>
@@ -60,7 +60,7 @@ export default function EditorLayout({
         )}
 
         {/* MAIN CANVAS (Primary Workspace - 70%+) */}
-        <main className="flex-1 min-w-[70vw] max-w-[80vw] bg-muted/20 relative overflow-hidden flex flex-col h-full">
+        <main className="flex-1 lg:min-w-[70vw] bg-muted/20 relative overflow-hidden flex flex-col h-full">
           <div className="flex-1 overflow-auto flex items-center justify-center p-4">
             {mainCanvas}
           </div>
@@ -68,7 +68,7 @@ export default function EditorLayout({
 
         {/* RIGHT PANEL (Secondary Options) */}
         {rightPanel && (
-          <aside className="hidden xl:flex w-full max-w-[280px] border-l border-border bg-card flex-col shrink-0 overflow-y-auto z-20">
+          <aside className="hidden xl:flex w-[280px] border-l border-border bg-card flex-col shrink overflow-y-auto z-20">
             <div className="p-6 space-y-8">
               {rightPanel}
             </div>
