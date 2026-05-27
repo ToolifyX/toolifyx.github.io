@@ -19,13 +19,15 @@ import { downloadFile } from '@/lib/utils';
 import ImageUploader from '@/components/ImageUploader';
 import { processQueue, ProcessedResult } from '@/lib/imagePipeline';
 import { getUploadLimits, UploadLimits } from '@/lib/adaptiveUpload';
-import { Loader2, Download, CheckCircle2, Zap, Settings2 } from 'lucide-react';
+import { downloadAllAsZip } from '@/lib/download';
+import { Loader2, Download, CheckCircle2, Zap, Settings2, Archive } from 'lucide-react';
 
 export default function ImageCompressor() {
   const [files, setFiles] = useState<File[]>([]);
   const [quality, setQuality] = useState(0.7); // Medium default
   const [results, setResults] = useState<ProcessedResult[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isZipping, setIsZipping] = useState(false);
   const [progress, setProgress] = useState({ current: 0, total: 0 });
   const [limits, setLimits] = useState<UploadLimits | null>(null);
 
@@ -60,6 +62,19 @@ export default function ImageCompressor() {
 
   const handleDownloadResult = (res: ProcessedResult) => {
     downloadFile(res.blob, res.name);
+  };
+
+  const handleDownloadAll = async () => {
+    if (results.length === 0) return;
+    setIsZipping(true);
+    try {
+      await downloadAllAsZip(
+        results.map(r => ({ name: r.name, blob: r.blob })),
+        "compressed-images.zip"
+      );
+    } finally {
+      setIsZipping(false);
+    }
   };
 
   const getQualityLabel = (q: number) => {
@@ -125,8 +140,17 @@ export default function ImageCompressor() {
         {results.length > 0 && (
           <div className="space-y-3 pt-4 border-t animate-in slide-in-from-bottom-2 duration-500">
             <div className="flex items-center justify-between px-1">
-              <h3 className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Results</h3>
-              <span className="text-[10px] font-bold text-green-600 bg-green-500/10 px-2 py-0.5 rounded-full">Success</span>
+              <h3 className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Results ({results.length})</h3>
+              {results.length > 1 && (
+                <button
+                  onClick={handleDownloadAll}
+                  disabled={isZipping}
+                  className="text-[10px] font-bold bg-primary text-primary-foreground px-3 py-1 rounded-full flex items-center gap-1.5 hover:brightness-110 disabled:opacity-50 transition-all shadow-sm"
+                >
+                  {isZipping ? <Loader2 className="w-3 h-3 animate-spin" /> : <Archive className="w-3 h-3" />}
+                  Download All as ZIP
+                </button>
+              )}
             </div>
             <div className="grid gap-2">
               {results.map((res, i) => {

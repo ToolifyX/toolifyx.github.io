@@ -17,11 +17,13 @@
 import React, { useState, useRef } from 'react';
 import { downloadFile } from '@/lib/utils';
 import ImageUploader from '@/components/ImageUploader';
-import { Loader2, Download, CheckCircle2 } from 'lucide-react';
+import { downloadAllAsZip } from '@/lib/download';
+import { Loader2, Download, CheckCircle2, Archive } from 'lucide-react';
 
 interface ConvertedImage {
   name: string;
   type: string;
+  blob: Blob;
   dataUrl: string;
 }
 
@@ -30,6 +32,7 @@ export default function ImageConverter() {
   const [targetFormat, setTargetFormat] = useState('image/jpeg');
   const [results, setResults] = useState<ConvertedImage[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isZipping, setIsZipping] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const convertFile = (file: File): Promise<ConvertedImage> => {
@@ -53,11 +56,16 @@ export default function ImageConverter() {
           const dataUrl = canvas.toDataURL(targetFormat, 0.9);
           const ext = targetFormat.split('/')[1];
 
-          resolve({
-            name: file.name.replace(/\.[^/.]+$/, "") + `_converted.${ext}`,
-            type: targetFormat,
-            dataUrl: dataUrl
-          });
+          canvas.toBlob((blob) => {
+            if (blob) {
+              resolve({
+                name: file.name.replace(/\.[^/.]+$/, "") + `_converted.${ext}`,
+                type: targetFormat,
+                blob: blob,
+                dataUrl: dataUrl
+              });
+            }
+          }, targetFormat, 0.9);
         };
         img.src = e.target?.result as string;
       };
@@ -81,11 +89,20 @@ export default function ImageConverter() {
   };
 
   const handleDownloadResult = (res: ConvertedImage) => {
-    const byteString = atob(res.dataUrl.split(',')[1]);
-    const ab = new ArrayBuffer(byteString.length);
-    const ia = new Uint8Array(ab);
-    for (let i = 0; i < byteString.length; i++) ia[i] = byteString.charCodeAt(i);
-    downloadFile(new Blob([ab], { type: res.type }), res.name);
+    downloadFile(res.blob, res.name);
+  };
+
+  const handleDownloadAll = async () => {
+    if (results.length === 0) return;
+    setIsZipping(true);
+    try {
+      await downloadAllAsZip(
+        results.map(r => ({ name: r.name, blob: r.blob })),
+        "converted-images.zip"
+      );
+    } finally {
+      setIsZipping(false);
+    }
   };
 
   return (
@@ -132,7 +149,19 @@ export default function ImageConverter() {
 
         {results.length > 0 && (
           <div className="space-y-3 pt-4 border-t">
-            <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Converted Images</h3>
+            <div className="flex items-center justify-between px-1">
+              <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Converted Images ({results.length})</h3>
+              {results.length > 1 && (
+                <button
+                  onClick={handleDownloadAll}
+                  disabled={isZipping}
+                  className="text-[10px] font-bold bg-primary text-primary-foreground px-3 py-1 rounded-full flex items-center gap-1.5 hover:brightness-110 disabled:opacity-50 transition-all shadow-sm"
+                >
+                  {isZipping ? <Loader2 className="w-3 h-3 animate-spin" /> : <Archive className="w-3 h-3" />}
+                  Download All (ZIP)
+                </button>
+              )}
+            </div>
             <div className="grid gap-2">
               {results.map((res, i) => (
                 <div key={i} className="flex items-center justify-between p-3 bg-muted/30 border rounded-xl">

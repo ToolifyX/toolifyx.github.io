@@ -17,10 +17,12 @@
 import React, { useState, useRef } from 'react';
 import { downloadFile } from '@/lib/utils';
 import ImageUploader from '@/components/ImageUploader';
-import { Loader2, Download, CheckCircle2 } from 'lucide-react';
+import { downloadAllAsZip } from '@/lib/download';
+import { Loader2, Download, CheckCircle2, Archive } from 'lucide-react';
 
 interface ResizedImage {
   name: string;
+  blob: Blob;
   dataUrl: string;
 }
 
@@ -31,6 +33,7 @@ export default function ImageResizer() {
   const [maintainAspect, setMaintainAspect] = useState(true);
   const [results, setResults] = useState<ResizedImage[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isZipping, setIsZipping] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const resizeFile = (file: File): Promise<ResizedImage> => {
@@ -56,10 +59,15 @@ export default function ImageResizer() {
           ctx?.drawImage(img, 0, 0, targetWidth, targetHeight);
 
           const dataUrl = canvas.toDataURL('image/png');
-          resolve({
-            name: file.name.replace(/\.[^/.]+$/, "") + `_resized.png`,
-            dataUrl: dataUrl
-          });
+          canvas.toBlob((blob) => {
+            if (blob) {
+              resolve({
+                name: file.name.replace(/\.[^/.]+$/, "") + `_resized.png`,
+                blob: blob,
+                dataUrl: dataUrl
+              });
+            }
+          }, 'image/png');
         };
         img.src = e.target?.result as string;
       };
@@ -83,11 +91,20 @@ export default function ImageResizer() {
   };
 
   const handleDownloadResult = (res: ResizedImage) => {
-    const byteString = atob(res.dataUrl.split(',')[1]);
-    const ab = new ArrayBuffer(byteString.length);
-    const ia = new Uint8Array(ab);
-    for (let i = 0; i < byteString.length; i++) ia[i] = byteString.charCodeAt(i);
-    downloadFile(new Blob([ab], { type: 'image/png' }), res.name);
+    downloadFile(res.blob, res.name);
+  };
+
+  const handleDownloadAll = async () => {
+    if (results.length === 0) return;
+    setIsZipping(true);
+    try {
+      await downloadAllAsZip(
+        results.map(r => ({ name: r.name, blob: r.blob })),
+        "resized-images.zip"
+      );
+    } finally {
+      setIsZipping(false);
+    }
   };
 
   return (
@@ -152,7 +169,19 @@ export default function ImageResizer() {
 
         {results.length > 0 && (
           <div className="space-y-3 pt-4 border-t">
-            <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Results</h3>
+            <div className="flex items-center justify-between px-1">
+              <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Results ({results.length})</h3>
+              {results.length > 1 && (
+                <button
+                  onClick={handleDownloadAll}
+                  disabled={isZipping}
+                  className="text-[10px] font-bold bg-primary text-primary-foreground px-3 py-1 rounded-full flex items-center gap-1.5 hover:brightness-110 disabled:opacity-50 transition-all shadow-sm"
+                >
+                  {isZipping ? <Loader2 className="w-3 h-3 animate-spin" /> : <Archive className="w-3 h-3" />}
+                  Download All (ZIP)
+                </button>
+              )}
+            </div>
             <div className="grid gap-2">
               {results.map((res, i) => (
                 <div key={i} className="flex items-center justify-between p-3 bg-muted/30 border rounded-xl">
