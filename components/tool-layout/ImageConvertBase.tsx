@@ -1,25 +1,29 @@
 "use client";
 
-/**
- * SEO Title: Batch Image Format Converter - JPG, PNG, WebP Online
- * Meta Description: Convert multiple images between formats instantly. PNG to JPG, JPG to PNG, and more. Free, secure batch processing.
- */
-
 import React, { useState, useEffect } from 'react';
 import { downloadFile } from '@/lib/utils';
 import { processQueue, ProcessedResult } from '@/lib/imagePipeline';
 import { getUploadLimits, UploadLimits } from '@/lib/adaptiveUpload';
 import { downloadAllAsZip } from '@/lib/download';
-import { Loader2, Zap, Settings2 } from 'lucide-react';
+import { Loader2, Zap } from 'lucide-react';
 import ToolSplitLayout from '@/components/tool-layout/ToolSplitLayout';
 import UploadPanel from '@/components/tool-layout/UploadPanel';
 import ResultPanel from '@/components/tool-layout/ResultPanel';
+import ResultScreen from '@/components/tool-layout/ResultScreen';
 
-export default function ImageConverter() {
+type ToolStatus = 'idle' | 'processing' | 'done';
+
+interface ImageConvertBaseProps {
+  fromFormat: string;
+  toFormat: string;
+  toExtension: string;
+  title: string;
+}
+
+export default function ImageConvertBase({ fromFormat, toFormat, toExtension, title }: ImageConvertBaseProps) {
+  const [status, setStatus] = useState<ToolStatus>('idle');
   const [files, setFiles] = useState<File[]>([]);
-  const [targetFormat, setTargetFormat] = useState('image/jpeg');
   const [results, setResults] = useState<ProcessedResult[]>([]);
-  const [isProcessing, setIsProcessing] = useState(false);
   const [isZipping, setIsZipping] = useState(false);
   const [progress, setProgress] = useState({ current: 0, total: 0 });
   const [limits, setLimits] = useState<UploadLimits | null>(null);
@@ -30,7 +34,7 @@ export default function ImageConverter() {
 
   const handleProcessAll = async () => {
     if (files.length === 0 || !limits) return;
-    setIsProcessing(true);
+    setStatus('processing');
     setResults([]);
 
     try {
@@ -39,18 +43,32 @@ export default function ImageConverter() {
         {
           maxResolution: limits.maxResolution,
           quality: 0.9,
-          format: targetFormat
+          format: toFormat
         },
         (current, total) => setProgress({ current, total })
       );
-      setResults(processedResults);
+
+      // Update names to match target extension
+      const renamedResults = processedResults.map(res => ({
+        ...res,
+        name: res.name.replace(/\.[^/.]+$/, "") + `.${toExtension}`
+      }));
+
+      setResults(renamedResults);
+      setStatus('done');
     } catch (error) {
       console.error("Batch processing failed:", error);
       alert("An error occurred during conversion.");
+      setStatus('idle');
     } finally {
-      setIsProcessing(false);
       setProgress({ current: 0, total: 0 });
     }
+  };
+
+  const handleReset = () => {
+    setFiles([]);
+    setResults([]);
+    setStatus('idle');
   };
 
   const handleDownloadResult = (res: ProcessedResult) => {
@@ -63,48 +81,52 @@ export default function ImageConverter() {
     try {
       await downloadAllAsZip(
         results.map(r => ({ name: r.name, blob: r.blob })),
-        "converted-images.zip"
+        `converted-${toExtension}-images.zip`
       );
     } finally {
       setIsZipping(false);
     }
   };
 
+  if (status === 'done') {
+    return (
+      <div className="max-w-3xl mx-auto">
+        <ResultScreen
+          results={results}
+          onReset={handleReset}
+          onDownload={handleDownloadResult}
+          onDownloadAll={handleDownloadAll}
+          isZipping={isZipping}
+          title={title}
+        />
+      </div>
+    );
+  }
+
   const leftPanel = (
     <div className="space-y-4">
-      <UploadPanel files={files} onChange={setFiles} maxFiles={limits?.maxFiles} />
+      <UploadPanel
+        files={files}
+        onChange={setFiles}
+        maxFiles={limits?.maxFiles}
+      />
 
       {files.length > 0 && (
         <div className="card border rounded-lg p-4 bg-card shadow-sm space-y-4 animate-in fade-in duration-300">
-          <div className="space-y-2">
-            <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-muted-foreground">
-               <Settings2 className="w-3 h-3" /> Target Format
-            </div>
-            <select
-              className="w-full border rounded-lg p-2 text-sm bg-background"
-              value={targetFormat}
-              onChange={(e) => setTargetFormat(e.target.value)}
-            >
-              <option value="image/jpeg">Convert to JPG</option>
-              <option value="image/png">Convert to PNG</option>
-              <option value="image/webp">Convert to WebP</option>
-            </select>
-          </div>
-
           <button
             onClick={handleProcessAll}
-            disabled={isProcessing}
-            className="bg-black text-white dark:bg-white dark:text-black px-4 py-3 rounded-xl w-full font-black text-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.01] active:scale-[0.98] disabled:opacity-50 shadow-lg shadow-primary/10"
+            disabled={status === 'processing'}
+            className="bg-black text-white dark:bg-white dark:text-black px-4 py-3 rounded-xl w-full font-black text-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.01] active:scale-[0.98] disabled:opacity-50 shadow-lg"
           >
-            {isProcessing ? (
+            {status === 'processing' ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin" />
-                Converting {progress.current}/{progress.total}...
+                Converting {progress.current} of {progress.total}...
               </>
             ) : (
               <>
                 <Zap className="w-4 h-4 fill-current" />
-                Convert {files.length} Images
+                Convert {files.length} to {toExtension.toUpperCase()}
               </>
             )}
           </button>
@@ -115,12 +137,12 @@ export default function ImageConverter() {
 
   const rightPanel = (
     <ResultPanel
-      isProcessing={isProcessing}
-      results={results}
+      isProcessing={status === 'processing'}
+      results={[]}
       progress={progress}
-      onDownload={handleDownloadResult}
-      onDownloadAll={handleDownloadAll}
-      isZipping={isZipping}
+      onDownload={() => {}}
+      onDownloadAll={() => {}}
+      emptyMessage={`Your ${toExtension.toUpperCase()} files will appear here`}
     />
   );
 

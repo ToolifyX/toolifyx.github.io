@@ -298,18 +298,88 @@ export const seoData: Record<string, {
       "Click 'Compress' and download the result."
     ]
   },
-  "image-converter": {
-    "seoTitle": "Image Converter - PNG, JPG, WebP Converter",
-    "metaDescription": "Convert images between formats instantly. PNG to JPG, JPG to PNG, and more. Free and secure.",
+  "png-to-jpg": {
+    "seoTitle": "PNG to JPG Converter – Free Online Tool",
+    "metaDescription": "Convert PNG images to JPG instantly in your browser. No upload required.",
     "faqs": [
-      { "question": "Can I convert to PNG?", "answer": "Yes, you can convert any supported image to PNG, JPG, or WebP." },
-      { "question": "Does it work on mobile?", "answer": "Yes, our converter works in any modern mobile browser." },
-      { "question": "Is there a file size limit?", "answer": "Limits are based on your device's memory; most standard photos work perfectly." }
+      { "question": "How do I convert PNG to JPG?", "answer": "Upload your PNG images and click 'Convert to JPG'." },
+      { "question": "Will it lose quality?", "answer": "Converting to JPG involves compression, but we use high-quality settings." },
+      { "question": "Is it safe?", "answer": "Yes, processing is 100% local in your browser." }
     ],
     "howToUse": [
-      "Upload your source image.",
-      "Select the target format (JPG, PNG, WebP).",
-      "Download your converted image."
+      "Select your PNG files.",
+      "Click 'Convert to JPG'.",
+      "Download your JPG images."
+    ]
+  },
+  "jpg-to-png": {
+    "seoTitle": "JPG to PNG Converter – Free Online Tool",
+    "metaDescription": "Convert JPG images to PNG instantly in your browser. Lossless quality conversion.",
+    "faqs": [
+      { "question": "Is the conversion lossless?", "answer": "Yes, PNG is a lossless format, so quality is preserved." },
+      { "question": "Does it support transparency?", "answer": "JPG doesn't have transparency, but the output PNG will be high quality." },
+      { "question": "Is it private?", "answer": "Yes, no files are ever uploaded." }
+    ],
+    "howToUse": [
+      "Select your JPG files.",
+      "Click 'Convert to PNG'.",
+      "Download your PNG images."
+    ]
+  },
+  "jpg-to-webp": {
+    "seoTitle": "JPG to WebP Converter – Free Online Tool",
+    "metaDescription": "Convert JPG images to WebP format instantly for better web performance.",
+    "faqs": [
+      { "question": "Why convert to WebP?", "answer": "WebP provides superior compression and smaller file sizes for the web." },
+      { "question": "Is it widely supported?", "answer": "Yes, all modern browsers support WebP." },
+      { "question": "Is it free?", "answer": "Yes, entirely free and browser-based." }
+    ],
+    "howToUse": [
+      "Select your JPG files.",
+      "Click 'Convert to WebP'.",
+      "Download your WebP images."
+    ]
+  },
+  "webp-to-jpg": {
+    "seoTitle": "WebP to JPG Converter – Free Online Tool",
+    "metaDescription": "Convert WebP images back to JPG format for maximum compatibility.",
+    "faqs": [
+      { "question": "Can I convert many images?", "answer": "Yes, you can upload up to 12 files at once." },
+      { "question": "Will it work on my phone?", "answer": "Yes, it works on any device with a modern browser." },
+      { "question": "Is it fast?", "answer": "It is ultra-fast as it uses your device's hardware." }
+    ],
+    "howToUse": [
+      "Select your WebP files.",
+      "Click 'Convert to JPG'.",
+      "Download your JPG images."
+    ]
+  },
+  "png-to-webp": {
+    "seoTitle": "PNG to WebP Converter – Free Online Tool",
+    "metaDescription": "Convert PNG images to WebP for smaller, faster-loading web images.",
+    "faqs": [
+      { "question": "Does it keep transparency?", "answer": "Yes, WebP supports alpha transparency just like PNG." },
+      { "question": "Is it better than PNG?", "answer": "WebP usually produces much smaller files with similar quality." },
+      { "question": "How many can I convert?", "answer": "Up to 12 images per batch." }
+    ],
+    "howToUse": [
+      "Select your PNG files.",
+      "Click 'Convert to WebP'.",
+      "Download your WebP images."
+    ]
+  },
+  "webp-to-png": {
+    "seoTitle": "WebP to PNG Converter – Free Online Tool",
+    "metaDescription": "Convert WebP images to PNG format instantly and securely.",
+    "faqs": [
+      { "question": "Is it lossless?", "answer": "Yes, if the source WebP was lossless, the PNG will be too." },
+      { "question": "Why use PNG?", "answer": "PNG is widely compatible with all image editors and viewers." },
+      { "question": "Are my files safe?", "answer": "Yes, they never leave your device." }
+    ],
+    "howToUse": [
+      "Select your WebP files.",
+      "Click 'Convert to PNG'.",
+      "Download your PNG images."
     ]
   },
   "image-resizer": {
