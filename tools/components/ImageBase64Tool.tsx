@@ -7,13 +7,12 @@
 import React, { useState, useEffect } from 'react';
 import { copyToClipboard, downloadFile, fileToBase64 } from '@/lib/utils';
 import { downloadAllAsZip } from '@/lib/download';
-import { Loader2, Zap, Copy, Download, CheckCircle2 } from 'lucide-react';
+import { Loader2, Zap, Copy, Download, CheckCircle2, RotateCcw } from 'lucide-react';
 import EditorLayout from '@/components/tool-layout/EditorLayout';
 import FileList from '@/components/tool-layout/FileList';
 import UploadPanel from '@/components/tool-layout/UploadPanel';
 import { getUploadLimits, UploadLimits } from '@/lib/adaptiveUpload';
 import { Tool } from '@/tools/types';
-import { RotateCcw } from 'lucide-react';
 
 interface Base64Result {
   name: string;

@@ -7,7 +7,7 @@
 import React, { useState, useEffect } from 'react';
 import { downloadFile } from '@/lib/utils';
 import { downloadAllAsZip } from '@/lib/download';
-import { Loader2, Zap, Download, CheckCircle2, ShieldAlert } from 'lucide-react';
+import { Loader2, Zap, Download, CheckCircle2, ShieldAlert, RotateCcw } from 'lucide-react';
 import EditorLayout from '@/components/tool-layout/EditorLayout';
 import FileList from '@/components/tool-layout/FileList';
 import UploadPanel from '@/components/tool-layout/UploadPanel';
@@ -15,7 +15,6 @@ import ResultScreen from '@/components/tool-layout/ResultScreen';
 import ResultPanel from '@/components/tool-layout/ResultPanel';
 import { getUploadLimits, UploadLimits } from '@/lib/adaptiveUpload';
 import { Tool } from '@/tools/types';
-import { RotateCcw } from 'lucide-react';
 
 export default function ImageMetadataTool({ tool }: { tool?: Tool }) {
   const [files, setFiles] = useState<File[]>([]);

@@ -5,13 +5,12 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { Loader2, Search, CheckCircle2, AlertCircle, Zap } from 'lucide-react';
+import { Loader2, Search, CheckCircle2, AlertCircle, Zap, RotateCcw } from 'lucide-react';
 import EditorLayout from '@/components/tool-layout/EditorLayout';
 import FileList from '@/components/tool-layout/FileList';
 import UploadPanel from '@/components/tool-layout/UploadPanel';
 import { getUploadLimits, UploadLimits } from '@/lib/adaptiveUpload';
 import { Tool } from '@/tools/types';
-import { RotateCcw } from 'lucide-react';
 
 interface BlurResult {
   name: string;

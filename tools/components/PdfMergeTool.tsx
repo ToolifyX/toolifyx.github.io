@@ -7,7 +7,7 @@
 import React, { useState } from 'react';
 import { PDFDocument } from 'pdf-lib';
 import { downloadFile } from '@/lib/utils';
-import { Loader2, Combine, Zap } from 'lucide-react';
+import { Loader2, Combine, Zap, RotateCcw } from 'lucide-react';
 import ToolSplitLayout from '@/components/tool-layout/ToolSplitLayout';
 import PDFUploader from '@/components/PDFUploader';
 import ResultPanel from '@/components/tool-layout/ResultPanel';

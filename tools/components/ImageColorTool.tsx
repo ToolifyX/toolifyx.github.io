@@ -7,13 +7,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { downloadFile, copyToClipboard } from '@/lib/utils';
 import { downloadAllAsZip } from '@/lib/download';
-import { Loader2, Zap, Pipette, Ghost, Download } from 'lucide-react';
+import { Loader2, Zap, Pipette, Ghost, Download, RotateCcw } from 'lucide-react';
 import EditorLayout from '@/components/tool-layout/EditorLayout';
 import FileList from '@/components/tool-layout/FileList';
 import UploadPanel from '@/components/tool-layout/UploadPanel';
 import { getUploadLimits, UploadLimits } from '@/lib/adaptiveUpload';
 import { Tool } from '@/tools/types';
-import { RotateCcw } from 'lucide-react';
 
 interface ColorResult {
   name: string;
@@ -122,6 +121,12 @@ export default function ImageColorTool({ tool }: { tool?: Tool }) {
     } finally {
       setIsZipping(false);
     }
+  };
+
+  const handleReset = () => {
+    setFiles([]);
+    setResults([]);
+    setIsProcessing(false);
   };
 
   const leftPanel = (
