@@ -1,93 +1,137 @@
 "use client";
 
 /**
- * SEO Title: Image Metadata Viewer & Remover - Strip EXIF Data
- * Meta Description: View and remove metadata (EXIF) from your images for better privacy.
+ * SEO Title: Batch Image Metadata Remover - Strip EXIF Data
+ * Meta Description: View info and remove metadata (EXIF) from multiple images at once for better privacy.
  *
- * FAQ 1: What is image metadata?
- * Metadata (EXIF) contains information about the camera, settings, and sometimes GPS location where the photo was taken.
+ * FAQ 1: Can I strip metadata from many photos?
+ * Yes, you can upload and process up to 5 images at once to remove hidden EXIF data.
  *
- * FAQ 2: Why remove metadata?
- * Removing metadata protects your privacy by stripping location and camera details before sharing online.
+ * FAQ 2: What is removed?
+ * All camera settings, timestamps, software info, and GPS location data are stripped by re-encoding the image.
  *
- * FAQ 3: Does it affect image quality?
- * Removing metadata by re-saving can slightly affect quality depending on the format, but strips all hidden data.
+ * FAQ 3: Is it secure?
+ * Yes, all processing is done locally in your browser. Your photos never leave your device.
  */
 
 import React, { useState, useRef } from 'react';
 import { downloadFile } from '@/lib/utils';
+import ImageUploader from '@/components/ImageUploader';
+import { Loader2, Download, CheckCircle2, ShieldAlert } from 'lucide-react';
+
+interface MetadataResult {
+  name: string;
+  type: string;
+  dataUrl: string;
+}
 
 export default function ImageMetadataTool() {
-  const [fileInfo, setFileInfo] = useState<{ name: string, size: number, type: string, width: number, height: number } | null>(null);
-  const [image, setImage] = useState<string | null>(null);
+  const [files, setFiles] = useState<File[]>([]);
+  const [results, setResults] = useState<MetadataResult[]>([]);
+  const [isProcessing, setIsProcessing] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
+  const stripMetadataFile = (file: File): Promise<MetadataResult> => {
+    return new Promise((resolve) => {
       const reader = new FileReader();
-      reader.onload = (event) => {
-        const src = event.target?.result as string;
-        setImage(src);
+      reader.onload = (e) => {
         const img = new Image();
-        img.src = src;
         img.onload = () => {
-          setFileInfo({
-            name: file.name,
-            size: file.size,
+          const canvas = canvasRef.current;
+          if (!canvas) return;
+          canvas.width = img.width;
+          canvas.height = img.height;
+          const ctx = canvas.getContext('2d');
+          ctx?.drawImage(img, 0, 0);
+
+          const dataUrl = canvas.toDataURL(file.type, 0.95);
+          resolve({
+            name: `clean_${file.name}`,
             type: file.type,
-            width: img.width,
-            height: img.height
+            dataUrl: dataUrl
           });
         };
+        img.src = e.target?.result as string;
       };
       reader.readAsDataURL(file);
-    }
+    });
   };
 
-  const removeMetadata = () => {
-    if (!image) return;
-    const img = new Image();
-    img.src = image;
-    img.onload = () => {
-      const canvas = canvasRef.current;
-      if (!canvas) return;
-      canvas.width = img.width;
-      canvas.height = img.height;
-      const ctx = canvas.getContext('2d');
-      ctx?.drawImage(img, 0, 0);
-      // toDataURL strips most metadata as it re-encodes the image
-      const dataUrl = canvas.toDataURL(fileInfo?.type || 'image/jpeg', 0.95);
+  const handleProcessAll = async () => {
+    if (files.length === 0) return;
+    setIsProcessing(true);
+    setResults([]);
 
-      const parts = dataUrl.split(',');
-      const byteString = atob(parts[1]);
-      const ab = new ArrayBuffer(byteString.length);
-      const ia = new Uint8Array(ab);
-      for (let i = 0; i < byteString.length; i++) ia[i] = byteString.charCodeAt(i);
-      downloadFile(new Blob([ab], { type: fileInfo?.type || 'image/jpeg' }), `clean_${fileInfo?.name}`);
-    };
+    const newResults: MetadataResult[] = [];
+    for (const file of files) {
+      const result = await stripMetadataFile(file);
+      newResults.push(result);
+    }
+
+    setResults(newResults);
+    setIsProcessing(false);
+  };
+
+  const handleDownloadResult = (res: MetadataResult) => {
+    const byteString = atob(res.dataUrl.split(',')[1]);
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+    for (let i = 0; i < byteString.length; i++) ia[i] = byteString.charCodeAt(i);
+    downloadFile(new Blob([ab], { type: res.type }), res.name);
   };
 
   return (
     <div className="max-w-2xl mx-auto p-6 space-y-6">
-      <div className="card border rounded-lg p-4 space-y-4">
-        <input type="file" accept="image/*" onChange={handleFileChange} className="w-full border rounded p-2" />
+      <div className="card border rounded-lg p-4 space-y-6">
+        <ImageUploader
+          maxFiles={5}
+          maxSizeMB={5}
+          totalSizeMB={20}
+          onChange={setFiles}
+        />
 
-        {fileInfo && (
-          <div className="space-y-4">
-            <div className="p-4 bg-gray-50 rounded border text-sm font-mono space-y-1">
-              <p><strong>Name:</strong> {fileInfo.name}</p>
-              <p><strong>Size:</strong> {(fileInfo.size / 1024).toFixed(2)} KB</p>
-              <p><strong>Type:</strong> {fileInfo.type}</p>
-              <p><strong>Dimensions:</strong> {fileInfo.width} x {fileInfo.height}</p>
+        {files.length > 0 && (
+          <div className="space-y-4 pt-2 border-t">
+            <div className="flex items-center gap-2 p-3 bg-blue-50/50 border border-blue-100 rounded-lg text-[10px] text-blue-700">
+               <ShieldAlert className="w-4 h-4 flex-shrink-0" />
+               Re-encoding will strip all EXIF metadata (Location, Camera Info, etc.)
             </div>
+            <button
+              onClick={handleProcessAll}
+              disabled={isProcessing}
+              className="bg-black text-white px-4 py-2.5 rounded-xl w-full font-bold flex items-center justify-center gap-2 disabled:opacity-50"
+            >
+              {isProcessing ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Stripping Metadata...
+                </>
+              ) : (
+                `Strip Metadata from ${files.length} Images`
+              )}
+            </button>
+          </div>
+        )}
 
-            <div className="flex flex-col gap-2">
-              <button onClick={removeMetadata} className="bg-black text-white px-4 py-2 rounded">Remove Metadata & Download</button>
-              <p className="text-[10px] text-gray-500 text-center">Note: Re-encoding strips all EXIF data.</p>
+        {results.length > 0 && (
+          <div className="space-y-3 pt-4 border-t">
+            <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Cleaned Images</h3>
+            <div className="grid gap-2">
+              {results.map((res, i) => (
+                <div key={i} className="flex items-center justify-between p-3 bg-muted/30 border rounded-xl">
+                  <div className="flex items-center space-x-3 min-w-0">
+                    <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0" />
+                    <p className="text-xs font-bold truncate">{res.name}</p>
+                  </div>
+                  <button
+                    onClick={() => handleDownloadResult(res)}
+                    className="p-2 rounded-lg bg-card border hover:bg-muted transition-colors"
+                  >
+                    <Download className="w-4 h-4" />
+                  </button>
+                </div>
+              ))}
             </div>
-
-            <img src={image!} alt="Preview" className="max-w-full h-auto rounded border mx-auto opacity-50" />
           </div>
         )}
       </div>
