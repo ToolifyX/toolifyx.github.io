@@ -15,6 +15,7 @@
  */
 
 import React, { useState, useEffect, useRef } from 'react';
+// @ts-ignore
 import QRCode from 'qrcode';
 import { downloadFile } from '@/lib/utils';
 
@@ -25,7 +26,7 @@ export default function QrCodeGenerator() {
 
   useEffect(() => {
     if (text) {
-      QRCode.toDataURL(text, { width: 512, margin: 2 }, (err, dataUrl) => {
+      QRCode.toDataURL(text, { width: 512, margin: 2 }, (err: any, dataUrl: string) => {
         if (!err) setUrl(dataUrl);
       });
     } else {

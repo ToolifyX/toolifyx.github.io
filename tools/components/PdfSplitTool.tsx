@@ -37,7 +37,7 @@ export default function PdfSplitTool() {
       newPdf.addPage(copiedPage);
 
       const pdfBytes = await newPdf.save();
-      const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+      const blob = new Blob([pdfBytes as any], { type: 'application/pdf' });
       setResult({
         blob,
         name: `page_${pageNumber}_of_${file.name}`,

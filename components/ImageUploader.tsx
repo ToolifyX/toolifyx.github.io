@@ -9,9 +9,15 @@ interface ImageUploaderProps {
   files?: File[];
   onChange: (files: File[]) => void;
   showFileList?: boolean;
+  maxFiles?: number;
 }
 
-export default function ImageUploader({ files: externalFiles, onChange, showFileList = true }: ImageUploaderProps) {
+export default function ImageUploader({
+  files: externalFiles,
+  onChange,
+  showFileList = true,
+  maxFiles: customMaxFiles
+}: ImageUploaderProps) {
   const [internalFiles, setInternalFiles] = useState<File[]>([]);
   const files = externalFiles || internalFiles;
 
@@ -27,7 +33,7 @@ export default function ImageUploader({ files: externalFiles, onChange, showFile
     if (selectedFiles.length === 0 || !limits) return;
 
     const { validFiles, invalidFiles: newInvalid } = validateFiles(selectedFiles, files, {
-        maxFiles: limits.maxFiles,
+        maxFiles: customMaxFiles || limits.maxFiles,
         maxFileSizeMB: limits.maxFileSizeMB,
         totalSizeMB: limits.totalSizeMB,
         allowedTypes: ['image/*']
@@ -78,7 +84,7 @@ export default function ImageUploader({ files: externalFiles, onChange, showFile
         <div className="text-center space-y-1">
           <p className="text-base font-semibold">Click to upload or drag and drop</p>
           <p className="text-xs text-muted-foreground font-medium">
-            Up to {limits.maxFiles} files • {limits.maxFileSizeMB}MB each
+            Up to {customMaxFiles || limits.maxFiles} files • {limits.maxFileSizeMB}MB each
           </p>
         </div>
         <input

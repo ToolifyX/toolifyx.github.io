@@ -108,7 +108,7 @@ export default function ImageConvertBase({ fromFormat, toFormat, toExtension, ti
         disabled={status === 'processing'}
       />
 
-      {files.length > 0 && status !== 'done' && (
+      {files.length > 0 && (
         <div className="border rounded-xl p-4 bg-muted/20 space-y-4 animate-in fade-in duration-300">
           <button
             onClick={handleProcessAll}
