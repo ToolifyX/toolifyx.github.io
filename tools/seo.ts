@@ -368,6 +368,20 @@ export const seoData: Record<string, {
       "Download the edited version."
     ]
   },
+  "image-crop": {
+    "seoTitle": "Image Cropper - Crop Images Online Free",
+    "metaDescription": "Crop your images to any size or aspect ratio. Interactive, browser-based image cropping tool.",
+    "faqs": [
+      { "question": "Can I crop to a specific aspect ratio?", "answer": "Yes, you can choose from presets like 1:1, 4:3, 16:9, or use free-form cropping." },
+      { "question": "Are my images uploaded?", "answer": "No, all cropping happens locally in your browser for maximum privacy." },
+      { "question": "What formats are supported?", "answer": "We support JPG, PNG, and WebP for cropping." }
+    ],
+    "howToUse": [
+      "Upload the image you want to crop.",
+      "Adjust the crop box or select an aspect ratio.",
+      "Click 'Download' to save your cropped image."
+    ]
+  },
   "image-base64": {
     "seoTitle": "Image to Base64 - Online Base64 Encoder",
     "metaDescription": "Convert any image into a Base64 string for use in HTML, CSS, or JSON. Secure and instant conversion.",

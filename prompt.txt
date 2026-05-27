@@ -1,17 +1,42 @@
-PNG to JPG
-WebP to JPG
-HEIC to JPG
-AVIF to JPG
----
-JPG to PNG
-WebP to PNG
-SVG to PNG
----
-JPG to WebP
-PNG to WebP
-
-Gop cac tool tren lai cac tool sang
-
-Convert to PNG
-Convert to JPG
-Convert to WebP
+# 🧩 Crop Image Feature (iLoveIMG-style) – ToolifyX
+🎯 Goal
+Build a browser-based Crop Image tool inspired by iLoveIMG, integrated into ToolifyX, with a clean and modern UX.
+🖥 Layout (IMPORTANT)
+* **LEFT (70–80%)**: Crop Editor (main area)
+  * Image canvas workspace
+  * Draggable + resizable crop box
+  * Image pan + zoom inside crop area
+  * Dark overlay outside crop region
+  * Live crop preview
+* **RIGHT (20–30%)**: Controls panel (compact)
+  * Aspect ratio presets: Free, 1:1, 4:3, 3:4, 16:9, 9:16, etc.
+  * Reset crop
+  * Rotate image (optional)
+  * Flip horizontal/vertical (optional)
+  * Export PNG / JPG (quality slider)
+⚙️ Core Features
+* Image upload (drag & drop + file picker)
+* Interactive crop (drag, resize, pan)
+* Crop box always stays within image bounds
+* Zoom in/out support
+* Live preview of cropped result
+* High-quality export using Canvas API
+🎨 UI/UX Requirements
+* Left side must be the dominant editing workspace
+* Right side is a minimal tool panel
+* Clean, modern SaaS design (iLoveIMG + Photopea style)
+* Smooth interactions (no lag in drag/resize)
+* Dark mode support
+🧱 Technical Requirements
+* Fully browser-based (no backend required)
+* Canvas API or equivalent for image processing
+* Optimized for large images (20MB+)
+* Modular structure:
+  * `CropEditor`
+  * `CropControls`
+  * `useCropEngine`
+  * `cropUtils`
+⭐ UX Principle
+* Crop editor is the primary focus (left side)
+* Controls are secondary and lightweight
+* Priority is simplicity + precision, similar to iLoveIMG but more modern

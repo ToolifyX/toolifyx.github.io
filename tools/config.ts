@@ -32,6 +32,7 @@ export const tools: Tool[] = [
   { slug: 'convert-to-webp', title: 'Convert to WebP', description: 'Convert JPG, PNG and more to WebP format instantly.', component: 'ConvertToWebp', category: 'image', icon: 'RefreshCw' },
   { slug: 'image-resizer', title: 'Image Resizer', description: 'Resize images to any dimensions.', component: 'ImageResizer', category: 'image', icon: 'Maximize' },
   { slug: 'image-editor', title: 'Image Editor', description: 'Rotate, flip, and edit images.', component: 'ImageEditor', category: 'image', icon: 'Edit3' },
+  { slug: 'image-crop', title: 'Image Cropper', description: 'Crop images to any size and ratio.', component: 'ImageCropTool', category: 'image', icon: 'Crop' },
   { slug: 'image-base64', title: 'Image to Base64', description: 'Convert images to Base64 strings.', component: 'ImageBase64Tool', category: 'image', icon: 'FileCode' },
   { slug: 'image-metadata', title: 'Image Metadata', description: 'View and remove image EXIF data.', component: 'ImageMetadataTool', category: 'image', icon: 'Info' },
   { slug: 'image-color-tool', title: 'Image Color Tool', description: 'Extract colors and grayscale.', component: 'ImageColorTool', category: 'image', icon: 'Pipette' },
