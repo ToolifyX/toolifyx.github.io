@@ -2,6 +2,30 @@ import { tools, getToolBySlug } from '@/tools/config';
 import ToolRenderer from '@/components/ToolRenderer';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import { Metadata } from 'next';
+
+interface Props {
+  params: { slug: string };
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const tool = getToolBySlug(params.slug);
+
+  if (!tool) {
+    return {
+      title: 'Tool Not Found',
+    };
+  }
+
+  return {
+    title: `${tool.title} - Free Online Tool`,
+    description: tool.description,
+    openGraph: {
+      title: `${tool.title} - Free Online Tool`,
+      description: tool.description,
+    },
+  };
+}
 
 export async function generateStaticParams() {
   return tools.map((tool) => ({
@@ -9,7 +33,7 @@ export async function generateStaticParams() {
   }));
 }
 
-export default function ToolPage({ params }: { params: { slug: string } }) {
+export default function ToolPage({ params }: Props) {
   const tool = getToolBySlug(params.slug);
 
   if (!tool) {
