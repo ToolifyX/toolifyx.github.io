@@ -34,7 +34,7 @@ export default function ResultScreen({
         </p>
       </div>
 
-      <div className="border rounded-2xl bg-muted/20 p-4 md:p-6">
+      <div className="bg-white border border-gray-200 rounded-lg p-4 md:p-6 shadow-sm">
         <ResultList
           results={results}
           onDownload={onDownload}

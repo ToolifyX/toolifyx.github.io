@@ -27,7 +27,7 @@ export default function CategoryMenu({ activeCategory, onCategoryChange }: Categ
 
   return (
     <div className="flex overflow-x-auto pb-4 no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0">
-      <div className="flex items-center gap-2 p-1 bg-card rounded-2xl border border-border/60 shadow-sm">
+      <div className="flex items-center gap-2 p-1 bg-transparent">
         {categories.map((cat) => {
           const isActive = activeCategory === cat.id;
           return (
@@ -35,16 +35,16 @@ export default function CategoryMenu({ activeCategory, onCategoryChange }: Categ
               key={cat.id}
               onClick={() => onCategoryChange(cat.id)}
               className={`
-                relative flex items-center gap-2 px-4 py-2 rounded-xl text-[13px] font-bold transition-all duration-200
+                relative flex items-center gap-2 px-4 py-2 rounded-lg text-[13px] font-bold transition-all duration-200
                 ${isActive
-                  ? 'bg-background text-foreground shadow-sm ring-1 ring-border'
-                  : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'}
+                  ? 'bg-white text-gray-900 border border-gray-200 shadow-sm'
+                  : 'text-gray-500 hover:text-gray-900 hover:bg-gray-100'}
               `}
             >
               <span className="relative z-10">{cat.label}</span>
               <span className={`
                 text-[10px] px-1.5 py-0.5 rounded-md font-black
-                ${isActive ? 'bg-primary/10 text-primary' : 'bg-muted-foreground/10 text-muted-foreground'}
+                ${isActive ? 'bg-primary/10 text-primary' : 'bg-gray-100 text-gray-400'}
               `}>
                 {getCount(cat.id)}
               </span>
