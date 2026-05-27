@@ -43,6 +43,7 @@ export const tools: Tool[] = [
   { slug: 'image-color-tool', title: 'Image Color Tool', description: 'Extract colors and grayscale.', component: 'ImageColorTool', category: 'image', icon: 'Pipette' },
   { slug: 'thumbnail-generator', title: 'Thumbnail Generator', description: 'Create custom image thumbnails.', component: 'ThumbnailGenerator', category: 'image', icon: 'Image' },
   { slug: 'blur-detector', title: 'Blur Detector', description: 'Check image sharpness and blur.', component: 'BlurDetector', category: 'image', icon: 'EyeOff' },
+  { slug: 'image-crop', title: 'Image Cropper', description: 'Crop images with free or fixed aspect ratios.', component: 'ImageCropTool', category: 'image', icon: 'Crop' },
 
   // PDF Tools
   { slug: 'pdf-merge', title: 'PDF Merge', description: 'Combine multiple PDFs into one.', component: 'PdfMergeTool', category: 'pdf', icon: 'Combine' },

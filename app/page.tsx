@@ -41,8 +41,7 @@ export default function Home() {
       {/* Hero Section - Professional & Minimalist */}
       <div className="text-center space-y-3 pt-6 md:pt-10 max-w-3xl mx-auto">
         <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">
-          Every tool for <br />
-          <span className="text-primary">everyone.</span>
+          Every tool for <span className="text-primary">everyone.</span>
         </h1>
         <p className="text-sm md:text-base text-muted-foreground leading-relaxed max-w-xl mx-auto">
           Fast, private, browser-native tools. Your data never leaves your device.
