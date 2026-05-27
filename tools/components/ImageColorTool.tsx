@@ -8,7 +8,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { downloadFile, copyToClipboard } from '@/lib/utils';
 import { downloadAllAsZip } from '@/lib/download';
 import { Loader2, Zap, Pipette, Ghost, Download } from 'lucide-react';
-import ToolSplitLayout from '@/components/tool-layout/ToolSplitLayout';
 import UploadPanel from '@/components/tool-layout/UploadPanel';
 import { getUploadLimits, UploadLimits } from '@/lib/adaptiveUpload';
 
@@ -121,8 +120,8 @@ export default function ImageColorTool() {
     }
   };
 
-  const leftPanel = (
-    <div className="space-y-4">
+  return (
+    <div className="max-w-3xl mx-auto space-y-4">
       <UploadPanel files={files} onChange={setFiles} maxFiles={limits?.maxFiles} />
       {files.length > 0 && (
         <button
@@ -134,20 +133,16 @@ export default function ImageColorTool() {
           Analyze {files.length} Images
         </button>
       )}
-    </div>
-  );
 
-  const rightPanel = (
-    <div className="card border rounded-lg p-4 bg-card shadow-sm min-h-[400px]">
       {isProcessing && (
-        <div className="flex flex-col items-center justify-center h-full py-20 space-y-4">
+        <div className="card border rounded-lg p-4 bg-card shadow-sm min-h-[200px] flex flex-col items-center justify-center space-y-4">
           <Loader2 className="w-10 h-10 animate-spin text-primary" />
           <p className="text-sm font-bold">Analyzing images...</p>
         </div>
       )}
 
       {results.length > 0 && !isProcessing && (
-        <div className="space-y-6">
+        <div className="card border rounded-lg p-4 bg-card shadow-sm space-y-6 animate-in fade-in duration-300">
           <div className="flex items-center justify-between px-1">
             <h3 className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Results ({results.length})</h3>
             {results.length > 1 && (
@@ -195,12 +190,6 @@ export default function ImageColorTool() {
           </div>
         </div>
       )}
-    </div>
-  );
-
-  return (
-    <div className="max-w-6xl mx-auto">
-      <ToolSplitLayout left={leftPanel} right={rightPanel} />
     </div>
   );
 }

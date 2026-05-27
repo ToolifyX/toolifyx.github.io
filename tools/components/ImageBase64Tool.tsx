@@ -8,7 +8,6 @@ import React, { useState, useEffect } from 'react';
 import { copyToClipboard, downloadFile, fileToBase64 } from '@/lib/utils';
 import { downloadAllAsZip } from '@/lib/download';
 import { Loader2, Zap, Copy, Download, CheckCircle2 } from 'lucide-react';
-import ToolSplitLayout from '@/components/tool-layout/ToolSplitLayout';
 import UploadPanel from '@/components/tool-layout/UploadPanel';
 import { getUploadLimits, UploadLimits } from '@/lib/adaptiveUpload';
 
@@ -72,8 +71,8 @@ export default function ImageBase64Tool() {
     }
   };
 
-  const leftPanel = (
-    <div className="space-y-4">
+  return (
+    <div className="max-w-3xl mx-auto space-y-4">
       <UploadPanel files={files} onChange={setFiles} maxFiles={limits?.maxFiles} />
       {files.length > 0 && (
         <button
@@ -85,22 +84,26 @@ export default function ImageBase64Tool() {
           Encode {files.length} Images to Base64
         </button>
       )}
-    </div>
-  );
 
-  const rightPanel = (
-    <div className="card border rounded-lg p-4 bg-card shadow-sm min-h-[400px] space-y-4">
       {isProcessing && (
-        <div className="flex flex-col items-center justify-center h-full py-20 space-y-4">
+        <div className="card border rounded-lg p-4 bg-card shadow-sm min-h-[200px] flex flex-col items-center justify-center space-y-4">
           <Loader2 className="w-10 h-10 animate-spin text-primary" />
           <p className="text-sm font-bold">Encoding images...</p>
         </div>
       )}
 
       {results.length > 0 && !isProcessing && (
-        <div className="space-y-4">
+        <div className="card border rounded-lg p-4 bg-card shadow-sm space-y-4 animate-in fade-in duration-300">
           <div className="flex items-center justify-between px-1">
             <h3 className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Results ({results.length})</h3>
+            <button
+                onClick={handleDownloadAll}
+                disabled={isZipping}
+                className="text-[10px] font-bold bg-primary text-primary-foreground px-3 py-1 rounded-full flex items-center gap-1.5 hover:brightness-110 disabled:opacity-50 transition-all shadow-sm"
+              >
+                {isZipping ? <Loader2 className="w-3 h-3 animate-spin" /> : <Download className="w-3 h-3" />}
+                Download All (ZIP)
+            </button>
           </div>
           <div className="grid gap-4">
             {results.map((res, i) => (
@@ -127,12 +130,6 @@ export default function ImageBase64Tool() {
           </div>
         </div>
       )}
-    </div>
-  );
-
-  return (
-    <div className="max-w-6xl mx-auto">
-      <ToolSplitLayout left={leftPanel} right={rightPanel} />
     </div>
   );
 }

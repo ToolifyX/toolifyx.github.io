@@ -7,8 +7,7 @@
 import React, { useState } from 'react';
 import { PDFDocument } from 'pdf-lib';
 import { downloadFile } from '@/lib/utils';
-import { Loader2, FileImage, FileText, Zap } from 'lucide-react';
-import ToolSplitLayout from '@/components/tool-layout/ToolSplitLayout';
+import { Loader2, FileText } from 'lucide-react';
 import UploadPanel from '@/components/tool-layout/UploadPanel';
 import ResultScreen from '@/components/tool-layout/ResultScreen';
 import ResultPanel from '@/components/tool-layout/ResultPanel';
@@ -83,8 +82,8 @@ export default function ImageToPdf() {
     );
   }
 
-  const leftPanel = (
-    <div className="space-y-4">
+  return (
+    <div className="max-w-3xl mx-auto space-y-4">
       <UploadPanel files={files} onChange={setFiles} />
       {files.length > 0 && (
         <button
@@ -96,21 +95,15 @@ export default function ImageToPdf() {
           Generate PDF from {files.length} Images
         </button>
       )}
-    </div>
-  );
 
-  const rightPanel = (
-    <ResultPanel
-      isProcessing={isProcessing}
-      results={[]}
-      onDownload={() => {}}
-      onDownloadAll={() => {}}
-    />
-  );
-
-  return (
-    <div className="max-w-6xl mx-auto">
-      <ToolSplitLayout left={leftPanel} right={rightPanel} />
+      {isProcessing && (
+        <ResultPanel
+          isProcessing={isProcessing}
+          results={[]}
+          onDownload={() => {}}
+          onDownloadAll={() => {}}
+        />
+      )}
     </div>
   );
 }

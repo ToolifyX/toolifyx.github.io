@@ -7,8 +7,7 @@
 import React, { useState } from 'react';
 import { PDFDocument } from 'pdf-lib';
 import { downloadFile } from '@/lib/utils';
-import { Loader2, Combine, Zap } from 'lucide-react';
-import ToolSplitLayout from '@/components/tool-layout/ToolSplitLayout';
+import { Loader2, Combine } from 'lucide-react';
 import PDFUploader from '@/components/PDFUploader';
 import ResultPanel from '@/components/tool-layout/ResultPanel';
 import ResultScreen from '@/components/tool-layout/ResultScreen';
@@ -92,8 +91,8 @@ export default function PdfMergeTool() {
   }
 
   // 2. Idle or Processing
-  const leftPanel = (
-    <div className="space-y-4">
+  return (
+    <div className="max-w-3xl mx-auto space-y-4">
       <div className="card border rounded-lg p-3 bg-card shadow-sm space-y-4">
         <PDFUploader files={files} onChange={setFiles} />
       </div>
@@ -117,22 +116,16 @@ export default function PdfMergeTool() {
           )}
         </button>
       )}
-    </div>
-  );
 
-  const rightPanel = (
-    <ResultPanel
-      isProcessing={status === 'processing'}
-      results={[]}
-      progress={progress}
-      onDownload={() => {}}
-      onDownloadAll={() => {}}
-    />
-  );
-
-  return (
-    <div className="max-w-6xl mx-auto">
-      <ToolSplitLayout left={leftPanel} right={rightPanel} />
+      {status === 'processing' && (
+        <ResultPanel
+          isProcessing={status === 'processing'}
+          results={[]}
+          progress={progress}
+          onDownload={() => {}}
+          onDownloadAll={() => {}}
+        />
+      )}
     </div>
   );
 }

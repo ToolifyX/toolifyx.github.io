@@ -10,7 +10,6 @@ import { processQueue, ProcessedResult } from '@/lib/imagePipeline';
 import { getUploadLimits, UploadLimits } from '@/lib/adaptiveUpload';
 import { downloadAllAsZip } from '@/lib/download';
 import { Loader2, Zap, Settings2 } from 'lucide-react';
-import ToolSplitLayout from '@/components/tool-layout/ToolSplitLayout';
 import UploadPanel from '@/components/tool-layout/UploadPanel';
 import ResultPanel from '@/components/tool-layout/ResultPanel';
 import ResultScreen from '@/components/tool-layout/ResultScreen';
@@ -103,8 +102,8 @@ export default function ImageCompressor() {
   }
 
   // 2. Idle or Processing States: "idle" | "processing"
-  const leftPanel = (
-    <div className="space-y-4">
+  return (
+    <div className="max-w-3xl mx-auto space-y-4">
       <UploadPanel
         files={files}
         onChange={setFiles}
@@ -151,22 +150,16 @@ export default function ImageCompressor() {
           </button>
         </div>
       )}
-    </div>
-  );
 
-  const rightPanel = (
-    <ResultPanel
-      isProcessing={status === 'processing'}
-      results={[]} // Don't show results list in the side panel anymore, wait for full screen
-      progress={progress}
-      onDownload={() => {}}
-      onDownloadAll={() => {}}
-    />
-  );
-
-  return (
-    <div className="max-w-6xl mx-auto">
-      <ToolSplitLayout left={leftPanel} right={rightPanel} />
+      {status === 'processing' && (
+        <ResultPanel
+          isProcessing={status === 'processing'}
+          results={[]}
+          progress={progress}
+          onDownload={() => {}}
+          onDownloadAll={() => {}}
+        />
+      )}
     </div>
   );
 }

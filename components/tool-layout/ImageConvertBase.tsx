@@ -5,8 +5,7 @@ import { downloadFile } from '@/lib/utils';
 import { convertImage, ConversionResult } from '@/lib/imageConverter';
 import { getUploadLimits, UploadLimits } from '@/lib/adaptiveUpload';
 import { downloadAllAsZip } from '@/lib/download';
-import { Loader2, Zap, RotateCcw } from 'lucide-react';
-import ToolSplitLayout from '@/components/tool-layout/ToolSplitLayout';
+import { Loader2, Zap } from 'lucide-react';
 import UploadPanel from '@/components/tool-layout/UploadPanel';
 import ResultPanel from '@/components/tool-layout/ResultPanel';
 import ResultScreen from '@/components/tool-layout/ResultScreen';
@@ -99,8 +98,8 @@ export default function ImageConvertBase({ fromFormat, toFormat, toExtension, ti
     );
   }
 
-  const leftPanel = (
-    <div className="space-y-4">
+  return (
+    <div className="max-w-3xl mx-auto space-y-4">
       <UploadPanel
         files={files}
         onChange={setFiles}
@@ -129,23 +128,17 @@ export default function ImageConvertBase({ fromFormat, toFormat, toExtension, ti
           </button>
         </div>
       )}
-    </div>
-  );
 
-  const rightPanel = (
-    <ResultPanel
-      isProcessing={status === 'processing'}
-      results={results}
-      progress={progress}
-      onDownload={handleDownloadResult}
-      onDownloadAll={handleDownloadAll}
-      isZipping={isZipping}
-    />
-  );
-
-  return (
-    <div className="max-w-6xl mx-auto">
-      <ToolSplitLayout left={leftPanel} right={rightPanel} />
+      {status === 'processing' && (
+        <ResultPanel
+          isProcessing={status === 'processing'}
+          results={results}
+          progress={progress}
+          onDownload={handleDownloadResult}
+          onDownloadAll={handleDownloadAll}
+          isZipping={isZipping}
+        />
+      )}
     </div>
   );
 }

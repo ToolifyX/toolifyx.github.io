@@ -7,8 +7,7 @@
 import React, { useState } from 'react';
 import { PDFDocument, degrees } from 'pdf-lib';
 import { downloadFile } from '@/lib/utils';
-import { Loader2, RotateCw, FileText, X, Zap, Settings2, Download } from 'lucide-react';
-import ToolSplitLayout from '@/components/tool-layout/ToolSplitLayout';
+import { Loader2, RotateCw, FileText, X, Settings2 } from 'lucide-react';
 import ResultScreen from '@/components/tool-layout/ResultScreen';
 import ResultPanel from '@/components/tool-layout/ResultPanel';
 
@@ -77,8 +76,8 @@ export default function PdfRotateTool() {
     );
   }
 
-  const leftPanel = (
-    <div className="space-y-4">
+  return (
+    <div className="max-w-3xl mx-auto space-y-4">
       <div className="card border rounded-lg p-4 bg-card shadow-sm space-y-4">
         {!file ? (
           <div
@@ -130,21 +129,15 @@ export default function PdfRotateTool() {
           </button>
         </div>
       )}
-    </div>
-  );
 
-  const rightPanel = (
-    <ResultPanel
-      isProcessing={isProcessing}
-      results={[]}
-      onDownload={() => {}}
-      onDownloadAll={() => {}}
-    />
-  );
-
-  return (
-    <div className="max-w-6xl mx-auto">
-      <ToolSplitLayout left={leftPanel} right={rightPanel} />
+      {isProcessing && (
+        <ResultPanel
+          isProcessing={isProcessing}
+          results={[]}
+          onDownload={() => {}}
+          onDownloadAll={() => {}}
+        />
+      )}
     </div>
   );
 }

@@ -7,8 +7,7 @@
 import React, { useState, useEffect } from 'react';
 import { downloadFile } from '@/lib/utils';
 import { downloadAllAsZip } from '@/lib/download';
-import { Loader2, Zap, Download, CheckCircle2, ShieldAlert } from 'lucide-react';
-import ToolSplitLayout from '@/components/tool-layout/ToolSplitLayout';
+import { Loader2, Zap, ShieldAlert } from 'lucide-react';
 import UploadPanel from '@/components/tool-layout/UploadPanel';
 import ResultScreen from '@/components/tool-layout/ResultScreen';
 import ResultPanel from '@/components/tool-layout/ResultPanel';
@@ -110,8 +109,8 @@ export default function ImageMetadataTool() {
     );
   }
 
-  const leftPanel = (
-    <div className="space-y-4">
+  return (
+    <div className="max-w-3xl mx-auto space-y-4">
       <UploadPanel files={files} onChange={setFiles} maxFiles={limits?.maxFiles} />
       {files.length > 0 && (
         <div className="space-y-4">
@@ -129,21 +128,15 @@ export default function ImageMetadataTool() {
           </button>
         </div>
       )}
-    </div>
-  );
 
-  const rightPanel = (
-    <ResultPanel
-      isProcessing={status === 'processing'}
-      results={[]}
-      onDownload={() => {}}
-      onDownloadAll={() => {}}
-    />
-  );
-
-  return (
-    <div className="max-w-6xl mx-auto">
-      <ToolSplitLayout left={leftPanel} right={rightPanel} />
+      {status === 'processing' && (
+        <ResultPanel
+          isProcessing={status === 'processing'}
+          results={[]}
+          onDownload={() => {}}
+          onDownloadAll={() => {}}
+        />
+      )}
     </div>
   );
 }
