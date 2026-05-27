@@ -39,7 +39,7 @@ export default function Home() {
   return (
     <div className="space-y-6 pb-12">
       {/* Hero Section - Simple Modern */}
-      <div className="text-center space-y-4 py-20 md:py-28 max-w-3xl mx-auto px-4">
+      <div className="text-center space-y-4 py-12 md:py-20 max-w-3xl mx-auto px-4">
         <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight">
           Every Tool <span className="text-primary">Instantly.</span>
         </h1>

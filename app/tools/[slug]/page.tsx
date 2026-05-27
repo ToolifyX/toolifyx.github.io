@@ -91,7 +91,7 @@ export default function ToolPage({ params }: Props) {
       </nav>
 
       {/* Header - Simple Modern */}
-      <div className="flex items-center gap-5 py-10 border-b">
+      <div className="flex items-center gap-5 py-6 border-b">
         <div className="p-4 rounded-2xl bg-primary/10 text-primary">
           <DynamicIcon name={tool.icon || 'HelpCircle'} size={40} strokeWidth={2} />
         </div>
