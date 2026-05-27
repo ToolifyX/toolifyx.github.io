@@ -10,14 +10,14 @@ interface ToolSearchProps {
 
 export default function ToolSearch({ query, onChange }: ToolSearchProps) {
   return (
-    <div className="relative w-full max-w-2xl mx-auto group">
+    <div className="relative group max-w-2xl mx-auto">
       <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-muted-foreground group-focus-within:text-primary transition-colors">
-        <Search className="w-5 h-5" />
+        <Search className="w-4 h-4" strokeWidth={2.5} />
       </div>
       <input
         type="text"
-        placeholder="Search for tools..."
-        className="w-full bg-muted/50 border border-transparent focus:bg-background focus:border-primary/20 focus:ring-4 focus:ring-primary/5 rounded-2xl py-4 pl-12 pr-12 transition-all text-base outline-none"
+        placeholder="Search for a tool..."
+        className="w-full h-12 bg-muted/40 border border-transparent focus:bg-background focus:border-primary/20 focus:ring-4 focus:ring-primary/5 rounded-xl py-4 pl-11 pr-12 transition-all text-[15px] font-medium outline-none placeholder:text-muted-foreground/50"
         value={query}
         onChange={(e) => onChange(e.target.value)}
       />
@@ -27,7 +27,7 @@ export default function ToolSearch({ query, onChange }: ToolSearchProps) {
           className="absolute inset-y-0 right-0 pr-4 flex items-center text-muted-foreground hover:text-foreground transition-colors"
           aria-label="Clear search"
         >
-          <X className="w-5 h-5" />
+          <X className="w-4 h-4" />
         </button>
       )}
     </div>

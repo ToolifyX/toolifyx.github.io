@@ -69,15 +69,15 @@ export default function ImageUploader({ files: externalFiles, onChange, showFile
   return (
     <div className="space-y-6 w-full">
       <div
-        className="border-2 border-dashed rounded-3xl p-12 transition-all flex flex-col items-center justify-center space-y-4 cursor-pointer group hover:border-primary hover:bg-primary/5"
+        className="border-2 border-dashed rounded-2xl p-8 md:p-12 transition-all flex flex-col items-center justify-center space-y-4 cursor-pointer group hover:border-primary/50 hover:bg-primary/[0.02]"
         onClick={() => document.getElementById('file-input')?.click()}
       >
-        <div className="p-4 rounded-2xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-all">
-          <Upload className="w-10 h-10" />
+        <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center transition-all group-hover:scale-110">
+          <Upload className="w-6 h-6" strokeWidth={2} />
         </div>
         <div className="text-center space-y-1">
-          <p className="text-xl font-bold">Click to upload or drag and drop</p>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-base font-semibold">Click to upload or drag and drop</p>
+          <p className="text-xs text-muted-foreground font-medium">
             Up to {limits.maxFiles} files • {limits.maxFileSizeMB}MB each
           </p>
         </div>

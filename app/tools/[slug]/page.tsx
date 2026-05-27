@@ -16,25 +16,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const seo = seoData[params.slug];
 
   if (!tool) {
-    return {
-      title: 'Tool Not Found',
-    };
+    return { title: 'Tool Not Found' };
   }
 
   return {
-    title: seo?.seoTitle || `${tool.title} - Free Online Tool`,
+    title: seo?.seoTitle || `${tool.title} - Online Utility`,
     description: seo?.metaDescription || tool.description,
-    openGraph: {
-      title: seo?.seoTitle || `${tool.title} - Free Online Tool`,
-      description: seo?.metaDescription || tool.description,
-    },
   };
 }
 
 export async function generateStaticParams() {
-  return tools.map((tool) => ({
-    slug: tool.slug,
-  }));
+  return tools.map((tool) => ({ slug: tool.slug }));
 }
 
 export default function ToolPage({ params }: Props) {
@@ -45,131 +37,99 @@ export default function ToolPage({ params }: Props) {
     notFound();
   }
 
-  const sameCategoryTools = tools
+  const relatedTools = tools
     .filter((t) => t.category === tool.category && t.slug !== tool.slug)
-    .slice(0, 5);
-
-  const differentCategoryTools = tools
-    .filter((t) => t.category !== tool.category)
-    .slice(0, 0); // Keep it same category mostly for speed
-
-  const allRelatedTools = [...sameCategoryTools, ...differentCategoryTools];
-
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": (seo?.faqs || [
-      { question: "Is this tool free?", answer: "Yes, 100% free." },
-      { question: "Is it secure?", answer: "All processing is local." },
-      { question: "No install?", answer: "Runs in browser." }
-    ]).map(faq => ({
-      "@type": "Question",
-      "name": faq.question,
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": faq.answer
-      }
-    }))
-  };
+    .slice(0, 4);
 
   return (
-    <div className="max-w-5xl mx-auto space-y-6 pb-12">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+    <div className="max-w-6xl mx-auto space-y-10 pb-20 px-4">
+      {/* Header & Breadcrumb */}
+      <div className="space-y-4 pt-8">
+        <nav className="flex items-center space-x-2 text-[13px] text-muted-foreground font-medium">
+          <Link href="/" className="hover:text-foreground transition-colors">Home</Link>
+          <span className="opacity-40">/</span>
+          <span className="capitalize">{tool.category}</span>
+          <span className="opacity-40">/</span>
+          <span className="text-foreground">{tool.title}</span>
+        </nav>
 
-      {/* Breadcrumb - Compact */}
-      <nav className="flex text-[10px] uppercase font-bold tracking-widest text-muted-foreground">
-        <ol className="flex items-center space-x-1">
-          <li><Link href="/" className="hover:text-foreground">Home</Link></li>
-          <li><span>/</span></li>
-          <li><Link href={`/${tool.category}-tools`} className="hover:text-foreground">{tool.category} Tools</Link></li>
-          <li><span>/</span></li>
-          <li className="text-foreground">{tool.title}</li>
-        </ol>
-      </nav>
-
-      {/* Header - Simple Modern */}
-      <div className="flex items-center gap-5 py-6 border-b">
-        <div className="p-4 rounded-2xl bg-primary/10 text-primary">
-          <DynamicIcon name={tool.icon || 'HelpCircle'} size={40} strokeWidth={2} />
-        </div>
-        <div className="space-y-1">
-          <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">{tool.title}</h1>
-          <p className="text-base md:text-lg text-muted-foreground font-medium">{tool.description}</p>
+        <div className="flex items-end gap-5">
+          <div className="space-y-1.5 flex-1">
+            <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground leading-none">
+              {tool.title}
+            </h1>
+            <p className="text-[15px] md:text-lg text-muted-foreground font-medium leading-relaxed max-w-2xl">
+              {tool.description}
+            </p>
+          </div>
+          <div className="hidden md:block">
+             <div className="w-16 h-16 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
+                <DynamicIcon name={tool.icon || 'HelpCircle'} size={32} strokeWidth={2} />
+             </div>
+          </div>
         </div>
       </div>
 
-      {/* Tool Main Area */}
-      <div className="bg-card border rounded-3xl overflow-hidden shadow-sm shadow-black/5 mb-12">
-        <div className="px-3 py-1.5 bg-muted/50 border-b flex items-center justify-between">
-          <div className="flex space-x-1">
-            <div className="w-2.5 h-2.5 rounded-full bg-red-400/20" />
-            <div className="w-2.5 h-2.5 rounded-full bg-yellow-400/20" />
-            <div className="w-2.5 h-2.5 rounded-full bg-green-400/20" />
+      {/* Workspace Canvas (App Window) */}
+      <div className="bg-background border rounded-2xl overflow-hidden shadow-sm">
+        {/* macOS Style Bar */}
+        <div className="px-4 py-3 bg-muted/20 border-b flex items-center justify-between">
+          <div className="flex space-x-1.5">
+            <div className="w-3 h-3 rounded-full bg-border" />
+            <div className="w-3 h-3 rounded-full bg-border" />
+            <div className="w-3 h-3 rounded-full bg-border" />
           </div>
-          <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">
+          <span className="text-[11px] font-bold uppercase tracking-[0.15em] text-muted-foreground/60">
             {tool.category} Utility
           </span>
         </div>
-        <div className="p-3 md:p-6">
+
+        {/* Actual Tool Canvas */}
+        <div className="p-4 md:p-8 min-h-[400px]">
           <ToolRenderer componentName={tool.component} />
         </div>
       </div>
 
-      {/* Content Grid - Dense */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
-        <div className="md:col-span-2 space-y-6">
-          <section className="space-y-2">
-            <h2 className="text-lg font-bold">How to use</h2>
-            <ol className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              {(seo?.howToUse || ["Input data", "Process", "Get result"]).map((step, i) => (
-                <li key={i} className="p-3 bg-muted/30 rounded-lg border text-xs leading-relaxed">
-                  <span className="font-black text-primary mr-1">{i + 1}.</span> {step}
-                </li>
+      {/* Instructions & FAQ (Footer Columns) */}
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-12 pt-8 border-t">
+        <div className="md:col-span-8 space-y-8">
+          <section className="space-y-4">
+            <h2 className="text-xl font-bold tracking-tight">How to use {tool.title}</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {(seo?.howToUse || ["Input your files or text", "Adjust any specific settings", "Download or copy result"]).map((step, i) => (
+                <div key={i} className="flex gap-4 p-4 rounded-xl border bg-muted/30">
+                  <span className="text-lg font-bold text-primary opacity-50">{String(i + 1).padStart(2, '0')}</span>
+                  <p className="text-[14px] text-muted-foreground font-medium leading-snug">{step}</p>
+                </div>
               ))}
-            </ol>
+            </div>
           </section>
 
-          <section className="p-4 bg-primary/5 rounded-xl border border-primary/10 space-y-2">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-primary">About {tool.title}</h2>
-            <p className="text-xs text-muted-foreground leading-relaxed">
-              Fast, secure, and browser-based. All processing for <strong>{tool.title}</strong> is done locally on your device.
-              No data is uploaded to our servers, ensuring your privacy remains 100% intact.
-            </p>
+          <section className="space-y-4">
+            <h2 className="text-xl font-bold tracking-tight">Frequently Asked Questions</h2>
+            <div className="space-y-4">
+              {(seo?.faqs || [
+                { question: "Is my data safe?", answer: "Yes, all processing happens locally in your browser. No data is ever uploaded to our servers." },
+                { question: "Do I need to pay?", answer: "No, ToolifyX is completely free to use without any limitations." }
+              ]).map((faq, i) => (
+                <div key={i} className="space-y-2">
+                  <h3 className="text-[15px] font-semibold text-foreground">{faq.question}</h3>
+                  <p className="text-[14px] text-muted-foreground leading-relaxed">{faq.answer}</p>
+                </div>
+              ))}
+            </div>
           </section>
         </div>
 
-        <aside className="space-y-4">
-          <h2 className="text-lg font-bold">FAQ</h2>
-          <div className="space-y-3">
-            {(seo?.faqs || []).slice(0, 3).map((faq, i) => (
-              <div key={i} className="space-y-1">
-                <h3 className="text-xs font-bold">{faq.question}</h3>
-                <p className="text-[11px] text-muted-foreground leading-snug">{faq.answer}</p>
-              </div>
-            ))}
-          </div>
-        </aside>
-      </div>
-
-      {/* Related Tools - Dense Grid */}
-      {allRelatedTools.length > 0 && (
-        <section className="space-y-3 pt-6 border-t">
-          <div className="flex items-baseline justify-between">
-            <h2 className="text-lg font-bold tracking-tight">More {tool.category} Tools</h2>
-            <Link href={`/${tool.category}-tools`} className="text-xs text-primary font-bold hover:underline">
-              View all
-            </Link>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {allRelatedTools.map((related) => (
+        <div className="md:col-span-4 space-y-6">
+          <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground">Related {tool.category} Tools</h2>
+          <div className="flex flex-col gap-3">
+            {relatedTools.map((related) => (
               <ToolCard key={related.slug} tool={related} />
             ))}
           </div>
-        </section>
-      )}
+        </div>
+      </div>
     </div>
   );
 }
