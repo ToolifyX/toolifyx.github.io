@@ -97,7 +97,7 @@ export default function ToolPage({ params }: Props) {
             <span className="mx-2">/</span>
           </li>
           <li className="capitalize">
-            <Link href={`/?category=${tool.category}`} className="hover:text-foreground transition-colors">
+            <Link href={`/${tool.category}-tools`} className="hover:text-foreground transition-colors">
               {tool.category} Tools
             </Link>
           </li>
