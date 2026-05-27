@@ -16,11 +16,13 @@
 
 import React, { useState, useEffect } from 'react';
 import { downloadFile } from '@/lib/utils';
-import ImageUploader from '@/components/ImageUploader';
 import { processQueue, ProcessedResult } from '@/lib/imagePipeline';
 import { getUploadLimits, UploadLimits } from '@/lib/adaptiveUpload';
 import { downloadAllAsZip } from '@/lib/download';
-import { Loader2, Download, CheckCircle2, Zap, Settings2, Archive } from 'lucide-react';
+import { Loader2, Zap, Settings2 } from 'lucide-react';
+import ToolSplitLayout from '@/components/tool-layout/ToolSplitLayout';
+import UploadPanel from '@/components/tool-layout/UploadPanel';
+import ResultPanel from '@/components/tool-layout/ResultPanel';
 
 export default function ImageCompressor() {
   const [files, setFiles] = useState<File[]>([]);
@@ -83,107 +85,70 @@ export default function ImageCompressor() {
     return "Low (Max Compression)";
   };
 
-  return (
-    <div className="max-w-2xl mx-auto p-4 space-y-4">
-      <div className="card border rounded-xl p-4 space-y-4 shadow-sm bg-card/50 backdrop-blur-sm">
-        <ImageUploader onChange={setFiles} />
+  const leftPanel = (
+    <div className="space-y-4">
+      <UploadPanel
+        files={files}
+        onChange={setFiles}
+        maxFiles={limits?.maxFiles}
+      />
 
-        {files.length > 0 && (
-          <div className="space-y-4 pt-2 border-t animate-in fade-in duration-300">
-            <div className="p-3 bg-muted/30 rounded-lg border space-y-2">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                   <Settings2 className="w-3 h-3" /> Compression Level
-                </div>
-                <span className="text-[10px] font-black text-primary uppercase">{getQualityLabel(quality)}</span>
+      {files.length > 0 && (
+        <div className="card border rounded-lg p-4 bg-card shadow-sm space-y-4 animate-in fade-in duration-300">
+          <div className="p-3 bg-muted/30 rounded-lg border space-y-2">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                 <Settings2 className="w-3 h-3" /> Settings
               </div>
-              <input
-                type="range"
-                min="0.1"
-                max="1"
-                step="0.1"
-                value={quality}
-                onChange={(e) => setQuality(parseFloat(e.target.value))}
-                className="w-full accent-primary"
-              />
+              <span className="text-[10px] font-black text-primary uppercase">{getQualityLabel(quality)}</span>
             </div>
+            <input
+              type="range"
+              min="0.1"
+              max="1"
+              step="0.1"
+              value={quality}
+              onChange={(e) => setQuality(parseFloat(e.target.value))}
+              className="w-full accent-primary"
+            />
+          </div>
 
-            <button
-              onClick={handleProcessAll}
-              disabled={isProcessing}
-              className="bg-black text-white dark:bg-white dark:text-black px-4 py-3 rounded-xl w-full font-black text-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.01] active:scale-[0.98] disabled:opacity-50 disabled:hover:scale-100 shadow-lg shadow-primary/10"
-            >
-              {isProcessing ? (
-                <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  Processing {progress.current}/{progress.total}...
-                </>
-              ) : (
-                <>
-                  <Zap className="w-4 h-4 fill-current" />
-                  Compress Batch ({files.length} Images)
-                </>
-              )}
-            </button>
-
-            {isProcessing && (
-              <div className="w-full bg-muted rounded-full h-1 overflow-hidden">
-                <div
-                  className="bg-primary h-full transition-all duration-300"
-                  style={{ width: `${(progress.current / progress.total) * 100}%` }}
-                />
-              </div>
+          <button
+            onClick={handleProcessAll}
+            disabled={isProcessing}
+            className="bg-black text-white dark:bg-white dark:text-black px-4 py-3 rounded-xl w-full font-black text-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.01] active:scale-[0.98] disabled:opacity-50 shadow-lg shadow-primary/10"
+          >
+            {isProcessing ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Processing {progress.current}/{progress.total}...
+              </>
+            ) : (
+              <>
+                <Zap className="w-4 h-4 fill-current" />
+                Compress {files.length} Images
+              </>
             )}
-          </div>
-        )}
+          </button>
+        </div>
+      )}
+    </div>
+  );
 
-        {results.length > 0 && (
-          <div className="space-y-3 pt-4 border-t animate-in slide-in-from-bottom-2 duration-500">
-            <div className="flex items-center justify-between px-1">
-              <h3 className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Results ({results.length})</h3>
-              {results.length > 1 && (
-                <button
-                  onClick={handleDownloadAll}
-                  disabled={isZipping}
-                  className="text-[10px] font-bold bg-primary text-primary-foreground px-3 py-1 rounded-full flex items-center gap-1.5 hover:brightness-110 disabled:opacity-50 transition-all shadow-sm"
-                >
-                  {isZipping ? <Loader2 className="w-3 h-3 animate-spin" /> : <Archive className="w-3 h-3" />}
-                  Download All as ZIP
-                </button>
-              )}
-            </div>
-            <div className="grid gap-2">
-              {results.map((res, i) => {
-                const savings = Math.round((1 - res.compressedSize / res.originalSize) * 100);
-                return (
-                  <div key={i} className="flex items-center justify-between p-2 bg-green-50/10 dark:bg-green-500/5 border border-green-500/20 rounded-xl group">
-                    <div className="flex items-center space-x-3 min-w-0">
-                      <div className="relative">
-                        <img src={res.url} alt="done" className="w-10 h-10 rounded-lg object-cover border border-green-500/20 shadow-sm" />
-                        <CheckCircle2 className="absolute -top-1 -right-1 w-4 h-4 text-green-500 fill-card" />
-                      </div>
-                      <div className="min-w-0">
-                        <p className="text-[11px] font-black truncate">{res.name}</p>
-                        <div className="flex items-center gap-2">
-                          <span className="text-[10px] font-bold text-green-600">Saved {savings}%</span>
-                          <span className="text-[9px] text-muted-foreground">{(res.compressedSize / 1024).toFixed(1)} KB</span>
-                        </div>
-                      </div>
-                    </div>
-                    <button
-                      onClick={() => handleDownloadResult(res)}
-                      className="p-2 rounded-lg bg-card border shadow-sm hover:shadow-md hover:bg-muted transition-all text-primary group-hover:scale-110"
-                      title="Download Result"
-                    >
-                      <Download className="w-4 h-4" />
-                    </button>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
-      </div>
+  const rightPanel = (
+    <ResultPanel
+      isProcessing={isProcessing}
+      results={results}
+      progress={progress}
+      onDownload={handleDownloadResult}
+      onDownloadAll={handleDownloadAll}
+      isZipping={isZipping}
+    />
+  );
+
+  return (
+    <div className="max-w-6xl mx-auto">
+      <ToolSplitLayout left={leftPanel} right={rightPanel} />
     </div>
   );
 }

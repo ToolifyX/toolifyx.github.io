@@ -5,11 +5,15 @@ import { X, Upload, FileWarning, Info } from 'lucide-react';
 import { getUploadLimits, UploadLimits } from '@/lib/adaptiveUpload';
 
 interface ImageUploaderProps {
+  files?: File[];
   onChange: (files: File[]) => void;
+  showFileList?: boolean;
 }
 
-export default function ImageUploader({ onChange }: ImageUploaderProps) {
-  const [files, setFiles] = useState<File[]>([]);
+export default function ImageUploader({ files: externalFiles, onChange, showFileList = true }: ImageUploaderProps) {
+  const [internalFiles, setInternalFiles] = useState<File[]>([]);
+  const files = externalFiles || internalFiles;
+
   const [error, setError] = useState<string | null>(null);
   const [limits, setLimits] = useState<UploadLimits | null>(null);
 
@@ -56,7 +60,7 @@ export default function ImageUploader({ onChange }: ImageUploaderProps) {
     }
 
     const updatedFiles = [...files, ...valid];
-    setFiles(updatedFiles);
+    if (!externalFiles) setInternalFiles(updatedFiles);
     onChange(updatedFiles);
     // Reset input
     e.target.value = '';
@@ -64,13 +68,13 @@ export default function ImageUploader({ onChange }: ImageUploaderProps) {
 
   const removeFile = (index: number) => {
     const updatedFiles = files.filter((_, i) => i !== index);
-    setFiles(updatedFiles);
+    if (!externalFiles) setInternalFiles(updatedFiles);
     onChange(updatedFiles);
     setError(null);
   };
 
   const clearAll = () => {
-    setFiles([]);
+    if (!externalFiles) setInternalFiles([]);
     onChange([]);
     setError(null);
   };
@@ -114,7 +118,7 @@ export default function ImageUploader({ onChange }: ImageUploaderProps) {
         </div>
       )}
 
-      {files.length > 0 && (
+      {showFileList && files.length > 0 && (
         <div className="space-y-2">
           <div className="flex items-center justify-between px-1">
             <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Queue ({files.length}/{limits.maxFiles})</span>
