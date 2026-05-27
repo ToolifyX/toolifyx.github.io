@@ -13,7 +13,7 @@ export default function ToolCard({ tool }: ToolCardProps) {
       <div className="h-full p-5 border rounded-2xl bg-card hover:border-primary hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 flex flex-col group">
         <div className="flex items-start gap-4">
           <div className="text-primary shrink-0 pt-1">
-            <DynamicIcon name={tool.icon || 'HelpCircle'} size={24} strokeWidth={2.5} />
+            <DynamicIcon name={tool.icon || 'HelpCircle'} size={32} strokeWidth={2.5} />
           </div>
           <div className="space-y-1.5 min-w-0">
             <h3 className="text-lg font-bold group-hover:text-primary transition-colors leading-tight">
@@ -26,7 +26,7 @@ export default function ToolCard({ tool }: ToolCardProps) {
         </div>
 
         <div className="flex items-center justify-between mt-auto pt-4">
-          <span className="text-[10px] font-bold text-muted-foreground/60 uppercase tracking-widest ml-10">
+          <span className="text-[10px] font-bold text-muted-foreground/60 uppercase tracking-widest ml-12">
             {tool.category}
           </span>
           <div className="text-primary opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all">
