@@ -8,8 +8,10 @@ import { downloadAllAsZip } from '@/lib/download';
 import { Loader2, Zap, Settings2, RotateCcw, Sliders, Image as ImageIcon } from 'lucide-react';
 import EditorLayout from '@/components/tool-layout/EditorLayout';
 import ResultScreen from '@/components/tool-layout/ResultScreen';
+import FileList from '@/components/tool-layout/FileList';
+import { Tool } from '@/tools/types';
 
-export default function ImageCompressor() {
+export default function ImageCompressor({ tool }: { tool?: Tool }) {
   const [files, setFiles] = useState<File[]>([]);
   const [quality, setQuality] = useState(0.7);
   const [results, setResults] = useState<ProcessedResult[]>([]);
@@ -79,16 +81,28 @@ export default function ImageCompressor() {
   }
 
   const leftPanel = (
-    <div className="flex flex-col gap-2">
-      <button className="flex flex-col items-center justify-center p-3 rounded-xl bg-primary/10 text-primary border border-primary/20 transition-all">
-        <Sliders className="w-5 h-5 mb-1" />
-        <span className="text-[10px] font-black uppercase">Compress</span>
-      </button>
-      <div className="h-px bg-border my-2" />
-      <button onClick={handleReset} className="flex flex-col items-center justify-center p-3 rounded-xl hover:bg-destructive/10 text-destructive transition-all">
-        <RotateCcw className="w-5 h-5 mb-1" />
-        <span className="text-[10px] font-black uppercase">Reset</span>
-      </button>
+    <div className="space-y-6">
+      <div className="flex flex-col gap-2">
+        <button className="flex flex-col items-center justify-center p-3 rounded-xl bg-primary/10 text-primary border border-primary/20 transition-all">
+          <Sliders className="w-5 h-5 mb-1" />
+          <span className="text-[10px] font-black uppercase">Compress</span>
+        </button>
+        <div className="h-px bg-border my-2" />
+        <button onClick={handleReset} className="flex flex-col items-center justify-center p-3 rounded-xl hover:bg-destructive/10 text-destructive transition-all">
+          <RotateCcw className="w-5 h-5 mb-1" />
+          <span className="text-[10px] font-black uppercase">Reset</span>
+        </button>
+      </div>
+
+      {files.length > 0 && (
+        <div className="pt-4 border-t border-border">
+          <FileList
+            files={files}
+            onRemove={(idx) => setFiles(prev => prev.filter((_, i) => i !== idx))}
+            onClear={() => setFiles([])}
+          />
+        </div>
+      )}
     </div>
   );
 
@@ -163,7 +177,8 @@ export default function ImageCompressor() {
 
   return (
     <EditorLayout
-      toolName="Image Compressor"
+      toolName={tool?.title || "Image Compressor"}
+      toolIcon={tool?.icon}
       fileName={files.length === 1 ? files[0].name : `${files.length} Files selected`}
       leftPanel={leftPanel}
       mainCanvas={mainCanvas}

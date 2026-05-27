@@ -9,10 +9,11 @@ import { cropImage } from '@/lib/imageConverter';
 import { ProcessedResult } from '@/lib/imagePipeline';
 import { downloadFile } from '@/lib/utils';
 import { downloadAllAsZip } from '@/lib/download';
+import { Tool } from '@/tools/types';
 
 type ToolStatus = 'idle' | 'ready' | 'cropping' | 'done';
 
-export default function ImageCropTool() {
+export default function ImageCropTool({ tool }: { tool?: Tool }) {
   const [status, setStatus] = useState<ToolStatus>('idle');
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [activeRatio, setActiveRatio] = useState<AspectRatio>(aspectRatios[0]);
@@ -183,7 +184,8 @@ export default function ImageCropTool() {
 
   return (
     <EditorLayout
-      toolName="Image Cropper"
+      toolName={tool?.title || "Image Cropper"}
+      toolIcon={tool?.icon}
       fileName={selectedImage?.name}
       leftPanel={leftPanel}
       mainCanvas={mainCanvas}

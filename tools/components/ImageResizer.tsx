@@ -7,8 +7,10 @@ import { getUploadLimits, UploadLimits } from '@/lib/adaptiveUpload';
 import { downloadAllAsZip } from '@/lib/download';
 import { Loader2, Zap, Settings2, Maximize2, Monitor, Smartphone, Layout, RotateCcw } from 'lucide-react';
 import EditorLayout from '@/components/tool-layout/EditorLayout';
+import FileList from '@/components/tool-layout/FileList';
+import { Tool } from '@/tools/types';
 
-export default function ImageResizer() {
+export default function ImageResizer({ tool }: { tool?: Tool }) {
   const [files, setFiles] = useState<File[]>([]);
   const [width, setWidth] = useState(1920);
   const [maintainAspect, setMaintainAspect] = useState(true);
@@ -71,33 +73,45 @@ export default function ImageResizer() {
   };
 
   const leftPanel = (
-    <div className="flex flex-col gap-2">
-      <button
-        onClick={() => setWidth(1920)}
-        className={`flex flex-col items-center justify-center p-3 rounded-xl transition-all ${width === 1920 ? 'bg-primary/10 text-primary border border-primary/20' : 'hover:bg-muted text-muted-foreground'}`}
-      >
-        <Monitor className="w-5 h-5 mb-1" />
-        <span className="text-[10px] font-black uppercase">FHD (1920)</span>
-      </button>
-      <button
-        onClick={() => setWidth(1280)}
-        className={`flex flex-col items-center justify-center p-3 rounded-xl transition-all ${width === 1280 ? 'bg-primary/10 text-primary border border-primary/20' : 'hover:bg-muted text-muted-foreground'}`}
-      >
-        <Layout className="w-5 h-5 mb-1" />
-        <span className="text-[10px] font-black uppercase">HD (1280)</span>
-      </button>
-      <button
-        onClick={() => setWidth(720)}
-        className={`flex flex-col items-center justify-center p-3 rounded-xl transition-all ${width === 720 ? 'bg-primary/10 text-primary border border-primary/20' : 'hover:bg-muted text-muted-foreground'}`}
-      >
-        <Smartphone className="w-5 h-5 mb-1" />
-        <span className="text-[10px] font-black uppercase">Mobile (720)</span>
-      </button>
-      <div className="h-px bg-border my-2" />
-      <button onClick={handleReset} className="flex flex-col items-center justify-center p-3 rounded-xl hover:bg-destructive/10 text-destructive transition-all">
-        <RotateCcw className="w-5 h-5 mb-1" />
-        <span className="text-[10px] font-black uppercase">Reset</span>
-      </button>
+    <div className="space-y-6">
+      <div className="flex flex-col gap-2">
+        <button
+          onClick={() => setWidth(1920)}
+          className={`flex flex-col items-center justify-center p-3 rounded-xl transition-all ${width === 1920 ? 'bg-primary/10 text-primary border border-primary/20' : 'hover:bg-muted text-muted-foreground'}`}
+        >
+          <Monitor className="w-5 h-5 mb-1" />
+          <span className="text-[10px] font-black uppercase">FHD (1920)</span>
+        </button>
+        <button
+          onClick={() => setWidth(1280)}
+          className={`flex flex-col items-center justify-center p-3 rounded-xl transition-all ${width === 1280 ? 'bg-primary/10 text-primary border border-primary/20' : 'hover:bg-muted text-muted-foreground'}`}
+        >
+          <Layout className="w-5 h-5 mb-1" />
+          <span className="text-[10px] font-black uppercase">HD (1280)</span>
+        </button>
+        <button
+          onClick={() => setWidth(720)}
+          className={`flex flex-col items-center justify-center p-3 rounded-xl transition-all ${width === 720 ? 'bg-primary/10 text-primary border border-primary/20' : 'hover:bg-muted text-muted-foreground'}`}
+        >
+          <Smartphone className="w-5 h-5 mb-1" />
+          <span className="text-[10px] font-black uppercase">Mobile (720)</span>
+        </button>
+        <div className="h-px bg-border my-2" />
+        <button onClick={handleReset} className="flex flex-col items-center justify-center p-3 rounded-xl hover:bg-destructive/10 text-destructive transition-all">
+          <RotateCcw className="w-5 h-5 mb-1" />
+          <span className="text-[10px] font-black uppercase">Reset</span>
+        </button>
+      </div>
+
+      {files.length > 0 && (
+        <div className="pt-4 border-t border-border">
+          <FileList
+            files={files}
+            onRemove={(idx) => setFiles(prev => prev.filter((_, i) => i !== idx))}
+            onClear={() => setFiles([])}
+          />
+        </div>
+      )}
     </div>
   );
 
@@ -188,7 +202,8 @@ export default function ImageResizer() {
 
   return (
     <EditorLayout
-      toolName="Image Resizer"
+      toolName={tool?.title || "Image Resizer"}
+      toolIcon={tool?.icon}
       fileName={files.length === 1 ? files[0].name : `${files.length} Files selected`}
       leftPanel={leftPanel}
       mainCanvas={mainCanvas}

@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import EditorLayout from '@/components/tool-layout/EditorLayout';
 import { downloadFile } from '@/lib/utils';
+import { Tool } from '@/tools/types';
 
 type ToolStatus = 'idle' | 'ready' | 'processing' | 'done';
 
@@ -31,7 +32,7 @@ interface TransformState {
   zoom: number;
 }
 
-export default function ImageEditor() {
+export default function ImageEditor({ tool }: { tool?: Tool }) {
   const [status, setStatus] = useState<ToolStatus>('idle');
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
@@ -230,7 +231,8 @@ export default function ImageEditor() {
 
   return (
     <EditorLayout
-      toolName="Image Editor"
+      toolName={tool?.title || "Image Editor"}
+      toolIcon={tool?.icon}
       fileName={selectedImage?.name}
       leftPanel={leftPanel}
       mainCanvas={mainCanvas}

@@ -13,9 +13,13 @@ import PDFUploader from '@/components/PDFUploader';
 import ResultPanel from '@/components/tool-layout/ResultPanel';
 import ResultScreen from '@/components/tool-layout/ResultScreen';
 
+import EditorLayout from '@/components/tool-layout/EditorLayout';
+import FileList from '@/components/tool-layout/FileList';
+import { Tool } from '@/tools/types';
+
 type ToolStatus = 'idle' | 'processing' | 'done';
 
-export default function PdfMergeTool() {
+export default function PdfMergeTool({ tool }: { tool?: Tool }) {
   const [status, setStatus] = useState<ToolStatus>('idle');
   const [files, setFiles] = useState<File[]>([]);
   const [result, setResult] = useState<{ blob: Blob, name: string, originalSize: number, compressedSize: number, url: string } | null>(null);
@@ -93,29 +97,30 @@ export default function PdfMergeTool() {
 
   // 2. Idle or Processing
   const leftPanel = (
-    <div className="space-y-4">
-      <div className="card border rounded-lg p-3 bg-card shadow-sm space-y-4">
-        <PDFUploader files={files} onChange={setFiles} />
-      </div>
-
-      {files.length >= 2 && (
+    <div className="space-y-6">
+      <div className="flex flex-col gap-2">
         <button
           onClick={mergePdfs}
-          disabled={status === 'processing'}
-          className="bg-black text-white dark:bg-white dark:text-black px-4 py-3 rounded-xl w-full font-black text-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.01] active:scale-[0.98] disabled:opacity-50 shadow-lg"
+          className="flex flex-col items-center justify-center p-3 rounded-xl bg-primary/10 text-primary border border-primary/20 transition-all"
         >
-          {status === 'processing' ? (
-            <>
-                <Loader2 className="w-4 h-4 animate-spin" />
-                Merging {progress.current} of {progress.total}...
-            </>
-          ) : (
-            <>
-                <Combine className="w-4 h-4" />
-                Merge {files.length} PDF Files
-            </>
-          )}
+          <Combine className="w-5 h-5 mb-1" />
+          <span className="text-[10px] font-black uppercase">Merge PDF</span>
         </button>
+        <div className="h-px bg-border my-2" />
+        <button onClick={handleReset} className="flex flex-col items-center justify-center p-3 rounded-xl hover:bg-destructive/10 text-destructive transition-all">
+          <RotateCcw className="w-5 h-5 mb-1" />
+          <span className="text-[10px] font-black uppercase">Reset</span>
+        </button>
+      </div>
+
+      {files.length > 0 && (
+        <div className="pt-4 border-t border-border">
+          <FileList
+            files={files}
+            onRemove={(idx) => setFiles(prev => prev.filter((_, i) => i !== idx))}
+            onClear={() => setFiles([])}
+          />
+        </div>
       )}
     </div>
   );
@@ -131,9 +136,50 @@ export default function PdfMergeTool() {
     />
   );
 
-  return (
-    <div className="max-w-6xl mx-auto">
-      <ToolSplitLayout left={leftPanel} right={rightPanel} />
+  const mainCanvas = (
+    <div className="w-full h-full flex items-center justify-center p-8">
+      {files.length === 0 ? (
+        <div
+          className="w-full max-w-lg border-2 border-dashed border-border rounded-3xl p-16 text-center space-y-6 hover:border-primary transition-all cursor-pointer bg-card/50 hover:bg-card group"
+          onClick={() => document.querySelector('input[type="file"]')?.dispatchEvent(new MouseEvent('click'))}
+        >
+          <div className="w-20 h-20 bg-primary/10 text-primary rounded-3xl flex items-center justify-center mx-auto transition-transform group-hover:scale-110 group-hover:rotate-3">
+             <Combine className="w-10 h-10" />
+          </div>
+          <div className="space-y-2">
+            <h4 className="text-xl font-bold">Upload PDFs to merge</h4>
+            <p className="text-sm text-muted-foreground font-medium">Combine multiple documents into one</p>
+          </div>
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full h-full overflow-y-auto p-6">
+          {files.map((file, i) => (
+            <div key={i} className="bg-white border border-border rounded-xl p-4 shadow-sm relative group flex flex-col items-center justify-center gap-3">
+              <div className="w-16 h-16 bg-primary/5 rounded-lg flex items-center justify-center border border-primary/10">
+                 <FileText className="w-8 h-8 text-primary" />
+              </div>
+              <div className="text-center space-y-1 w-full">
+                <p className="text-[10px] font-black uppercase truncate w-full">{file.name}</p>
+                <p className="text-[9px] text-muted-foreground font-bold uppercase">{(file.size / 1024).toFixed(1)} KB</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
+
+  return (
+    <EditorLayout
+      toolName={tool?.title || "PDF Merge"}
+      toolIcon={tool?.icon}
+      fileName={files.length > 0 ? `${files.length} Files selected` : undefined}
+      leftPanel={leftPanel}
+      mainCanvas={mainCanvas}
+      rightPanel={rightPanel}
+      onDownload={result ? () => downloadFile(result.blob, result.name) : undefined}
+    />
+  );
 }
+
+import { FileText } from 'lucide-react';

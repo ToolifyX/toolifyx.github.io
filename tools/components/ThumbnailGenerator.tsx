@@ -6,9 +6,11 @@ import { downloadAllAsZip } from '@/lib/download';
 import { Loader2, Download, Image as ImageIcon, Zap, Settings2, RotateCcw, LayoutGrid } from 'lucide-react';
 import EditorLayout from '@/components/tool-layout/EditorLayout';
 import ResultScreen from '@/components/tool-layout/ResultScreen';
+import FileList from '@/components/tool-layout/FileList';
 import { getUploadLimits, UploadLimits } from '@/lib/adaptiveUpload';
+import { Tool } from '@/tools/types';
 
-export default function ThumbnailGenerator() {
+export default function ThumbnailGenerator({ tool }: { tool?: Tool }) {
   const [files, setFiles] = useState<File[]>([]);
   const [size, setSize] = useState(150);
   const [results, setResults] = useState<any[]>([]);
@@ -102,16 +104,28 @@ export default function ThumbnailGenerator() {
   }
 
   const leftPanel = (
-    <div className="flex flex-col gap-2">
-      <button className="flex flex-col items-center justify-center p-3 rounded-xl bg-primary/10 text-primary border border-primary/20 transition-all">
-        <LayoutGrid className="w-5 h-5 mb-1" />
-        <span className="text-[10px] font-black uppercase">Thumbnails</span>
-      </button>
-      <div className="h-px bg-border my-2" />
-      <button onClick={handleReset} className="flex flex-col items-center justify-center p-3 rounded-xl hover:bg-destructive/10 text-destructive transition-all">
-        <RotateCcw className="w-5 h-5 mb-1" />
-        <span className="text-[10px] font-black uppercase">Reset</span>
-      </button>
+    <div className="space-y-6">
+      <div className="flex flex-col gap-2">
+        <button className="flex flex-col items-center justify-center p-3 rounded-xl bg-primary/10 text-primary border border-primary/20 transition-all">
+          <LayoutGrid className="w-5 h-5 mb-1" />
+          <span className="text-[10px] font-black uppercase">Thumbnails</span>
+        </button>
+        <div className="h-px bg-border my-2" />
+        <button onClick={handleReset} className="flex flex-col items-center justify-center p-3 rounded-xl hover:bg-destructive/10 text-destructive transition-all">
+          <RotateCcw className="w-5 h-5 mb-1" />
+          <span className="text-[10px] font-black uppercase">Reset</span>
+        </button>
+      </div>
+
+      {files.length > 0 && (
+        <div className="pt-4 border-t border-border">
+          <FileList
+            files={files}
+            onRemove={(idx) => setFiles(prev => prev.filter((_, i) => i !== idx))}
+            onClear={() => setFiles([])}
+          />
+        </div>
+      )}
     </div>
   );
 
@@ -182,7 +196,8 @@ export default function ThumbnailGenerator() {
 
   return (
     <EditorLayout
-      toolName="Thumbnail Generator"
+      toolName={tool?.title || "Thumbnail Generator"}
+      toolIcon={tool?.icon}
       fileName={files.length === 1 ? files[0].name : `${files.length} Files selected`}
       leftPanel={leftPanel}
       mainCanvas={mainCanvas}

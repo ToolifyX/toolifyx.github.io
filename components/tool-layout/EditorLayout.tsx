@@ -1,9 +1,11 @@
 "use client";
 
 import React from 'react';
+import { DynamicIcon } from '@/components/DynamicIcon';
 
 interface EditorLayoutProps {
   toolName: string;
+  toolIcon?: string;
   fileName?: string;
   topBarActions?: React.ReactNode;
   leftPanel?: React.ReactNode;
@@ -14,6 +16,7 @@ interface EditorLayoutProps {
 
 export default function EditorLayout({
   toolName,
+  toolIcon,
   fileName,
   topBarActions,
   leftPanel,
@@ -26,7 +29,14 @@ export default function EditorLayout({
       {/* TOP BAR */}
       <header className="h-14 border-b border-border bg-card flex items-center justify-between px-6 shrink-0 z-30">
         <div className="flex items-center gap-4">
-          <h2 className="text-sm font-black uppercase tracking-tight">{toolName}</h2>
+          <div className="flex items-center gap-2.5">
+            {toolIcon && (
+              <div className="text-primary">
+                <DynamicIcon name={toolIcon} size={18} strokeWidth={2.5} />
+              </div>
+            )}
+            <h2 className="text-sm font-black uppercase tracking-tight">{toolName}</h2>
+          </div>
           {fileName && (
             <>
               <div className="h-4 w-px bg-border mx-1" />

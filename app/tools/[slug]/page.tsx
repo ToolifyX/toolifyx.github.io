@@ -84,7 +84,7 @@ export default function ToolPage({ params }: Props) {
 
         {/* Actual Tool Canvas */}
         <div className="min-h-[600px]">
-          <ToolRenderer componentName={tool.component} />
+          <ToolRenderer tool={tool} />
         </div>
       </div>
 
