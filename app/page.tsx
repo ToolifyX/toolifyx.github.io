@@ -38,18 +38,22 @@ export default function Home() {
 
   return (
     <div className="space-y-6 pb-12">
-      {/* Hero Section - Compact Retro */}
-      <div className="text-center space-y-6 py-16 md:py-24 max-w-4xl mx-auto px-4">
-        <h1 className="text-5xl md:text-7xl font-black tracking-tighter leading-none uppercase">
+      {/* Hero Section - Refined Compact Retro */}
+      <div className="text-center space-y-6 py-12 md:py-16 max-w-2xl mx-auto px-4">
+        <h1 className="text-4xl md:text-5xl font-black tracking-tighter leading-[0.9] uppercase">
           EVERY TOOL <br />
-          <span className="text-primary bg-black text-white dark:bg-white dark:text-black px-3 shadow-neo inline-block mt-2">INSTANTLY.</span>
+          <span className="text-primary italic">INSTANTLY.</span>
         </h1>
-        <p className="text-lg md:text-xl text-black dark:text-white max-w-2xl mx-auto font-bold leading-tight tracking-tight uppercase">
-          FAST. PRIVATE. BROWSER-BASED. <br className="hidden md:block" />
-          YOUR DATA NEVER LEAVES YOUR MACHINE.
-        </p>
+        <div className="space-y-1">
+          <p className="text-sm md:text-lg font-black tracking-tighter uppercase italic text-black dark:text-white">
+            FAST. PRIVATE. BROWSER-BASED.
+          </p>
+          <p className="text-[10px] md:text-xs font-bold text-muted-foreground uppercase tracking-[0.2em]">
+            YOUR DATA NEVER LEAVES YOUR MACHINE.
+          </p>
+        </div>
 
-        <div className="pt-8 max-w-2xl mx-auto">
+        <div className="pt-4 max-w-xl mx-auto">
           <ToolSearch query={searchQuery} onChange={setSearchQuery} />
         </div>
       </div>
