@@ -1,103 +1,113 @@
-Refactor the UI color system to improve contrast by using a light gray background instead of pure white.
-
+Build a complete Image Crop Tool suite inside the existing image tool platform.
 GOAL
+Provide multiple crop modes for images with a modern UX:
 
-Make UI components (cards, panels, tools) stand out more by:
+- Free crop
+- Fixed aspect ratio crop
+- Preset social media crops
 
-- changing main background to gray tone
-- keeping components white
-- improving visual hierarchy
+All processing must run fully in-browser using canvas.
+TOOLS TO CREATE
+Create separate tools OR modes inside Image Cropper:
 
-GLOBAL BACKGROUND
+1. Free Crop Tool
+2. Fixed Ratio Crop Tool
+   - 1:1 (Square)
+   - 4:3
+   - 3:4
+   - 16:9
+   - 9:16
+3. Social Media Crop Presets
+   - Instagram Post (1:1)
+   - Instagram Story (9:16)
+   - Facebook Cover (16:9)
+   - YouTube Thumbnail (16:9)
+UI LAYOUT (IMPORTANT)
+Use split layout:
 
-Update main layout:
+LEFT PANEL:
+- Image upload (single image only)
+- Crop mode selector
+- Aspect ratio selector
+- Crop controls
 
-- Replace:
-  bg-white
+RIGHT PANEL:
+- Live preview canvas
+- Cropped result preview
+- Download button
+- Download All (if multiple outputs)
+CROPPING ENGINE
+Use HTML5 Canvas or Cropper.js style logic:
 
-- With:
-  bg-gray-50 or bg-gray-100
+- Load image into canvas
+- Apply crop coordinates
+- Maintain aspect ratio when required
+- Export cropped image as Blob
 
-CONTAINER
-
-Main container:
-
-- max-w-screen-xl mx-auto
-- px-3 py-3
-
-CARDS / PANELS
-
-All tool cards, panels:
-
-- bg-white
-- border border-gray-200
-- rounded-lg
-
-Optional:
-- shadow-sm (very light)
-
-SPLIT LAYOUT PANELS
-
-LEFT / RIGHT panels:
-
-- bg-white
-- border border-gray-200
-- rounded-lg
-- p-3
-
-TOOL GRID ITEMS
-
-ToolCard:
-
-- bg-white
-- hover:bg-gray-50
-- transition
-
-CATEGORY MENU
-
-- background: transparent
-- active tab:
-  bg-white + border
-
-SEARCH BAR
-
-- bg-white
-- border border-gray-300
-- focus:ring-1
-
-TYPOGRAPHY
-
-- title: text-gray-900
-- description: text-gray-500
-
-DIVIDERS
-
+Example:
+canvas.toBlob("image/png")
+STATE MANAGEMENT
 Use:
 
-- border-gray-200
+- selectedImage
+- cropMode
+- cropArea
+- resultImage
 
-RESULT SCREEN
+States:
+"idle" | "ready" | "cropping" | "done"
+QUEUE LOGIC (if multiple crops enabled)
+If user selects multiple presets:
 
-- keep white card on gray background
-- emphasize success state
+- process sequentially (NO Promise.all)
+- show progress:
 
-VISUAL RESULT
+"Processing 2/5 crops..."
+RESULT SCREEN (REQUIRED)
+After crop completion:
 
-- Background: subtle gray
-- Components: white
-- Clean, modern, minimal
+Show:
 
-CONSTRAINTS
+✓ Crop completed
 
-- Do NOT use dark colors
-- Keep minimal aesthetic
-- Avoid heavy shadows
+- preview list of cropped images
+- original size vs cropped size
+- download buttons:
+  - Download All (ZIP)
+  - Download per image
 
+Button:
+"Crop New Image"
+VALIDATION
+- Only 1 image per session (or warn if multiple selected)
+- Reject non-image files
+- Limit file size per image:
+  max 10–15MB
+UX REQUIREMENTS
+- Drag to crop (interactive box)
+- Show crop boundaries clearly
+- Show aspect ratio lock toggle
+- Smooth UI transitions
+PERFORMANCE
+- Downscale large images (>2500px) before rendering
+- Use object URLs instead of base64
+- Release memory after processing
+REUSABLE COMPONENTS
+/components/crop/
+- CropCanvas.tsx
+- CropControls.tsx
+- AspectRatioSelector.tsx
+- CropResultPanel.tsx
+INTEGRATION
+Integrate into existing image tool system:
+
+- Add route: /tools/image-crop
+- Add to tool registry
+- Use shared ResultScreen system if available
 OUTPUT
+Return:
 
-Return updated:
-
-- layout.tsx
-- global styles (if any)
-- ToolCard
-- panels (left/right)
+1. ImageCropTool main component
+2. Crop engine logic (canvas-based)
+3. UI components listed above
+4. Example integration in tool system

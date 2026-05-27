@@ -90,23 +90,36 @@ export default function Home() {
           </div>
         ) : (
           /* Default Discovery View: Compact Categories */
-          <div className="space-y-10">
+          <div className="space-y-16">
             {categories.map((cat) => {
               const categoryTools = tools.filter((t) => t.category === cat.id);
               if (categoryTools.length === 0) return null;
 
               return (
-                <section key={cat.id} className="space-y-3">
-                  <div className="flex items-center justify-between px-1">
-                    <div className="flex items-center gap-2">
-                      <h2 className="text-xs font-bold uppercase tracking-widest text-foreground">{cat.label}</h2>
-                      <div className="h-px w-6 bg-border" />
-                      <span className="text-[10px] text-muted-foreground font-semibold">{categoryTools.length}</span>
+                <section key={cat.id} className="space-y-6">
+                  <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 px-1">
+                    <div className="space-y-1 max-w-2xl">
+                      <div className="flex items-center gap-2">
+                        <h2 className="text-sm font-black uppercase tracking-[0.15em] text-foreground">{cat.label}</h2>
+                        <span className="text-[10px] bg-muted px-1.5 py-0.5 rounded font-bold text-muted-foreground">{categoryTools.length}</span>
+                      </div>
+                      <p className="text-sm text-muted-foreground leading-relaxed">
+                        {cat.description}
+                      </p>
                     </div>
+                    <Link
+                      href={cat.href}
+                      className="text-xs font-bold text-primary hover:underline flex items-center gap-1 shrink-0 transition-all hover:gap-2"
+                    >
+                      Explore All
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                      </svg>
+                    </Link>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                    {categoryTools.slice(0, 12).map((tool) => (
+                    {categoryTools.slice(0, 8).map((tool) => (
                       <ToolCard key={tool.slug} tool={tool} />
                     ))}
                   </div>
