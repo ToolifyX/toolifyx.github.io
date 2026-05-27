@@ -37,14 +37,14 @@ export default function CategoryMenu({ activeCategory, onCategoryChange }: Categ
               className={`
                 relative flex items-center gap-2 px-4 py-2 rounded-lg text-[13px] font-bold transition-all duration-200
                 ${isActive
-                  ? 'bg-white text-gray-900 border border-gray-200 shadow-sm'
-                  : 'text-gray-500 hover:text-gray-900 hover:bg-gray-100'}
+                  ? 'bg-card text-foreground border border-border shadow-sm'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-muted'}
               `}
             >
               <span className="relative z-10">{cat.label}</span>
               <span className={`
                 text-[10px] px-1.5 py-0.5 rounded-md font-black
-                ${isActive ? 'bg-primary/10 text-primary' : 'bg-gray-100 text-gray-400'}
+                ${isActive ? 'bg-primary/10 text-primary' : 'bg-muted text-muted-foreground'}
               `}>
                 {getCount(cat.id)}
               </span>

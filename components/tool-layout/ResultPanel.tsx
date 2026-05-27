@@ -27,7 +27,7 @@ export default function ResultPanel({
   emptyMessage = "Process files to see results here"
 }: ResultPanelProps) {
   return (
-    <div className={`bg-white border border-gray-200 rounded-lg p-3 min-h-[400px] flex flex-col ${className}`}>
+    <div className={`bg-card border border-border rounded-lg p-3 min-h-[400px] flex flex-col ${className}`}>
       {isProcessing && (
         <div className="flex-1 flex flex-col items-center justify-center py-20 space-y-4">
           <div className="relative">

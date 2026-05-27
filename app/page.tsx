@@ -40,11 +40,11 @@ export default function Home() {
     <div className="space-y-12 pb-20 max-w-7xl mx-auto px-4">
       {/* Hero Section - Professional & Minimalist */}
       <div className="text-center space-y-4 pt-10 md:pt-16 max-w-3xl mx-auto">
-        <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900">
+        <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground">
           Every tool for <br />
           <span className="text-primary">everyone.</span>
         </h1>
-        <p className="text-base md:text-lg text-gray-500 leading-relaxed max-w-xl mx-auto">
+        <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-xl mx-auto">
           Fast, private, browser-native tools. Your data never leaves your device.
         </p>
 
@@ -99,9 +99,9 @@ export default function Home() {
                 <section key={cat.id} className="space-y-4">
                   <div className="flex items-center justify-between px-1">
                     <div className="flex items-center gap-2">
-                      <h2 className="text-sm font-bold uppercase tracking-widest text-gray-900">{cat.label}</h2>
-                      <div className="h-px w-8 bg-gray-200" />
-                      <span className="text-xs text-gray-400 font-medium">{categoryTools.length}</span>
+                      <h2 className="text-sm font-bold uppercase tracking-widest text-foreground">{cat.label}</h2>
+                      <div className="h-px w-8 bg-border" />
+                      <span className="text-xs text-muted-foreground font-medium">{categoryTools.length}</span>
                     </div>
                   </div>
 

@@ -10,16 +10,16 @@ interface ToolCardProps {
 export default function ToolCard({ tool }: ToolCardProps) {
   return (
     <Link href={`/tools/${tool.slug}`} title={tool.title}>
-      <div className="h-full p-4 border border-gray-200 rounded-lg bg-white shadow-sm hover:bg-gray-50 transition-all duration-200 flex flex-col group relative overflow-hidden">
+      <div className="h-full p-4 border border-border rounded-lg bg-card shadow-sm hover:bg-muted/50 transition-all duration-200 flex flex-col group relative overflow-hidden">
         <div className="flex items-start gap-4">
-          <div className="w-10 h-10 rounded-lg bg-gray-50 text-gray-600 flex items-center justify-center shrink-0 transition-all group-hover:bg-primary group-hover:text-white">
+          <div className="w-10 h-10 rounded-lg bg-muted text-muted-foreground flex items-center justify-center shrink-0 transition-all group-hover:bg-primary group-hover:text-primary-foreground">
             <DynamicIcon name={tool.icon || 'HelpCircle'} size={20} strokeWidth={2} />
           </div>
           <div className="space-y-1 min-w-0">
-            <h3 className="text-[15px] font-bold text-gray-900 leading-none tracking-tight group-hover:text-primary transition-colors">
+            <h3 className="text-[15px] font-bold text-foreground leading-none tracking-tight group-hover:text-primary transition-colors">
               {tool.title}
             </h3>
-            <p className="text-[13px] text-gray-500 leading-relaxed line-clamp-2">
+            <p className="text-[13px] text-muted-foreground leading-relaxed line-clamp-2">
               {tool.description}
             </p>
           </div>
