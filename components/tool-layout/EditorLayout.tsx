@@ -59,8 +59,8 @@ export default function EditorLayout({
           </aside>
         )}
 
-        {/* MAIN CANVAS (Primary Workspace - 70%+) */}
-        <main className="flex-1 lg:min-w-[70vw] bg-muted/20 relative overflow-hidden flex flex-col h-full">
+        {/* MAIN CANVAS (Primary Workspace - Flexible growth) */}
+        <main className="flex-1 bg-muted/20 relative overflow-hidden flex flex-col h-full min-w-0">
           <div className="flex-1 overflow-auto flex items-center justify-center p-4">
             {mainCanvas}
           </div>
@@ -68,7 +68,7 @@ export default function EditorLayout({
 
         {/* RIGHT PANEL (Secondary Options) */}
         {rightPanel && (
-          <aside className="hidden xl:flex w-[280px] border-l border-border bg-card flex-col shrink overflow-y-auto z-20">
+          <aside className="hidden lg:flex w-[360px] border-l border-border bg-card flex-col shrink-0 overflow-y-auto z-20">
             <div className="p-6 space-y-8">
               {rightPanel}
             </div>
