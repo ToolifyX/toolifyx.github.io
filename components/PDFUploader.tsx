@@ -1,37 +1,34 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { X, Upload, FileWarning, Info, CheckCircle2, AlertCircle } from 'lucide-react';
-import { getUploadLimits, UploadLimits } from '@/lib/adaptiveUpload';
+import { X, Upload, Info, CheckCircle2, AlertCircle, FileText } from 'lucide-react';
 import { validateFiles, InvalidFile } from '@/lib/fileValidation';
 
-interface ImageUploaderProps {
+interface PDFUploaderProps {
   files?: File[];
   onChange: (files: File[]) => void;
   showFileList?: boolean;
 }
 
-export default function ImageUploader({ files: externalFiles, onChange, showFileList = true }: ImageUploaderProps) {
+export default function PDFUploader({ files: externalFiles, onChange, showFileList = true }: PDFUploaderProps) {
   const [internalFiles, setInternalFiles] = useState<File[]>([]);
   const files = externalFiles || internalFiles;
 
   const [invalidFiles, setInvalidFiles] = useState<InvalidFile[]>([]);
-  const [limits, setLimits] = useState<UploadLimits | null>(null);
 
-  useEffect(() => {
-    setLimits(getUploadLimits());
-  }, []);
+  // PDF specific limits
+  const limits = {
+    maxFiles: 10,
+    maxFileSizeMB: 20,
+    totalSizeMB: 100,
+    allowedTypes: ['application/pdf', '.pdf']
+  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = Array.from(e.target.files || []);
-    if (selectedFiles.length === 0 || !limits) return;
+    if (selectedFiles.length === 0) return;
 
-    const { validFiles, invalidFiles: newInvalid } = validateFiles(selectedFiles, files, {
-        maxFiles: limits.maxFiles,
-        maxFileSizeMB: limits.maxFileSizeMB,
-        totalSizeMB: limits.totalSizeMB,
-        allowedTypes: ['image/*']
-    });
+    const { validFiles, invalidFiles: newInvalid } = validateFiles(selectedFiles, files, limits);
 
     setInvalidFiles(newInvalid);
 
@@ -64,27 +61,25 @@ export default function ImageUploader({ files: externalFiles, onChange, showFile
     return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
   };
 
-  if (!limits) return <div className="h-32 flex items-center justify-center border-2 border-dashed rounded-xl animate-pulse bg-muted" />;
-
   return (
     <div className="space-y-4 w-full">
       <div
         className="border-2 border-dashed rounded-xl p-6 transition-all flex flex-col items-center justify-center space-y-2 cursor-pointer group border-muted-foreground/20 hover:border-primary hover:bg-muted/50"
-        onClick={() => document.getElementById('file-input')?.click()}
+        onClick={() => document.getElementById('pdf-input')?.click()}
       >
         <Upload className="w-8 h-8 transition-transform group-hover:-translate-y-1 text-muted-foreground group-hover:text-primary" />
         <div className="text-center">
-          <p className="text-sm font-medium">Click to upload or drag and drop</p>
+          <p className="text-sm font-medium">Click to upload PDF files</p>
           <div className="flex items-center justify-center gap-1.5 mt-1 text-[10px] uppercase font-bold text-muted-foreground/60 tracking-wider">
             <Info className="w-3 h-3" />
-            Up to {limits.maxFiles} images • {limits.maxFileSizeMB}MB each
+            Up to {limits.maxFiles} files • {limits.maxFileSizeMB}MB each
           </div>
         </div>
         <input
-          id="file-input"
+          id="pdf-input"
           type="file"
           multiple
-          accept="image/*"
+          accept=".pdf,application/pdf"
           className="hidden"
           onChange={handleFileChange}
         />
@@ -125,13 +120,8 @@ export default function ImageUploader({ files: externalFiles, onChange, showFile
             {files.map((file, i) => (
               <div key={i} className="flex items-center justify-between p-2 bg-card border rounded-lg animate-in fade-in slide-in-from-top-1">
                 <div className="flex items-center space-x-3 min-w-0">
-                  <div className="w-8 h-8 rounded bg-muted flex items-center justify-center overflow-hidden flex-shrink-0 border">
-                     <img
-                       src={URL.createObjectURL(file)}
-                       alt="preview"
-                       className="w-full h-full object-cover"
-                       onLoad={(e) => URL.revokeObjectURL((e.target as any).src)}
-                     />
+                  <div className="w-8 h-8 rounded bg-muted flex items-center justify-center overflow-hidden flex-shrink-0 border text-primary">
+                     <FileText className="w-4 h-4" />
                   </div>
                   <div className="min-w-0">
                     <p className="text-[11px] font-bold truncate">{file.name}</p>

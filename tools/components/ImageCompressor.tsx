@@ -3,15 +3,6 @@
 /**
  * SEO Title: Adaptive Batch Image Compressor - High Performance Online Compression
  * Meta Description: Compress multiple images safely with device-aware limits. Pro-level quality control, downscaling, and ultra-fast local processing.
- *
- * FAQ 1: How does adaptive compression work?
- * Our tool detects your device's RAM and CPU power to set safe processing limits, preventing browser crashes during large batch jobs.
- *
- * FAQ 2: What is the maximum resolution?
- * Depending on your device, we safely process images up to 3000px. Larger images are automatically downscaled proportionally.
- *
- * FAQ 3: Is it safer than server-side tools?
- * Much safer. Your data never leaves your RAM, and our sequential processing queue ensures your browser remains responsive.
  */
 
 import React, { useState, useEffect } from 'react';
@@ -43,6 +34,7 @@ export default function ImageCompressor() {
     setResults([]);
 
     try {
+      // Correct processing logic using queue (sequential)
       const processedResults = await processQueue(
         files,
         {
@@ -55,7 +47,7 @@ export default function ImageCompressor() {
       setResults(processedResults);
     } catch (error) {
       console.error("Batch processing failed:", error);
-      alert("An error occurred during compression. Some files might be too large for your browser to process.");
+      alert("An error occurred during compression.");
     } finally {
       setIsProcessing(false);
       setProgress({ current: 0, total: 0 });
@@ -121,12 +113,12 @@ export default function ImageCompressor() {
             {isProcessing ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin" />
-                Processing {progress.current}/{progress.total}...
+                Processing {progress.current} of {progress.total} files...
               </>
             ) : (
               <>
                 <Zap className="w-4 h-4 fill-current" />
-                Compress {files.length} Images
+                Process {files.length} files
               </>
             )}
           </button>
