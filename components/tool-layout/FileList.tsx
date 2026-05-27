@@ -22,18 +22,21 @@ export default function FileList({ files, onRemove, onClear, maxFiles }: FileLis
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between px-1">
-        <span className="text-xs font-black uppercase tracking-[0.2em] text-black dark:text-white underline decoration-4 underline-offset-4">
-          QUEUE ({files.length}{maxFiles ? `/${maxFiles}` : ''})
+        <span className="text-[11px] font-bold uppercase tracking-[0.15em] text-muted-foreground/80">
+          Selected Files ({files.length}{maxFiles ? `/${maxFiles}` : ''})
         </span>
-        <button onClick={onClear} className="text-xs font-black uppercase text-destructive hover:underline tracking-tighter">
-          CLEAR EVERYTHING
+        <button
+          onClick={onClear}
+          className="text-[11px] font-bold uppercase tracking-wider text-destructive hover:underline"
+        >
+          Clear All
         </button>
       </div>
-      <div className="grid gap-3 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+      <div className="grid gap-2 max-h-[400px] overflow-y-auto pr-1 no-scrollbar">
         {files.map((file, i) => (
-          <div key={i} className="flex items-center justify-between p-4 bg-white dark:bg-black border-4 border-black dark:border-white rounded-2xl shadow-neo group hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all animate-in fade-in slide-in-from-top-1">
-            <div className="flex items-center space-x-4 min-w-0">
-              <div className="w-16 h-16 rounded-xl border-4 border-black dark:border-white bg-muted flex items-center justify-center overflow-hidden flex-shrink-0 shadow-neo-sm">
+          <div key={i} className="flex items-center justify-between p-3 bg-muted/30 border rounded-xl group transition-all hover:bg-muted/50 animate-in fade-in slide-in-from-top-1">
+            <div className="flex items-center space-x-3 min-w-0">
+              <div className="w-12 h-12 rounded-lg border bg-background flex items-center justify-center overflow-hidden flex-shrink-0 shadow-sm">
                 {file.type.startsWith('image/') ? (
                   <img
                     src={URL.createObjectURL(file)}
@@ -42,19 +45,19 @@ export default function FileList({ files, onRemove, onClear, maxFiles }: FileLis
                     onLoad={(e) => URL.revokeObjectURL((e.target as any).src)}
                   />
                 ) : (
-                  <FileText className="w-8 h-8 text-black dark:text-white stroke-[3]" />
+                  <FileText className="w-6 h-6 text-muted-foreground" />
                 )}
               </div>
-              <div className="min-w-0 space-y-1">
-                <p className="text-base font-black truncate uppercase tracking-tight">{file.name}</p>
-                <p className="text-xs text-black/50 dark:text-white/50 uppercase font-black tracking-widest">{formatSize(file.size)}</p>
+              <div className="min-w-0 space-y-0.5">
+                <p className="text-[14px] font-semibold truncate leading-none">{file.name}</p>
+                <p className="text-[12px] text-muted-foreground font-medium">{formatSize(file.size)}</p>
               </div>
             </div>
             <button
               onClick={() => onRemove(i)}
-              className="p-2 rounded-lg hover:bg-destructive hover:text-white transition-all text-muted-foreground"
+              className="p-2 rounded-lg hover:bg-destructive/10 hover:text-destructive transition-colors text-muted-foreground"
             >
-              <X className="w-5 h-5" />
+              <X className="w-4 h-4" />
             </button>
           </div>
         ))}

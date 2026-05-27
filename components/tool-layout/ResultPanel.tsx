@@ -27,13 +27,25 @@ export default function ResultPanel({
   emptyMessage = "Process files to see results here"
 }: ResultPanelProps) {
   return (
-    <div className={`card border rounded-lg p-4 bg-card shadow-sm min-h-[400px] ${className}`}>
+    <div className={`min-h-[400px] flex flex-col ${className}`}>
       {isProcessing && (
-        <div className="space-y-4 flex flex-col items-center justify-center h-full py-20">
-          <Loader2 className="w-10 h-10 animate-spin text-primary" />
-          <p className="text-sm font-bold animate-pulse">Processing your files...</p>
+        <div className="flex-1 flex flex-col items-center justify-center py-20 space-y-4">
+          <div className="relative">
+            <Loader2 className="w-12 h-12 animate-spin text-primary" />
+            <div className="absolute inset-0 flex items-center justify-center">
+               <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+            </div>
+          </div>
+          <div className="text-center space-y-1">
+            <p className="text-base font-semibold">Processing your files...</p>
+            {progress && (
+              <p className="text-xs text-muted-foreground font-medium">
+                {progress.current} of {progress.total}
+              </p>
+            )}
+          </div>
           {progress && (
-            <div className="w-full max-w-xs bg-muted rounded-full h-1 overflow-hidden">
+            <div className="w-full max-w-[200px] bg-muted rounded-full h-1 overflow-hidden">
               <div
                 className="bg-primary h-full transition-all duration-300"
                 style={{ width: `${(progress.current / progress.total) * 100}%` }}
@@ -44,25 +56,24 @@ export default function ResultPanel({
       )}
 
       {!isProcessing && results.length === 0 && (
-        <div className="flex flex-col items-center justify-center h-full py-20 text-center space-y-2 opacity-30">
-          <Zap className="w-12 h-12" />
-          <p className="text-sm font-medium">{emptyMessage}</p>
+        <div className="flex-1 flex flex-col items-center justify-center py-20 text-center space-y-3 opacity-20">
+          <div className="w-16 h-16 rounded-full border-2 border-dashed flex items-center justify-center">
+            <Zap className="w-8 h-8" />
+          </div>
+          <p className="text-[14px] font-medium max-w-[200px]">{emptyMessage}</p>
         </div>
       )}
 
       {results.length > 0 && !isProcessing && (
-        <ResultList
-          results={results}
-          onDownload={handleDownload} // Wait, I should use the prop
-          onDownloadAll={onDownloadAll}
-          isZipping={isZipping}
-        />
+        <div className="animate-in fade-in duration-500">
+           <ResultList
+             results={results}
+             onDownload={onDownload}
+             onDownloadAll={onDownloadAll}
+             isZipping={isZipping}
+           />
+        </div>
       )}
     </div>
   );
-
-  // Fix: onDownload wasn't being used correctly in the JSX above
-  function handleDownload(res: ProcessedResult) {
-    onDownload(res);
-  }
 }

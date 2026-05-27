@@ -109,21 +109,21 @@ export default function ImageConvertBase({ fromFormat, toFormat, toExtension, ti
       />
 
       {files.length > 0 && status !== 'done' && (
-        <div className="card border rounded-lg p-4 bg-card shadow-sm space-y-4 animate-in fade-in duration-300">
+        <div className="border rounded-xl p-4 bg-muted/20 space-y-4 animate-in fade-in duration-300">
           <button
             onClick={handleProcessAll}
             disabled={status === 'processing'}
-            className="bg-black text-white dark:bg-white dark:text-black px-4 py-3 rounded-xl w-full font-black text-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.01] active:scale-[0.98] disabled:opacity-50 shadow-lg"
+            className="bg-primary text-primary-foreground px-6 py-4 rounded-xl w-full font-bold text-base flex items-center justify-center gap-2 transition-all hover:brightness-105 active:scale-[0.98] disabled:opacity-50"
           >
             {status === 'processing' ? (
               <>
-                <Loader2 className="w-4 h-4 animate-spin" />
+                <Loader2 className="w-5 h-5 animate-spin" />
                 Converting {progress.current} of {progress.total}...
               </>
             ) : (
               <>
-                <Zap className="w-4 h-4 fill-current" />
-                Convert {files.length} to {toExtension.toUpperCase()}
+                <Zap className="w-5 h-5 fill-current" />
+                Convert to {toExtension.toUpperCase()}
               </>
             )}
           </button>

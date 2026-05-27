@@ -24,16 +24,16 @@ export default function ResultList({
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
       <div className="flex items-center justify-between px-1">
-        <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+        <h3 className="text-[11px] font-bold uppercase tracking-[0.15em] text-muted-foreground/80">
           {title} ({results.length})
         </h3>
         {results.length > 1 && (
           <button
             onClick={onDownloadAll}
             disabled={isZipping}
-            className="text-xs font-bold bg-primary/10 text-primary px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-primary hover:text-white transition-all transition-colors"
+            className="text-[11px] font-bold uppercase tracking-wider text-primary hover:underline flex items-center gap-1.5"
           >
-            {isZipping ? <Loader2 className="w-4 h-4 animate-spin" /> : <Archive className="w-4 h-4" />}
+            {isZipping ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Archive className="w-3.5 h-3.5" />}
             Download All
           </button>
         )}
@@ -44,25 +44,25 @@ export default function ResultList({
           const isReduced = res.compressedSize < res.originalSize;
 
           return (
-            <div key={i} className="flex items-center justify-between p-4 bg-muted/30 border rounded-2xl group transition-all hover:bg-muted/50 animate-in fade-in slide-in-from-top-1">
-              <div className="flex items-center space-x-4 min-w-0">
+            <div key={i} className="flex items-center justify-between p-3 bg-muted/30 border rounded-xl group transition-all hover:bg-muted/50 animate-in fade-in slide-in-from-top-1">
+              <div className="flex items-center space-x-3 min-w-0">
                 <div className="relative flex-shrink-0">
                   <img
                     src={res.url}
                     alt="result"
-                    className="w-16 h-16 rounded-xl object-cover border bg-card shadow-sm"
+                    className="w-12 h-12 rounded-lg object-cover border bg-background shadow-sm"
                   />
-                  <div className="absolute -top-1.5 -right-1.5 p-1 bg-green-500 rounded-full border-2 border-background">
-                    <CheckCircle2 className="w-3 h-3 text-white" />
+                  <div className="absolute -top-1 -right-1 p-0.5 bg-green-500 rounded-full border-2 border-background">
+                    <CheckCircle2 className="w-2.5 h-2.5 text-white" />
                   </div>
                 </div>
-                <div className="min-w-0 space-y-1">
-                  <p className="text-base font-semibold truncate">{res.name}</p>
-                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                <div className="min-w-0 space-y-0.5">
+                  <p className="text-[14px] font-semibold truncate leading-none">{res.name}</p>
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5">
                     {isReduced && (
-                      <span className="text-[10px] font-bold bg-green-500/10 text-green-600 px-2 py-0.5 rounded-full uppercase">Saved {savings}%</span>
+                      <span className="text-[10px] font-bold text-green-600 uppercase tracking-tight">Saved {savings}%</span>
                     )}
-                    <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
+                    <div className="flex items-center gap-2 text-[12px] font-medium text-muted-foreground">
                       <span>{(res.compressedSize / 1024).toFixed(1)} KB</span>
                       <span className="opacity-40 line-through">{(res.originalSize / 1024).toFixed(1)} KB</span>
                     </div>
@@ -71,10 +71,10 @@ export default function ResultList({
               </div>
               <button
                 onClick={() => onDownload(res)}
-                className="p-3 rounded-xl bg-background border shadow-sm hover:shadow-md hover:border-primary transition-all text-primary"
+                className="p-2.5 rounded-lg bg-background border shadow-sm hover:shadow-md hover:border-primary/50 transition-all text-primary"
                 title="Download Result"
               >
-                <Download className="w-5 h-5" />
+                <Download className="w-4 h-4" />
               </button>
             </div>
           );

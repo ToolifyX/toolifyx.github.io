@@ -29,9 +29,11 @@ export default function RootLayout({
           <main className="container mx-auto px-2 md:px-4 py-4 md:py-6">
             {children}
           </main>
-          <footer className="border-t py-4 mt-auto">
-            <div className="container mx-auto px-4 text-center text-muted-foreground text-[10px] uppercase font-bold tracking-widest">
-              © {new Date().getFullYear()} ToolifyX. All processing is local.
+          <footer className="border-t py-8 mt-auto">
+            <div className="container mx-auto px-4 text-center">
+              <p className="text-[12px] text-muted-foreground font-medium tracking-tight uppercase">
+                © {new Date().getFullYear()} ToolifyX • Private & Secure • All processing is local
+              </p>
             </div>
           </footer>
         </ThemeProvider>

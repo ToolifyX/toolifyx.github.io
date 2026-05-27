@@ -13,7 +13,7 @@ interface UploadPanelProps {
 
 export default function UploadPanel({ files, onChange, maxFiles, className = "" }: UploadPanelProps) {
   return (
-    <div className={`border rounded-[2rem] p-6 bg-card shadow-sm shadow-black/5 space-y-8 ${className}`}>
+    <div className={`space-y-6 ${className}`}>
       <ImageUploader files={files} onChange={onChange} showFileList={false} />
       <FileList
         files={files}
