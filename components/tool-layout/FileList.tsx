@@ -20,20 +20,20 @@ export default function FileList({ files, onRemove, onClear, maxFiles }: FileLis
   };
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-4">
       <div className="flex items-center justify-between px-1">
-        <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
-          Queue ({files.length}{maxFiles ? `/${maxFiles}` : ''})
+        <span className="text-xs font-black uppercase tracking-[0.2em] text-black dark:text-white underline decoration-4 underline-offset-4">
+          QUEUE ({files.length}{maxFiles ? `/${maxFiles}` : ''})
         </span>
-        <button onClick={onClear} className="text-[10px] uppercase font-bold text-destructive hover:underline">
-          Clear All
+        <button onClick={onClear} className="text-xs font-black uppercase text-destructive hover:underline tracking-tighter">
+          CLEAR EVERYTHING
         </button>
       </div>
-      <div className="grid gap-1.5 max-h-[300px] overflow-y-auto pr-1 custom-scrollbar">
+      <div className="grid gap-3 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
         {files.map((file, i) => (
-          <div key={i} className="flex items-center justify-between p-2 bg-card border rounded-lg group animate-in fade-in slide-in-from-top-1">
-            <div className="flex items-center space-x-3 min-w-0">
-              <div className="w-8 h-8 rounded bg-muted flex items-center justify-center overflow-hidden flex-shrink-0 border">
+          <div key={i} className="flex items-center justify-between p-4 bg-white dark:bg-black border-4 border-black dark:border-white rounded-2xl shadow-neo group hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all animate-in fade-in slide-in-from-top-1">
+            <div className="flex items-center space-x-4 min-w-0">
+              <div className="w-16 h-16 rounded-xl border-4 border-black dark:border-white bg-muted flex items-center justify-center overflow-hidden flex-shrink-0 shadow-neo-sm">
                 {file.type.startsWith('image/') ? (
                   <img
                     src={URL.createObjectURL(file)}
@@ -42,19 +42,19 @@ export default function FileList({ files, onRemove, onClear, maxFiles }: FileLis
                     onLoad={(e) => URL.revokeObjectURL((e.target as any).src)}
                   />
                 ) : (
-                  <FileText className="w-4 h-4 text-muted-foreground" />
+                  <FileText className="w-8 h-8 text-black dark:text-white stroke-[3]" />
                 )}
               </div>
-              <div className="min-w-0">
-                <p className="text-[11px] font-bold truncate">{file.name}</p>
-                <p className="text-[9px] text-muted-foreground uppercase font-medium">{formatSize(file.size)}</p>
+              <div className="min-w-0 space-y-1">
+                <p className="text-base font-black truncate uppercase tracking-tight">{file.name}</p>
+                <p className="text-xs text-black/50 dark:text-white/50 uppercase font-black tracking-widest">{formatSize(file.size)}</p>
               </div>
             </div>
             <button
               onClick={() => onRemove(i)}
-              className="p-1.5 rounded-full hover:bg-muted text-muted-foreground hover:text-destructive transition-colors"
+              className="p-3 rounded-xl border-4 border-black dark:border-white bg-white dark:bg-black hover:bg-destructive hover:text-white transition-all shadow-neo-sm hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5"
             >
-              <X className="w-3.5 h-3.5" />
+              <X className="w-6 h-6 stroke-[4]" />
             </button>
           </div>
         ))}

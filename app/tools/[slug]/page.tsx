@@ -90,19 +90,21 @@ export default function ToolPage({ params }: Props) {
         </ol>
       </nav>
 
-      {/* Header - Larger */}
-      <div className="flex items-center space-x-4 py-4">
-        <div className="p-4 rounded-2xl bg-primary/10 text-primary shadow-sm">
-          <DynamicIcon name={tool.icon || 'HelpCircle'} size={40} strokeWidth={2.5} />
+      {/* Header - Ultra Large Retro */}
+      <div className="flex flex-col md:flex-row items-center md:items-end gap-8 py-12 md:py-24 border-b-8 border-black dark:border-white mb-16">
+        <div className="p-10 rounded-2xl border-8 border-black dark:border-white bg-primary text-primary-foreground shadow-neo-xl rotate-3">
+          <DynamicIcon name={tool.icon || 'HelpCircle'} size={100} strokeWidth={3} />
         </div>
-        <div className="space-y-1">
-          <h1 className="text-3xl md:text-5xl font-black tracking-tight leading-none">{tool.title}</h1>
-          <p className="text-base md:text-lg text-muted-foreground font-medium">{tool.description}</p>
+        <div className="space-y-4 text-center md:text-left flex-1">
+          <h1 className="text-6xl md:text-[7rem] font-black tracking-tighter leading-none uppercase italic">{tool.title}</h1>
+          <p className="text-2xl md:text-4xl text-black dark:text-white font-black tracking-tight uppercase bg-yellow-400 dark:bg-yellow-600 inline-block px-4 py-1 shadow-neo">
+            {tool.description}
+          </p>
         </div>
       </div>
 
       {/* Tool Main Area */}
-      <div className="bg-card border-2 rounded-2xl overflow-hidden shadow-md">
+      <div className="bg-white dark:bg-black border-8 border-black dark:border-white rounded-3xl overflow-hidden shadow-neo-xl mb-20">
         <div className="px-3 py-1.5 bg-muted/50 border-b flex items-center justify-between">
           <div className="flex space-x-1">
             <div className="w-2.5 h-2.5 rounded-full bg-red-400/20" />

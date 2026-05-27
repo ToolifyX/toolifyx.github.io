@@ -67,17 +67,19 @@ export default function ImageUploader({ files: externalFiles, onChange, showFile
   if (!limits) return <div className="h-32 flex items-center justify-center border-2 border-dashed rounded-xl animate-pulse bg-muted" />;
 
   return (
-    <div className="space-y-4 w-full">
+    <div className="space-y-6 w-full">
       <div
-        className="border-2 border-dashed rounded-xl p-6 transition-all flex flex-col items-center justify-center space-y-2 cursor-pointer group border-muted-foreground/20 hover:border-primary hover:bg-muted/50"
+        className="border-8 border-dashed rounded-[2rem] p-12 transition-all flex flex-col items-center justify-center space-y-4 cursor-pointer group border-black dark:border-white hover:bg-primary/5 hover:shadow-neo-lg"
         onClick={() => document.getElementById('file-input')?.click()}
       >
-        <Upload className="w-8 h-8 transition-transform group-hover:-translate-y-1 text-muted-foreground group-hover:text-primary" />
-        <div className="text-center">
-          <p className="text-sm font-medium">Click to upload or drag and drop</p>
-          <div className="flex items-center justify-center gap-1.5 mt-1 text-[10px] uppercase font-bold text-muted-foreground/60 tracking-wider">
-            <Info className="w-3 h-3" />
-            Up to {limits.maxFiles} images • {limits.maxFileSizeMB}MB each
+        <div className="p-6 rounded-2xl border-4 border-black dark:border-white bg-white dark:bg-black group-hover:bg-primary group-hover:text-white transition-all shadow-neo group-hover:shadow-none group-hover:translate-x-1 group-hover:translate-y-1">
+          <Upload className="w-12 h-12 stroke-[3]" />
+        </div>
+        <div className="text-center space-y-2">
+          <p className="text-2xl font-black uppercase tracking-tighter">CLICK TO UPLOAD OR DRAG</p>
+          <div className="flex items-center justify-center gap-2 text-xs font-black uppercase tracking-widest bg-black text-white dark:bg-white dark:text-black px-4 py-1 rounded shadow-neo-sm">
+            <Info className="w-4 h-4" />
+            MAX {limits.maxFiles} FILES • {limits.maxFileSizeMB}MB EACH
           </div>
         </div>
         <input

@@ -20,47 +20,47 @@ export default function ResultScreen({
   onDownload,
   onDownloadAll,
   isZipping = false,
-  title = "Processing Complete"
+  title = "DONE."
 }: ResultScreenProps) {
   return (
-    <div className="space-y-6 animate-in fade-in zoom-in-95 duration-500">
-      <div className="text-center space-y-2 py-4">
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600 mb-2">
-          <CheckCircle2 className="w-10 h-10" />
+    <div className="space-y-10 animate-in fade-in slide-in-from-bottom-10 duration-500 py-10">
+      <div className="text-center space-y-4">
+        <div className="inline-flex items-center justify-center w-24 h-24 rounded-2xl border-4 border-black dark:border-white bg-green-400 dark:bg-green-600 shadow-neo-lg -rotate-6">
+          <CheckCircle2 className="w-14 h-14 text-black dark:text-white" />
         </div>
-        <h2 className="text-2xl font-black tracking-tight">{title}</h2>
-        <p className="text-muted-foreground text-sm">
-          Successfully processed {results.length} {results.length === 1 ? 'file' : 'files'}.
+        <h2 className="text-5xl md:text-7xl font-black tracking-tighter uppercase italic underline decoration-8 underline-offset-8">{title}</h2>
+        <p className="text-xl md:text-2xl font-black uppercase tracking-tight">
+          SUCCESSFULLY PROCESSED {results.length} {results.length === 1 ? 'FILE' : 'FILES'}.
         </p>
       </div>
 
-      <div className="card border rounded-2xl p-4 bg-card shadow-sm">
+      <div className="border-8 border-black dark:border-white rounded-[2rem] p-8 bg-white dark:bg-black shadow-neo-xl">
         <ResultList
           results={results}
           onDownload={onDownload}
           onDownloadAll={onDownloadAll}
           isZipping={isZipping}
-          title="Processed Files"
+          title="THE GOODS"
         />
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-3 pt-4">
+      <div className="flex flex-col sm:flex-row gap-6 pt-6">
         <button
           onClick={onReset}
-          className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl border-2 border-muted-foreground/10 font-bold hover:bg-muted transition-all active:scale-95"
+          className="flex-1 inline-flex items-center justify-center gap-4 px-10 py-6 rounded-2xl border-4 border-black dark:border-white bg-white dark:bg-black font-black text-xl uppercase tracking-tighter shadow-neo hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all"
         >
-          <RotateCcw className="w-4 h-4" />
-          Process New Files
+          <RotateCcw className="w-6 h-6 stroke-[3]" />
+          NEW FILES
         </button>
 
         {results.length > 1 && (
            <button
              onClick={onDownloadAll}
              disabled={isZipping}
-             className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-black text-white dark:bg-white dark:text-black font-bold hover:opacity-90 transition-all active:scale-95 disabled:opacity-50"
+             className="flex-1 inline-flex items-center justify-center gap-4 px-10 py-6 rounded-2xl border-4 border-black dark:border-white bg-primary text-primary-foreground font-black text-xl uppercase tracking-tighter shadow-neo hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all disabled:opacity-50"
            >
-             {isZipping ? <Loader2 className="w-4 h-4 animate-spin" /> : <Archive className="w-4 h-4" />}
-             Download All (.ZIP)
+             {isZipping ? <Loader2 className="w-6 h-6 animate-spin" /> : <Archive className="w-6 h-6 stroke-[3]" />}
+             GET EVERYTHING (.ZIP)
            </button>
         )}
       </div>
