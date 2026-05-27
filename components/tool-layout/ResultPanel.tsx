@@ -13,7 +13,6 @@ interface ResultPanelProps {
   onDownloadAll: () => void;
   isZipping?: boolean;
   className?: string;
-  emptyMessage?: string;
 }
 
 export default function ResultPanel({
@@ -23,8 +22,7 @@ export default function ResultPanel({
   onDownload,
   onDownloadAll,
   isZipping = false,
-  className = "",
-  emptyMessage = "Process files to see results here"
+  className = ""
 }: ResultPanelProps) {
   return (
     <div className={`bg-card border border-border rounded-lg p-3 min-h-[400px] flex flex-col ${className}`}>
@@ -52,15 +50,6 @@ export default function ResultPanel({
               />
             </div>
           )}
-        </div>
-      )}
-
-      {!isProcessing && results.length === 0 && (
-        <div className="flex-1 flex flex-col items-center justify-center py-20 text-center space-y-3 opacity-20">
-          <div className="w-16 h-16 rounded-full border-2 border-dashed flex items-center justify-center">
-            <Zap className="w-8 h-8" />
-          </div>
-          <p className="text-[14px] font-medium max-w-[200px]">{emptyMessage}</p>
         </div>
       )}
 

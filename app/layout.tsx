@@ -7,7 +7,7 @@ import { ThemeProvider } from '@/components/ThemeProvider';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'ToolifyX - Scalable Tool Platform',
+  title: 'ToolifyX - Every tool for everyone',
   description: '50+ browser-based tools for developers and creators.',
 };
 

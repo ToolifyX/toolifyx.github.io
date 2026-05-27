@@ -2,16 +2,14 @@
 
 import React from 'react';
 import ImageConvertBase from '@/components/tool-layout/ImageConvertBase';
-import { Tool } from '@/tools/types';
 
-export default function JpgToWebp({ tool }: { tool?: Tool }) {
+export default function ConvertToWebp() {
   return (
     <ImageConvertBase
-      fromFormat="image/jpeg"
+      fromFormat="image/*"
       toFormat="image/webp"
       toExtension="webp"
-      title="JPG to WebP Converter"
-      tool={tool}
+      title="Convert to WebP"
     />
   );
 }

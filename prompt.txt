@@ -1,87 +1,126 @@
-Refactor ALL image tools to enforce a strict layout rule:
-CRITICAL UX RULE
+Build a **professional Image Resizer tool** inspired by iLoveIMG, fully integrated into ToolifyX, with a split layout where the **LEFT panel shows multiple image previews generated from the right-side configuration**.
+🎯 Goal
 
-The IMAGE WORKSPACE (canvas / preview / crop / editor area)
-MUST ALWAYS occupy at least 70% of screen width on desktop.
-GLOBAL LAYOUT CONSTRAINT
+Create a browser-based Image Resizer that supports:
 
-DESKTOP LAYOUT:----------------------
-| LEFT TOOL PANEL |   IMAGE WORKSPACE (70%+)        |
-| (max 20%)       |   (main focus area)             |
-|                 |                                 |----------------------
-| RIGHT PANEL (optional, max 15–20%)                |----------------------
-IMPLEMENTATION REQUIREMENTS
+* Percentage-based resizing
+* Exact dimension resizing (width/height)
+* Batch-style preview system
+* Real-time preview generation based on selected settings
+🖥 Layout (UPDATED — IMPORTANT)
 
-1. MAIN CANVAS AREA
+#LEFT (70–80%) — Preview Workspace (PRIMARY)
 
-Apply:
+This area is NOT a single image preview anymore.
 
-- flex-grow: 1
-- width: 70vw minimum
-- max-width: 80vw
-- height: 100vh minus header
+It must display a **LIST OF IMAGE PREVIEWS** generated dynamically from the current configuration in the right panel.
 
-OR Tailwind:
+Each item includes:
 
-className="
-  flex-1
-  min-w-[70vw]
-  max-w-[80vw]
-  h-[calc(100vh-64px)]
-"
-2. PANELS MUST BE SECONDARY
+* Original image thumbnail
+* Resized preview result
+* Resolution info (original → new size)
+* Visual comparison (before/after optional)
+* Loading real-time updates when config changes
 
-LEFT PANEL:
-- max width: 240px
-- shrinkable
-- overflow-y scroll
+👉 Behavior:
 
-RIGHT PANEL:
-- max width: 280px
-- optional / collapsible
-3. REMOVE SMALL CANVAS PROBLEM
+* Every change in right panel immediately updates ALL previews
+* Supports multiple uploaded images (batch mode)
+* Scrollable grid layout (responsive)
+#RIGHT (20–30%) — Controls Panel (SECONDARY)
 
-DO NOT:
+Compact configuration panel controlling all previews in LEFT.
+⚙️ Resize Modes
 
-- wrap canvas inside small card
-- restrict width with container max-w
-- center inside narrow div
-4. IMAGE WORKSPACE RULE
+#1. Percentage Resize Mode
 
-Inside workspace:
+* Slider or numeric input (%)
+* Example: 25%, 50%, 75%, 100%, 150%
+* Applies to ALL images in preview list
+* Live update across all items
+#2. Dimension Resize Mode
 
-- canvas MUST expand full available space
-- image MUST scale to fit container
-- maintain aspect ratio
-- center image
-5. CROPPER / EDITOR FIX
+* Inputs:
 
-Crop box must scale relative to workspace size:
-- no fixed small container crop area
-- use percentage-based sizing
-6. RESPONSIVE RULE
+  * Width (px)
+  * Height (px)
 
-MOBILE:
-- workspace becomes full width (100%)
-- panels collapse into drawers
-7. APPLY TO ALL IMAGE TOOLS
+#Options:
 
-- Image Cropper
-- Image Editor
-- Image Resizer
-- Image Compressor preview
-- Thumbnail Generator preview
-8. TOP PRIORITY FIX
+* ☑ Maintain aspect ratio
 
-Fix any layout that causes:
+  * Lock ratio when modifying width or height
+* ☑ Do not enlarge if smaller
 
-- canvas < 60% width ❌
-- image appears "small in box" ❌
-OUTPUT
+  * Prevent upscaling beyond original image size
+🧠 Resize Behavior Rules (GLOBAL)
 
-Return:
+* All settings apply to **entire image list**
+* LEFT panel always reflects current configuration state
+* Changes in RIGHT panel instantly re-render all previews
+* No manual refresh required
+🧩 Functional Requirements
 
-1. SharedEditorLayout.tsx (updated)
-2. CSS/Tailwind layout fix
-3. Updated Cropper page example
-4. Updated Editor page example
+#Image Input
+
+* Drag & drop multiple images
+* File picker upload (multi-select supported)
+* Supported formats: JPG, PNG, WEBP, HEIC
+* Immediately populate LEFT preview list
+#Preview System (LEFT PANEL CORE)
+
+Each image item must show:
+
+* Original image
+* Resized result (live computed)
+* Before/after comparison toggle (optional)
+* File size estimate (optional)
+* Dimensions (original → output)
+
+Layout style:
+
+* Grid (desktop)
+* Single column (mobile)
+* Smooth lazy rendering for performance
+#Resize Engine
+
+* Canvas-based processing
+* Real-time batch processing
+* Optimized for multiple images (10–50+ files)
+* No UI lag when updating config
+#Export System
+
+* Export:
+
+  * Single image download
+  * Batch download (ZIP)
+* Formats:
+
+  * PNG (default)
+  * JPG (quality slider 0–100)
+🎨 UI/UX Requirements
+
+* LEFT panel = dynamic preview gallery (primary workspace)
+* RIGHT panel = control center (global settings)
+* Modern SaaS UI (iLoveIMG + Figma-like batch tool style)
+* Smooth real-time updates
+* Clean grid layout, no clutter
+* Dark mode support
+🧱 Technical Requirements
+
+* Fully client-side (no backend)
+* Canvas API / Web image processing
+* Efficient batch processing (worker recommended)
+* Modular structure:
+
+  * `ResizeGallery.tsx` (LEFT preview grid)
+  * `ResizeControls.tsx` (RIGHT panel)
+  * `useBatchResizeEngine.ts`
+  * `resizeUtils.ts`
+⭐ UX PRINCIPLE (CRITICAL)
+
+* RIGHT panel controls everything
+* LEFT panel is a **live batch preview system**
+* Every config change = instant update of all images
+* Must feel like a professional batch image processing tool (iLoveIMG level or better)

@@ -27,7 +27,7 @@ export default function RegexTester() {
     if (!pattern) return [];
     try {
       const regex = new RegExp(pattern, flags);
-      const results = [...testString.matchAll(regex)];
+      const results = Array.from(testString.matchAll(regex));
       return results;
     } catch (e: any) {
       setError(e.message);

@@ -7,13 +7,11 @@
 import React, { useState } from 'react';
 import { PDFDocument } from 'pdf-lib';
 import { downloadFile } from '@/lib/utils';
-import { Loader2, Shrink, FileText, X, Zap } from 'lucide-react';
-import EditorLayout from '@/components/tool-layout/EditorLayout';
+import { Loader2, Shrink, FileText, X } from 'lucide-react';
 import ResultScreen from '@/components/tool-layout/ResultScreen';
 import ResultPanel from '@/components/tool-layout/ResultPanel';
-import { Tool } from '@/tools/types';
 
-export default function PdfCompressTool({ tool }: { tool?: Tool }) {
+export default function PdfCompressTool() {
   const [file, setFile] = useState<File | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [result, setResult] = useState<{ blob: Blob, name: string, originalSize: number, compressedSize: number, url: string } | null>(null);
@@ -74,8 +72,8 @@ export default function PdfCompressTool({ tool }: { tool?: Tool }) {
     );
   }
 
-  const leftPanel = (
-    <div className="space-y-4">
+  return (
+    <div className="max-w-3xl mx-auto space-y-4">
       <div className="card border rounded-lg p-4 bg-card shadow-sm space-y-4">
         {!file ? (
           <div
@@ -109,58 +107,15 @@ export default function PdfCompressTool({ tool }: { tool?: Tool }) {
           Compress PDF
         </button>
       )}
-    </div>
-  );
 
-  const rightPanel = (
-    <ResultPanel
-      isProcessing={isProcessing}
-      results={[]}
-      onDownload={() => {}}
-      onDownloadAll={() => {}}
-      emptyMessage="Compressed PDF will appear here"
-    />
-  );
-
-  const mainCanvas = (
-    <div className="w-full h-full flex items-center justify-center p-8">
-      {!file ? (
-        <div
-          className="w-full max-w-lg border-2 border-dashed border-border rounded-3xl p-16 text-center space-y-6 hover:border-primary transition-all cursor-pointer bg-card/50 hover:bg-card group"
-          onClick={() => document.getElementById('compress-input')?.click()}
-        >
-          <div className="w-20 h-20 bg-primary/10 text-primary rounded-3xl flex items-center justify-center mx-auto transition-transform group-hover:scale-110 group-hover:rotate-3">
-             <FileText className="w-10 h-10" />
-          </div>
-          <div className="space-y-2">
-            <h4 className="text-xl font-bold">Select PDF to compress</h4>
-            <p className="text-sm text-muted-foreground font-medium">Reduce file size while preserving quality</p>
-          </div>
-          <input id="compress-input" type="file" accept=".pdf" className="hidden" onChange={(e) => setFile(e.target.files?.[0] || null)} />
-        </div>
-      ) : (
-        <div className="flex flex-col items-center gap-6 animate-in fade-in zoom-in-95">
-           <div className="w-32 h-32 bg-primary/5 rounded-2xl flex items-center justify-center border border-primary/10">
-              <FileText className="w-16 h-16 text-primary" />
-           </div>
-           <div className="text-center space-y-1">
-              <p className="text-sm font-bold uppercase tracking-tight">{file.name}</p>
-              <p className="text-xs text-muted-foreground font-medium uppercase">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
-           </div>
-        </div>
+      {isProcessing && (
+        <ResultPanel
+          isProcessing={isProcessing}
+          results={[]}
+          onDownload={() => {}}
+          onDownloadAll={() => {}}
+        />
       )}
     </div>
-  );
-
-  return (
-    <EditorLayout
-      toolName={tool?.title || "PDF Compressor"}
-      toolIcon={tool?.icon}
-      fileName={file?.name}
-      leftPanel={leftPanel}
-      mainCanvas={mainCanvas}
-      rightPanel={rightPanel}
-      onDownload={result ? () => downloadFile(result.blob, result.name) : undefined}
-    />
   );
 }

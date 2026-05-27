@@ -5,3 +5,4 @@
 /package-lock.json
 /tools/registry.tsx
 /tsconfig.tsbuildinfo
+/out/*

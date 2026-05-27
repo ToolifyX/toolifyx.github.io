@@ -1,227 +1,197 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
-import { downloadFile } from '@/lib/utils';
-import { processQueue, ProcessedResult } from '@/lib/imagePipeline';
-import { getUploadLimits, UploadLimits } from '@/lib/adaptiveUpload';
+/**
+ * SEO Title: Professional Image Resizer - Resize Multiple Images Online
+ * Meta Description: Resize your images to any dimension or percentage instantly. Bulk image resizing with real-time preview. 100% free and private.
+ */
+
+import React, { useState, useCallback, useEffect } from 'react';
+import ImageUploader from '@/components/ImageUploader';
+import ResizeGallery from './ImageResizerTool/ResizeGallery';
+import ResizeControls from './ImageResizerTool/ResizeControls';
+import { useBatchResizeEngine, ResizedImage } from './ImageResizerTool/useBatchResizeEngine';
+import { ResizeSettings, ImageInfo } from './ImageResizerTool/resizeUtils';
+import { downloadFile, formatBytes } from '@/lib/utils';
 import { downloadAllAsZip } from '@/lib/download';
-import { Loader2, Zap, Settings2, Maximize2, Monitor, Smartphone, Layout, RotateCcw } from 'lucide-react';
-import EditorLayout from '@/components/tool-layout/EditorLayout';
-import FileList from '@/components/tool-layout/FileList';
-import { Tool } from '@/tools/types';
+import { X, Plus, Loader2 } from 'lucide-react';
 
-export default function ImageResizer({ tool }: { tool?: Tool }) {
-  const [files, setFiles] = useState<File[]>([]);
-  const [width, setWidth] = useState(1920);
-  const [maintainAspect, setMaintainAspect] = useState(true);
-  const [results, setResults] = useState<ProcessedResult[]>([]);
-  const [status, setStatus] = useState<'idle' | 'ready' | 'processing' | 'done'>('idle');
+export default function ImageResizer() {
+  const [initialImages, setInitialImages] = useState<ImageInfo[]>([]);
   const [isZipping, setIsZipping] = useState(false);
-  const [progress, setProgress] = useState({ current: 0, total: 0 });
-  const [limits, setLimits] = useState<UploadLimits | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
 
-  useEffect(() => {
-    setLimits(getUploadLimits());
-  }, []);
+  const [settings, setSettings] = useState<ResizeSettings>({
+    mode: 'percentage',
+    percentage: 50,
+    width: 1920,
+    height: 1080,
+    maintainAspectRatio: true,
+    noEnlarge: true,
+    format: 'png',
+    quality: 90
+  });
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFiles = Array.from(e.target.files || []);
-    if (selectedFiles.length > 0) {
-      setFiles(selectedFiles);
-      setStatus('ready');
-      setResults([]);
-    }
+  const { images, processSingleImage, processAll } = useBatchResizeEngine(initialImages, settings);
+
+  const handleFileChange = (files: File[]) => {
+    const newInfos = files.map(file => ({
+      id: Math.random().toString(36).substring(2, 11),
+      file,
+      originalUrl: URL.createObjectURL(file),
+      originalWidth: 0,
+      originalHeight: 0,
+      originalSize: file.size
+    }));
+
+    // Pre-load images to get dimensions
+    newInfos.forEach(info => {
+      const img = new Image();
+      img.onload = () => {
+        setInitialImages(prev => prev.map(p => p.id === info.id ? {
+          ...p,
+          originalWidth: img.naturalWidth,
+          originalHeight: img.naturalHeight
+        } : p));
+      };
+      img.src = info.originalUrl;
+    });
+
+    setInitialImages(prev => [...prev, ...newInfos]);
   };
 
-  const handleProcessAll = async () => {
-    if (files.length === 0 || !limits) return;
-    setStatus('processing');
-    setResults([]);
+  const handleRemoveImage = (id: string) => {
+    setInitialImages(prev => {
+      const filtered = prev.filter(img => img.id !== id);
+      const removed = prev.find(img => img.id === id);
+      if (removed) URL.revokeObjectURL(removed.originalUrl);
+      return filtered;
+    });
+  };
 
+  const clearImages = () => {
+    initialImages.forEach(img => URL.revokeObjectURL(img.originalUrl));
+    setInitialImages([]);
+  };
+
+  const handleDownload = async (img: ResizedImage) => {
+    setIsProcessing(true);
     try {
-      const processedResults = await processQueue(
-        files,
-        { maxResolution: width, quality: 0.9, format: 'image/png' },
-        (current, total) => setProgress({ current, total })
-      );
-      setResults(processedResults);
-      setStatus('done');
+      const processed = await processSingleImage(img.id, settings);
+      if (processed && processed.resizedBlob) {
+        const ext = settings.format === 'jpeg' ? 'jpg' : settings.format;
+        downloadFile(processed.resizedBlob, `resized_${img.file.name.replace(/\.[^/.]+$/, "")}.${ext}`);
+      }
     } catch (error) {
-      console.error("Batch processing failed:", error);
-      alert("An error occurred during resizing.");
-      setStatus('ready');
+      console.error("Single download failed:", error);
+    } finally {
+      setIsProcessing(false);
     }
-  };
-
-  const handleReset = () => {
-    setFiles([]);
-    setResults([]);
-    setStatus('idle');
   };
 
   const handleDownloadAll = async () => {
-    if (results.length === 0) return;
+    if (images.length === 0) return;
+    setIsProcessing(true);
     setIsZipping(true);
     try {
-      await downloadAllAsZip(
-        results.map(r => ({ name: r.name, blob: r.blob })),
-        "resized-images.zip"
-      );
+      const processedImages = await processAll(settings);
+      const zipItems = processedImages
+        .filter(img => img.resizedBlob)
+        .map(img => {
+          const ext = settings.format === 'jpeg' ? 'jpg' : settings.format;
+          return {
+            name: `resized_${img.file.name.replace(/\.[^/.]+$/, "")}.${ext}`,
+            blob: img.resizedBlob!
+          };
+        });
+
+      if (zipItems.length > 0) {
+        await downloadAllAsZip(zipItems, "toolifyx-resized-images.zip");
+      } else {
+        alert("Failed to process images for download.");
+      }
+    } catch (error) {
+      console.error("Batch download failed:", error);
+      alert("An error occurred during batch processing.");
     } finally {
       setIsZipping(false);
+      setIsProcessing(false);
     }
   };
 
-  const leftPanel = (
-    <div className="space-y-6">
-      <div className="flex flex-col gap-2">
-        <button
-          onClick={() => setWidth(1920)}
-          className={`flex flex-col items-center justify-center p-3 rounded-xl transition-all ${width === 1920 ? 'bg-primary/10 text-primary border border-primary/20' : 'hover:bg-muted text-muted-foreground'}`}
-        >
-          <Monitor className="w-5 h-5 mb-1" />
-          <span className="text-[10px] font-black uppercase">FHD (1920)</span>
-        </button>
-        <button
-          onClick={() => setWidth(1280)}
-          className={`flex flex-col items-center justify-center p-3 rounded-xl transition-all ${width === 1280 ? 'bg-primary/10 text-primary border border-primary/20' : 'hover:bg-muted text-muted-foreground'}`}
-        >
-          <Layout className="w-5 h-5 mb-1" />
-          <span className="text-[10px] font-black uppercase">HD (1280)</span>
-        </button>
-        <button
-          onClick={() => setWidth(720)}
-          className={`flex flex-col items-center justify-center p-3 rounded-xl transition-all ${width === 720 ? 'bg-primary/10 text-primary border border-primary/20' : 'hover:bg-muted text-muted-foreground'}`}
-        >
-          <Smartphone className="w-5 h-5 mb-1" />
-          <span className="text-[10px] font-black uppercase">Mobile (720)</span>
-        </button>
-        <div className="h-px bg-border my-2" />
-        <button onClick={handleReset} className="flex flex-col items-center justify-center p-3 rounded-xl hover:bg-destructive/10 text-destructive transition-all">
-          <RotateCcw className="w-5 h-5 mb-1" />
-          <span className="text-[10px] font-black uppercase">Reset</span>
-        </button>
+  if (initialImages.length === 0) {
+    return (
+      <div className="max-w-3xl mx-auto p-6">
+        <ImageUploader maxFiles={50} onChange={handleFileChange} />
       </div>
-
-      {files.length > 0 && (
-        <div className="pt-4 border-t border-border">
-          <FileList
-            files={files}
-            onRemove={(idx) => setFiles(prev => prev.filter((_, i) => i !== idx))}
-            onClear={() => setFiles([])}
-          />
-        </div>
-      )}
-    </div>
-  );
-
-  const rightPanel = (
-    <div className="space-y-6">
-      <div className="space-y-4">
-        <h3 className="text-[10px] font-black uppercase tracking-[0.15em] text-muted-foreground border-b pb-2">Resize Options</h3>
-        <div className="space-y-4">
-          <div className="space-y-1">
-            <label className="text-[9px] font-bold text-muted-foreground uppercase">Target Width (Pixels)</label>
-            <input
-              type="number"
-              value={width}
-              onChange={(e) => setWidth(parseInt(e.target.value) || 0)}
-              className="w-full bg-muted/50 border border-border rounded-lg px-3 py-2 text-xs font-black"
-            />
-          </div>
-          <div className="flex items-center justify-between p-3 bg-muted/30 rounded-xl">
-             <span className="text-[10px] font-bold text-muted-foreground uppercase">Maintain Aspect</span>
-             <input
-                type="checkbox"
-                checked={maintainAspect}
-                onChange={(e) => setMaintainAspect(e.target.checked)}
-                className="w-4 h-4 accent-primary"
-             />
-          </div>
-        </div>
-      </div>
-
-      <div className="space-y-4">
-        <h3 className="text-[10px] font-black uppercase tracking-[0.15em] text-muted-foreground border-b pb-2">Statistics</h3>
-        <div className="p-4 bg-muted/30 rounded-xl space-y-2">
-           <div className="flex justify-between">
-              <span className="text-[10px] font-bold text-muted-foreground uppercase">Batch Size</span>
-              <span className="text-xs font-black">{files.length} Files</span>
-           </div>
-           <div className="flex justify-between">
-              <span className="text-[10px] font-bold text-muted-foreground uppercase">Estimated Quality</span>
-              <span className="text-xs font-black">90%</span>
-           </div>
-        </div>
-      </div>
-
-      <div className="pt-6">
-        <button
-          onClick={handleProcessAll}
-          disabled={status !== 'ready'}
-          className="w-full py-4 rounded-2xl bg-primary text-primary-foreground font-black uppercase tracking-widest text-xs flex items-center justify-center gap-2 hover:opacity-90 transition-all shadow-xl shadow-primary/20 disabled:opacity-50"
-        >
-          {status === 'processing' ? <Loader2 className="w-4 h-4 animate-spin" /> : <Zap className="w-4 h-4 fill-current" />}
-          Resize Images
-        </button>
-      </div>
-    </div>
-  );
-
-  const mainCanvas = (
-    <div className="w-full h-full flex items-center justify-center p-8">
-      {files.length === 0 ? (
-        <div
-          className="w-full max-w-lg border-2 border-dashed border-border rounded-3xl p-16 text-center space-y-6 hover:border-primary transition-all cursor-pointer bg-card/50 hover:bg-card group"
-          onClick={() => document.getElementById('resize-upload')?.click()}
-        >
-          <div className="w-20 h-20 bg-primary/10 text-primary rounded-3xl flex items-center justify-center mx-auto transition-transform group-hover:scale-110 group-hover:rotate-3">
-             <Maximize2 className="w-10 h-10" />
-          </div>
-          <div className="space-y-2">
-            <h4 className="text-xl font-bold">Upload images to resize</h4>
-            <p className="text-sm text-muted-foreground font-medium">Batch process multiple images at once</p>
-          </div>
-          <input id="resize-upload" type="file" multiple className="hidden" accept="image/*" onChange={handleFileChange} />
-        </div>
-      ) : (
-        <div className="flex flex-col items-center gap-6 animate-in fade-in zoom-in-95">
-           <div className="w-32 h-32 bg-primary/5 rounded-3xl flex items-center justify-center border border-primary/10 relative">
-              <Maximize2 className="w-16 h-16 text-primary" />
-              <div className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-xs font-black px-2 py-1 rounded-full shadow-lg">
-                {files.length}
-              </div>
-           </div>
-           <div className="text-center space-y-1">
-              <h4 className="text-xl font-bold uppercase tracking-tight">Images ready to resize</h4>
-              <p className="text-sm text-muted-foreground font-medium uppercase">
-                Target Width: {width}px
-              </p>
-           </div>
-           <button
-             onClick={() => document.getElementById('resize-upload')?.click()}
-             className="text-xs font-bold text-primary hover:underline uppercase tracking-widest"
-           >
-             Add more files
-           </button>
-           <input id="resize-upload" type="file" multiple className="hidden" accept="image/*" onChange={(e) => {
-             const newFiles = Array.from(e.target.files || []);
-             if (newFiles.length > 0) setFiles(prev => [...prev, ...newFiles]);
-           }} />
-        </div>
-      )}
-    </div>
-  );
+    );
+  }
 
   return (
-    <EditorLayout
-      toolName={tool?.title || "Image Resizer"}
-      toolIcon={tool?.icon}
-      fileName={files.length === 1 ? files[0].name : `${files.length} Files selected`}
-      leftPanel={leftPanel}
-      mainCanvas={mainCanvas}
-      rightPanel={rightPanel}
-      onDownload={status === 'done' ? handleDownloadAll : undefined}
-    />
+    <div className="fixed inset-0 z-50 bg-background flex flex-col md:flex-row overflow-hidden mt-16 lg:mt-0">
+      {/* Processing Overlay */}
+      {(isProcessing || isZipping) && (
+        <div className="absolute inset-0 z-[100] bg-background/50 backdrop-blur-sm flex items-center justify-center">
+          <div className="bg-card p-8 rounded-3xl shadow-2xl border flex flex-col items-center gap-6 min-w-[300px]">
+            <div className="relative">
+              <Loader2 className="w-12 h-12 animate-spin text-primary" />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-2 h-2 bg-primary rounded-full animate-ping" />
+              </div>
+            </div>
+            <div className="text-center space-y-1">
+              <p className="font-black text-lg uppercase tracking-wider">Processing Batch</p>
+              <p className="text-xs text-muted-foreground font-medium uppercase tracking-widest">Applying settings to {images.length} images</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Header for mobile or tool identifier */}
+      <div className="absolute top-4 left-4 z-10 flex items-center gap-2">
+        <button
+          onClick={clearImages}
+          className="p-2.5 bg-black/80 hover:bg-black text-white rounded-full transition-all backdrop-blur-md shadow-xl active:scale-90"
+          title="Clear all images"
+        >
+          <X className="w-5 h-5" />
+        </button>
+        <div className="h-10 px-4 bg-black/80 backdrop-blur-md text-white rounded-2xl flex items-center gap-3 border border-white/10 shadow-xl">
+          <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+          <span className="text-xs font-black uppercase tracking-widest">{initialImages.length} Images Ready</span>
+        </div>
+      </div>
+
+      {/* Main Workspace (Left) */}
+      <div className="flex-1 relative bg-muted/20 overflow-y-auto custom-scrollbar">
+        <div className="min-h-full pb-28 pt-20">
+          <ResizeGallery
+            images={images}
+            settings={settings}
+            onDownload={handleDownload}
+            onRemove={handleRemoveImage}
+          />
+        </div>
+
+        {/* Floating Add More Button */}
+        <label className="fixed bottom-8 left-1/2 -translate-x-1/2 md:left-[calc(50%-160px)] z-20 cursor-pointer">
+           <input type="file" multiple className="hidden" onChange={(e) => handleFileChange(Array.from(e.target.files || []))} />
+           <div className="flex items-center gap-3 px-8 py-3.5 bg-white dark:bg-zinc-900 border-2 border-primary text-primary hover:bg-primary hover:text-white rounded-full font-black text-sm transition-all shadow-2xl active:scale-95 group">
+              <Plus className="w-5 h-5 group-hover:rotate-90 transition-transform" />
+              Add More Images
+           </div>
+        </label>
+      </div>
+
+      {/* Controls Panel (Right) */}
+      <div className="w-full md:w-80 h-auto md:h-full shrink-0 shadow-2xl z-30">
+        <ResizeControls
+          settings={settings}
+          setSettings={setSettings}
+          onDownloadAll={handleDownloadAll}
+          isProcessing={isZipping || isProcessing}
+          hasImages={images.length > 0}
+        />
+      </div>
+    </div>
   );
 }

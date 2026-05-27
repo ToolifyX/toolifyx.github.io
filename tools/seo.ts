@@ -4,7 +4,6 @@ export const seoData: Record<string, {
   faqs: { question: string; answer: string }[];
   howToUse: string[];
 }> = {
-  // Developer Tools
   "json-formatter": {
     "seoTitle": "JSON Formatter - Online JSON Beautifier & Prettifier",
     "metaDescription": "Free online tool to format, beautify, and prettify JSON data. Make your JSON readable with custom indentation instantly.",
@@ -145,8 +144,6 @@ export const seoData: Record<string, {
       "Copy the result to your project."
     ]
   },
-
-  // Text Tools
   "word-counter": {
     "seoTitle": "Word Counter - Count Words & Characters Online",
     "metaDescription": "Free online word counter tool. Calculate word count, character count, sentences, and paragraphs in real-time.",
@@ -287,8 +284,6 @@ export const seoData: Record<string, {
       "Click 'Generate' and copy the text."
     ]
   },
-
-  // Image Tools - Reordered
   "image-compressor": {
     "seoTitle": "Image Compressor - Reduce Image Size Online",
     "metaDescription": "Compress images without losing quality. Support for JPG, PNG, and WebP. Faster website loading times.",
@@ -301,6 +296,48 @@ export const seoData: Record<string, {
       "Upload your image file.",
       "Adjust the quality slider.",
       "Click 'Compress' and download the result."
+    ]
+  },
+  "convert-to-png": {
+    "seoTitle": "Convert to PNG - Free Online Image Converter",
+    "metaDescription": "Convert JPG, WebP, SVG, and other formats to PNG instantly in your browser. No upload required, 100% private.",
+    "faqs": [
+      { "question": "What formats can I convert to PNG?", "answer": "You can convert JPG, WebP, SVG, BMP, and more to high-quality PNG." },
+      { "question": "Is the conversion lossless?", "answer": "Yes, PNG is a lossless format, so the original quality is preserved." },
+      { "question": "Can I convert multiple images?", "answer": "Yes, you can batch convert multiple images at once." }
+    ],
+    "howToUse": [
+      "Select your source images.",
+      "Click 'Convert to PNG'.",
+      "Download your converted PNG files."
+    ]
+  },
+  "convert-to-jpg": {
+    "seoTitle": "Convert to JPG - Free Online Image Converter",
+    "metaDescription": "Convert PNG, WebP, HEIC, AVIF, and more to JPG instantly in your browser. Fast, secure, and private.",
+    "faqs": [
+      { "question": "What formats can I convert to JPG?", "answer": "You can convert PNG, WebP, HEIC, AVIF, SVG and more to JPG." },
+      { "question": "Does it support HEIC/AVIF?", "answer": "Yes, we support modern high-efficiency formats like HEIC and AVIF." },
+      { "question": "Is it private?", "answer": "Yes, everything happens locally on your device; no images are uploaded." }
+    ],
+    "howToUse": [
+      "Select your source images.",
+      "Click 'Convert to JPG'.",
+      "Download your high-quality JPG files."
+    ]
+  },
+  "convert-to-webp": {
+    "seoTitle": "Convert to WebP - Modern Image Converter",
+    "metaDescription": "Convert JPG, PNG, and more to WebP for superior web performance. Smaller file sizes, better quality.",
+    "faqs": [
+      { "question": "Why use WebP?", "answer": "WebP provides much smaller file sizes than JPG or PNG with comparable quality." },
+      { "question": "Does it support transparency?", "answer": "Yes, when converting from PNG, WebP preserves alpha transparency." },
+      { "question": "Is it free?", "answer": "Yes, it's 100% free and works entirely in your browser." }
+    ],
+    "howToUse": [
+      "Select your source images.",
+      "Click 'Convert to WebP'.",
+      "Download your optimized WebP images."
     ]
   },
   "image-resizer": {
@@ -317,146 +354,6 @@ export const seoData: Record<string, {
       "Download the resized image."
     ]
   },
-  "png-to-jpg": {
-    "seoTitle": "PNG to JPG Converter – Free Online Tool",
-    "metaDescription": "Convert PNG images to JPG instantly in your browser. No upload required.",
-    "faqs": [
-      { "question": "How do I convert PNG to JPG?", "answer": "Upload your PNG images and click 'Convert to JPG'." },
-      { "question": "Will it lose quality?", "answer": "Converting to JPG involves compression, but we use high-quality settings." },
-      { "question": "Is it safe?", "answer": "Yes, processing is 100% local in your browser." }
-    ],
-    "howToUse": [
-      "Select your PNG files.",
-      "Click 'Convert to JPG'.",
-      "Download your JPG images."
-    ]
-  },
-  "jpg-to-png": {
-    "seoTitle": "JPG to PNG Converter – Free Online Tool",
-    "metaDescription": "Convert JPG images to PNG instantly in your browser. No upload required.",
-    "faqs": [
-      { "question": "Is the conversion lossless?", "answer": "Yes, PNG is a lossless format, so quality is preserved." },
-      { "question": "Does it support transparency?", "answer": "JPG doesn't have transparency, but the output PNG will be high quality." },
-      { "question": "Is it private?", "answer": "Yes, no files are ever uploaded." }
-    ],
-    "howToUse": [
-      "Select your JPG files.",
-      "Click 'Convert to PNG'.",
-      "Download your PNG images."
-    ]
-  },
-  "jpg-to-webp": {
-    "seoTitle": "JPG to WebP Converter – Free Online Tool",
-    "metaDescription": "Convert JPG images to WebP format instantly in your browser. No upload required.",
-    "faqs": [
-      { "question": "Why convert to WebP?", "answer": "WebP provides superior compression and smaller file sizes for the web." },
-      { "question": "Is it widely supported?", "answer": "Yes, all modern browsers support WebP." },
-      { "question": "Is it free?", "answer": "Yes, entirely free and browser-based." }
-    ],
-    "howToUse": [
-      "Select your JPG files.",
-      "Click 'Convert to WebP'.",
-      "Download your WebP images."
-    ]
-  },
-  "png-to-webp": {
-    "seoTitle": "PNG to WebP Converter – Free Online Tool",
-    "metaDescription": "Convert PNG images to WebP instantly in your browser. No upload required.",
-    "faqs": [
-      { "question": "Does it keep transparency?", "answer": "Yes, WebP supports alpha transparency just like PNG." },
-      { "question": "Is it better than PNG?", "answer": "WebP usually produces much smaller files with similar quality." },
-      { "question": "How many can I convert?", "answer": "Up to 12 images per batch." }
-    ],
-    "howToUse": [
-      "Select your PNG files.",
-      "Click 'Convert to WebP'.",
-      "Download your WebP images."
-    ]
-  },
-  "webp-to-jpg": {
-    "seoTitle": "WebP to JPG Converter – Free Online Tool",
-    "metaDescription": "Convert WebP images to JPG instantly in your browser. No upload required.",
-    "faqs": [
-      { "question": "Can I convert many images?", "answer": "Yes, you can upload up to 12 files at once." },
-      { "question": "Will it work on my phone?", "answer": "Yes, it works on any device with a modern browser." },
-      { "question": "Is it fast?", "answer": "It is ultra-fast as it uses your device's hardware." }
-    ],
-    "howToUse": [
-      "Select your WebP files.",
-      "Click 'Convert to JPG'.",
-      "Download your JPG images."
-    ]
-  },
-  "webp-to-png": {
-    "seoTitle": "WebP to PNG Converter – Free Online Tool",
-    "metaDescription": "Convert WebP images to PNG instantly in your browser. No upload required.",
-    "faqs": [
-      { "question": "Is it lossless?", "answer": "Yes, if the source WebP was lossless, the PNG will be too." },
-      { "question": "Why use PNG?", "answer": "PNG is widely compatible with all image editors and viewers." },
-      { "question": "Are my files safe?", "answer": "Yes, they never leave your device." }
-    ],
-    "howToUse": [
-      "Select your WebP files.",
-      "Click 'Convert to PNG'.",
-      "Download your PNG images."
-    ]
-  },
-  "heic-to-jpg": {
-    "seoTitle": "HEIC to JPG Converter – Free Online Tool",
-    "metaDescription": "Convert HEIC images to JPG instantly in your browser. No upload required.",
-    "faqs": [
-      { "question": "What is HEIC?", "answer": "HEIC is a high-efficiency image format used by Apple devices." },
-      { "question": "Can all browsers convert HEIC?", "answer": "Browser support for HEIC varies; it works best in Safari and modern browsers." },
-      { "question": "Is it free?", "answer": "Yes, 100% free and private." }
-    ],
-    "howToUse": [
-      "Select your HEIC files.",
-      "Click 'Convert to JPG'.",
-      "Download your JPG images."
-    ]
-  },
-  "avif-to-jpg": {
-    "seoTitle": "AVIF to JPG Converter – Free Online Tool",
-    "metaDescription": "Convert AVIF images to JPG instantly in your browser. No upload required.",
-    "faqs": [
-      { "question": "What is AVIF?", "answer": "AVIF is a modern image format with superior compression." },
-      { "question": "Why convert to JPG?", "answer": "JPG has wider compatibility with older software and devices." },
-      { "question": "Is it secure?", "answer": "Yes, processing happens entirely on your device." }
-    ],
-    "howToUse": [
-      "Select your AVIF files.",
-      "Click 'Convert to JPG'.",
-      "Download your JPG images."
-    ]
-  },
-  "svg-to-png": {
-    "seoTitle": "SVG to PNG Converter – Free Online Tool",
-    "metaDescription": "Convert SVG images to PNG instantly in your browser. No upload required.",
-    "faqs": [
-      { "question": "Does it keep transparency?", "answer": "Yes, the resulting PNG will preserve the transparency of your SVG." },
-      { "question": "Can I scale the SVG?", "answer": "The tool converts the SVG at its original defined size." },
-      { "question": "Is it private?", "answer": "Yes, all processing is done locally." }
-    ],
-    "howToUse": [
-      "Select your SVG files.",
-      "Click 'Convert to PNG'.",
-      "Download your PNG images."
-    ]
-  },
-  "image-crop": {
-    "seoTitle": "Image Cropper - Crop Images Online Free",
-    "metaDescription": "Crop images with free or fixed aspect ratios. Maintain aspect ratio for professional results.",
-    "faqs": [
-      { "question": "Can I crop with fixed aspect ratio?", "answer": "Yes, you can choose from common presets like 1:1, 4:3, 16:9, etc." },
-      { "question": "What is the output format?", "answer": "Cropped images are currently exported as PNG for maximum quality." },
-      { "question": "Is it free?", "answer": "Yes, all our image tools are 100% free to use." }
-    ],
-    "howToUse": [
-      "Upload the image you want to crop.",
-      "Select an aspect ratio or use free crop.",
-      "Adjust the crop area and click 'Apply Crop'."
-    ]
-  },
   "image-editor": {
     "seoTitle": "Image Editor - Rotate & Flip Images Online",
     "metaDescription": "Quickly rotate or flip your images horizontally and vertically. Simple and fast online editing.",
@@ -469,6 +366,34 @@ export const seoData: Record<string, {
       "Upload your image.",
       "Use the buttons to rotate or flip.",
       "Download the edited version."
+    ]
+  },
+  "image-crop": {
+    "seoTitle": "Image Cropper - Crop Images Online Free",
+    "metaDescription": "Crop your images to any size or aspect ratio. Interactive, browser-based image cropping tool.",
+    "faqs": [
+      { "question": "Can I crop to a specific aspect ratio?", "answer": "Yes, you can choose from presets like 1:1, 4:3, 16:9, or use free-form cropping." },
+      { "question": "Are my images uploaded?", "answer": "No, all cropping happens locally in your browser for maximum privacy." },
+      { "question": "What formats are supported?", "answer": "We support JPG, PNG, and WebP for cropping." }
+    ],
+    "howToUse": [
+      "Upload the image you want to crop.",
+      "Adjust the crop box or select an aspect ratio.",
+      "Click 'Download' to save your cropped image."
+    ]
+  },
+  "image-base64": {
+    "seoTitle": "Image to Base64 - Online Base64 Encoder",
+    "metaDescription": "Convert any image into a Base64 string for use in HTML, CSS, or JSON. Secure and instant conversion.",
+    "faqs": [
+      { "question": "Why use Base64 for images?", "answer": "It allows you to embed small images directly in code, reducing the number of HTTP requests." },
+      { "question": "Can I go from Base64 to Image?", "answer": "Yes, paste a Base64 string and our tool will render and let you download the image." },
+      { "question": "Is it private?", "answer": "Yes, conversion happens entirely on your machine." }
+    ],
+    "howToUse": [
+      "Upload an image or paste a Base64 string.",
+      "Copy the generated string or preview the image.",
+      "Download the result if needed."
     ]
   },
   "image-metadata": {
@@ -499,34 +424,6 @@ export const seoData: Record<string, {
       "Copy colors or download the black and white image."
     ]
   },
-  "blur-detector": {
-    "seoTitle": "Blur Detector - Check Image Sharpness",
-    "metaDescription": "Analyze your photos to see if they are blurry or sharp. Uses edge detection to estimate clarity.",
-    "faqs": [
-      { "question": "How is blur measured?", "answer": "We use a mathematical edge detection filter; a higher score means a sharper image." },
-      { "question": "Is it always right?", "answer": "It's an estimate. Dark or low-contrast images might return lower scores even if sharp." },
-      { "question": "Does it upload my file?", "answer": "No, analysis is done purely in your browser." }
-    ],
-    "howToUse": [
-      "Upload the photo you want to check.",
-      "Wait for the score to calculate.",
-      "Review the sharpness analysis."
-    ]
-  },
-  "image-base64": {
-    "seoTitle": "Image to Base64 - Online Base64 Encoder",
-    "metaDescription": "Convert any image into a Base64 string for use in HTML, CSS, or JSON. Secure and instant conversion.",
-    "faqs": [
-      { "question": "Why use Base64 for images?", "answer": "It allows you to embed small images directly in code, reducing the number of HTTP requests." },
-      { "question": "Can I go from Base64 to Image?", "answer": "Yes, paste a Base64 string and our tool will render and let you download the image." },
-      { "question": "Is it private?", "answer": "Yes, conversion happens entirely on your machine." }
-    ],
-    "howToUse": [
-      "Upload an image or paste a Base64 string.",
-      "Copy the generated string or preview the image.",
-      "Download the result if needed."
-    ]
-  },
   "thumbnail-generator": {
     "seoTitle": "Thumbnail Generator - Create Image Thumbnails",
     "metaDescription": "Generate custom-sized thumbnails from your images. Perfect for profile pictures and previews.",
@@ -541,8 +438,20 @@ export const seoData: Record<string, {
       "Download the generated thumbnail."
     ]
   },
-
-  // PDF Tools
+  "blur-detector": {
+    "seoTitle": "Blur Detector - Check Image Sharpness",
+    "metaDescription": "Analyze your photos to see if they are blurry or sharp. Uses edge detection to estimate clarity.",
+    "faqs": [
+      { "question": "How is blur measured?", "answer": "We use a mathematical edge detection filter; a higher score means a sharper image." },
+      { "question": "Is it always right?", "answer": "It's an estimate. Dark or low-contrast images might return lower scores even if sharp." },
+      { "question": "Does it upload my file?", "answer": "No, analysis is done purely in your browser." }
+    ],
+    "howToUse": [
+      "Upload the photo you want to check.",
+      "Wait for the score to calculate.",
+      "Review the sharpness analysis."
+    ]
+  },
   "pdf-merge": {
     "seoTitle": "PDF Merge - Combine PDF Files Online",
     "metaDescription": "Merge multiple PDF documents into a single file securely. Fast, private, and 100% browser-based.",
@@ -627,8 +536,6 @@ export const seoData: Record<string, {
       "Download the smaller version."
     ]
   },
-
-  // Design Tools
   "color-picker": {
     "seoTitle": "Color Picker - Hex, RGB, HSL Selector",
     "metaDescription": "Pick colors and get instant Hex, RGB, and HSL values. Perfect for developers and designers.",
@@ -727,8 +634,6 @@ export const seoData: Record<string, {
       "Copy the CSS styles for your project."
     ]
   },
-
-  // Utility Tools
   "qr-code-generator": {
     "seoTitle": "QR Code Generator - Create Custom QR Codes",
     "metaDescription": "Generate high-quality QR codes for links or text instantly. Download as PNG for free.",

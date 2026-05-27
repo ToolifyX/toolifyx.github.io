@@ -7,19 +7,14 @@
 import React, { useState } from 'react';
 import { PDFDocument } from 'pdf-lib';
 import { downloadFile } from '@/lib/utils';
-import { Loader2, Combine, Zap, RotateCcw } from 'lucide-react';
-import ToolSplitLayout from '@/components/tool-layout/ToolSplitLayout';
+import { Loader2, Combine } from 'lucide-react';
 import PDFUploader from '@/components/PDFUploader';
 import ResultPanel from '@/components/tool-layout/ResultPanel';
 import ResultScreen from '@/components/tool-layout/ResultScreen';
 
-import EditorLayout from '@/components/tool-layout/EditorLayout';
-import FileList from '@/components/tool-layout/FileList';
-import { Tool } from '@/tools/types';
-
 type ToolStatus = 'idle' | 'processing' | 'done';
 
-export default function PdfMergeTool({ tool }: { tool?: Tool }) {
+export default function PdfMergeTool() {
   const [status, setStatus] = useState<ToolStatus>('idle');
   const [files, setFiles] = useState<File[]>([]);
   const [result, setResult] = useState<{ blob: Blob, name: string, originalSize: number, compressedSize: number, url: string } | null>(null);
@@ -96,105 +91,41 @@ export default function PdfMergeTool({ tool }: { tool?: Tool }) {
   }
 
   // 2. Idle or Processing
-  const leftPanel = (
-    <div className="space-y-6">
-      <div className="flex flex-col gap-2">
-        <button
-          onClick={mergePdfs}
-          className="flex flex-col items-center justify-center p-3 rounded-xl bg-primary/10 text-primary border border-primary/20 transition-all"
-        >
-          <Combine className="w-5 h-5 mb-1" />
-          <span className="text-[10px] font-black uppercase">Merge PDF</span>
-        </button>
-        <div className="h-px bg-border my-2" />
-        <button onClick={handleReset} className="flex flex-col items-center justify-center p-3 rounded-xl hover:bg-destructive/10 text-destructive transition-all">
-          <RotateCcw className="w-5 h-5 mb-1" />
-          <span className="text-[10px] font-black uppercase">Reset</span>
-        </button>
+  return (
+    <div className="max-w-3xl mx-auto space-y-4">
+      <div className="card border rounded-lg p-3 bg-card shadow-sm space-y-4">
+        <PDFUploader files={files} onChange={setFiles} />
       </div>
 
-      {files.length > 0 && (
-        <div className="pt-4 border-t border-border">
-          <FileList
-            files={files}
-            onRemove={(idx) => setFiles(prev => prev.filter((_, i) => i !== idx))}
-            onClear={() => setFiles([])}
-          />
-        </div>
-      )}
-    </div>
-  );
-
-  const rightPanel = (
-    <ResultPanel
-      isProcessing={status === 'processing'}
-      results={[]}
-      progress={progress}
-      onDownload={() => {}}
-      onDownloadAll={() => {}}
-      emptyMessage="Merged PDF will appear here"
-    />
-  );
-
-  const mainCanvas = (
-    <div className="w-full h-full flex items-center justify-center p-8">
-      {files.length === 0 ? (
-        <div
-          className="w-full max-w-lg border-2 border-dashed border-border rounded-3xl p-16 text-center space-y-6 hover:border-primary transition-all cursor-pointer bg-card/50 hover:bg-card group"
-          onClick={() => document.getElementById('merge-upload')?.click()}
+      {files.length >= 2 && (
+        <button
+          onClick={mergePdfs}
+          disabled={status === 'processing'}
+          className="bg-black text-white dark:bg-white dark:text-black px-4 py-3 rounded-xl w-full font-black text-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.01] active:scale-[0.98] disabled:opacity-50 shadow-lg"
         >
-          <div className="w-20 h-20 bg-primary/10 text-primary rounded-3xl flex items-center justify-center mx-auto transition-transform group-hover:scale-110 group-hover:rotate-3">
-             <Combine className="w-10 h-10" />
-          </div>
-          <div className="space-y-2">
-            <h4 className="text-xl font-bold">Upload PDFs to merge</h4>
-            <p className="text-sm text-muted-foreground font-medium">Combine multiple documents into one</p>
-          </div>
-          <input id="merge-upload" type="file" multiple className="hidden" accept=".pdf" onChange={(e) => {
-            const newFiles = Array.from(e.target.files || []);
-            if (newFiles.length > 0) setFiles(prev => [...prev, ...newFiles]);
-          }} />
-        </div>
-      ) : (
-        <div className="flex flex-col items-center gap-6 animate-in fade-in zoom-in-95">
-           <div className="w-32 h-32 bg-primary/5 rounded-3xl flex items-center justify-center border border-primary/10 relative">
-              <FileText className="w-16 h-16 text-primary" />
-              <div className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-xs font-black px-2 py-1 rounded-full shadow-lg">
-                {files.length}
-              </div>
-           </div>
-           <div className="text-center space-y-1">
-              <h4 className="text-xl font-bold uppercase tracking-tight">PDFs ready for merging</h4>
-              <p className="text-sm text-muted-foreground font-medium uppercase">
-                {files.length} documents selected
-              </p>
-           </div>
-           <button
-             onClick={() => document.getElementById('merge-upload')?.click()}
-             className="text-xs font-bold text-primary hover:underline uppercase tracking-widest"
-           >
-             Add more files
-           </button>
-           <input id="merge-upload" type="file" multiple className="hidden" accept=".pdf" onChange={(e) => {
-             const newFiles = Array.from(e.target.files || []);
-             if (newFiles.length > 0) setFiles(prev => [...prev, ...newFiles]);
-           }} />
-        </div>
+          {status === 'processing' ? (
+            <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Merging {progress.current} of {progress.total}...
+            </>
+          ) : (
+            <>
+                <Combine className="w-4 h-4" />
+                Merge {files.length} PDF Files
+            </>
+          )}
+        </button>
+      )}
+
+      {status === 'processing' && (
+        <ResultPanel
+          isProcessing={status === 'processing'}
+          results={[]}
+          progress={progress}
+          onDownload={() => {}}
+          onDownloadAll={() => {}}
+        />
       )}
     </div>
-  );
-
-  return (
-    <EditorLayout
-      toolName={tool?.title || "PDF Merge"}
-      toolIcon={tool?.icon}
-      fileName={files.length > 0 ? `${files.length} Files selected` : undefined}
-      leftPanel={leftPanel}
-      mainCanvas={mainCanvas}
-      rightPanel={rightPanel}
-      onDownload={result ? () => downloadFile(result.blob, result.name) : undefined}
-    />
   );
 }
-
-import { FileText } from 'lucide-react';

@@ -23,7 +23,7 @@ export default function DuplicateRemover() {
 
   const removeDuplicates = () => {
     const lines = text.split('\n');
-    const uniqueLines = [...new Set(lines)];
+    const uniqueLines = Array.from(new Set(lines));
     setText(uniqueLines.join('\n'));
   };
 
