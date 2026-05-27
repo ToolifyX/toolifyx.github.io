@@ -25,12 +25,9 @@ export default function ToolCard({ tool }: ToolCardProps) {
           </div>
         </div>
 
-        <div className="flex items-center justify-between mt-auto pt-4">
-          <span className="text-[10px] font-bold text-muted-foreground/60 uppercase tracking-widest ml-12">
-            {tool.category}
-          </span>
+        <div className="mt-auto pt-4 flex justify-end">
           <div className="text-primary opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all">
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="9 5l7 7-7 7" />
             </svg>
           </div>
