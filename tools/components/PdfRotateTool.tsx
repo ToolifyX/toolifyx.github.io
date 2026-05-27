@@ -139,7 +139,6 @@ export default function PdfRotateTool() {
       results={[]}
       onDownload={() => {}}
       onDownloadAll={() => {}}
-      emptyMessage="Rotated PDF will appear here"
     />
   );
 

@@ -117,7 +117,6 @@ export default function PdfCompressTool() {
       results={[]}
       onDownload={() => {}}
       onDownloadAll={() => {}}
-      emptyMessage="Compressed PDF will appear here"
     />
   );
 

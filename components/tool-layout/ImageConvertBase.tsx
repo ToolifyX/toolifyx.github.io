@@ -140,7 +140,6 @@ export default function ImageConvertBase({ fromFormat, toFormat, toExtension, ti
       onDownload={handleDownloadResult}
       onDownloadAll={handleDownloadAll}
       isZipping={isZipping}
-      emptyMessage={`Your ${toExtension.toUpperCase()} files will appear here`}
     />
   );
 

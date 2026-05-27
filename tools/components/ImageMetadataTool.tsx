@@ -138,7 +138,6 @@ export default function ImageMetadataTool() {
       results={[]}
       onDownload={() => {}}
       onDownloadAll={() => {}}
-      emptyMessage="Cleaned files will appear here"
     />
   );
 

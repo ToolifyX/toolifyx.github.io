@@ -127,7 +127,6 @@ export default function PdfMergeTool() {
       progress={progress}
       onDownload={() => {}}
       onDownloadAll={() => {}}
-      emptyMessage="Merged PDF will appear here"
     />
   );
 

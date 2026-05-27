@@ -144,7 +144,6 @@ export default function PdfSplitTool() {
       results={[]}
       onDownload={() => {}}
       onDownloadAll={() => {}}
-      emptyMessage="Split page will appear here"
     />
   );
 

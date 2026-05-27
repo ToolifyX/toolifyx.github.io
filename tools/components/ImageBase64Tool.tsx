@@ -97,13 +97,6 @@ export default function ImageBase64Tool() {
         </div>
       )}
 
-      {!isProcessing && results.length === 0 && (
-        <div className="flex flex-col items-center justify-center h-full py-20 text-center space-y-2 opacity-30">
-          <Zap className="w-12 h-12" />
-          <p className="text-sm font-medium">Encoded results will appear here</p>
-        </div>
-      )}
-
       {results.length > 0 && !isProcessing && (
         <div className="space-y-4">
           <div className="flex items-center justify-between px-1">

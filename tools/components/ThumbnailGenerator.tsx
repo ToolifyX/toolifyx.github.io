@@ -148,7 +148,6 @@ export default function ThumbnailGenerator() {
       results={[]}
       onDownload={() => {}}
       onDownloadAll={() => {}}
-      emptyMessage="Thumbnails will appear here"
     />
   );
 

@@ -105,7 +105,6 @@ export default function ImageToPdf() {
       results={[]}
       onDownload={() => {}}
       onDownloadAll={() => {}}
-      emptyMessage="PDF result will appear here"
     />
   );
 
