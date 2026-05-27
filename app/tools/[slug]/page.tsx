@@ -90,19 +90,19 @@ export default function ToolPage({ params }: Props) {
         </ol>
       </nav>
 
-      {/* Header - Compact */}
-      <div className="flex items-center space-x-3">
-        <div className="p-2 md:p-3 rounded-xl bg-primary/10 text-primary">
-          <DynamicIcon name={tool.icon || 'HelpCircle'} size={24} strokeWidth={2.5} />
+      {/* Header - Larger */}
+      <div className="flex items-center space-x-4 py-4">
+        <div className="p-4 rounded-2xl bg-primary/10 text-primary shadow-sm">
+          <DynamicIcon name={tool.icon || 'HelpCircle'} size={40} strokeWidth={2.5} />
         </div>
-        <div className="space-y-0.5">
-          <h1 className="text-2xl md:text-3xl font-black tracking-tight">{tool.title}</h1>
-          <p className="text-sm text-muted-foreground">{tool.description}</p>
+        <div className="space-y-1">
+          <h1 className="text-3xl md:text-5xl font-black tracking-tight leading-none">{tool.title}</h1>
+          <p className="text-base md:text-lg text-muted-foreground font-medium">{tool.description}</p>
         </div>
       </div>
 
       {/* Tool Main Area */}
-      <div className="bg-card border rounded-xl overflow-hidden shadow-sm">
+      <div className="bg-card border-2 rounded-2xl overflow-hidden shadow-md">
         <div className="px-3 py-1.5 bg-muted/50 border-b flex items-center justify-between">
           <div className="flex space-x-1">
             <div className="w-2.5 h-2.5 rounded-full bg-red-400/20" />
@@ -163,7 +163,7 @@ export default function ToolPage({ params }: Props) {
               View all
             </Link>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {allRelatedTools.map((related) => (
               <ToolCard key={related.slug} tool={related} />
             ))}

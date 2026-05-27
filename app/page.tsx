@@ -38,16 +38,16 @@ export default function Home() {
 
   return (
     <div className="space-y-6 pb-12">
-      {/* Hero Section - Compact */}
-      <div className="text-center space-y-3 py-6 md:py-10">
-        <h1 className="text-3xl md:text-5xl font-black tracking-tighter">
+      {/* Hero Section - Larger */}
+      <div className="text-center space-y-6 py-12 md:py-24 max-w-4xl mx-auto px-4">
+        <h1 className="text-5xl md:text-8xl font-black tracking-tight leading-[0.9]">
           EVERY TOOL <span className="text-primary italic">INSTANTLY.</span>
         </h1>
-        <p className="text-sm text-muted-foreground max-w-xl mx-auto px-4">
-          Fast, private, browser-based utilities. Your data never leaves your machine.
+        <p className="text-lg md:text-2xl text-muted-foreground max-w-2xl mx-auto font-medium leading-relaxed">
+          Fast, private, browser-based utilities for designers and developers. Your data never leaves your machine.
         </p>
 
-        <div className="pt-4 px-4 max-w-xl mx-auto">
+        <div className="pt-8 max-w-2xl mx-auto">
           <ToolSearch query={searchQuery} onChange={setSearchQuery} />
         </div>
       </div>
@@ -74,7 +74,7 @@ export default function Home() {
             </div>
 
             {filteredTools.length > 0 ? (
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 animate-in fade-in slide-in-from-bottom-2 duration-300">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
                 {filteredTools.map((tool) => (
                   <ToolCard key={tool.slug} tool={tool} />
                 ))}
@@ -116,7 +116,7 @@ export default function Home() {
                     </Link>
                   </div>
 
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {categoryTools.slice(0, 10).map((tool) => (
                       <ToolCard key={tool.slug} tool={tool} />
                     ))}

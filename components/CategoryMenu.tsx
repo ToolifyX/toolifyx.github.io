@@ -26,21 +26,21 @@ export default function CategoryMenu({ activeCategory, onCategoryChange }: Categ
   };
 
   return (
-    <div className="flex overflow-x-auto pb-2 no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0">
-      <div className="flex space-x-1">
+    <div className="flex overflow-x-auto pb-4 no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0">
+      <div className="flex space-x-2">
         {categories.map((cat) => (
           <button
             key={cat.id}
             onClick={() => onCategoryChange(cat.id)}
             className={`
-              whitespace-nowrap px-3 py-1.5 rounded-lg text-sm font-medium transition-all
+              whitespace-nowrap px-6 py-3 rounded-2xl text-base font-black transition-all border-2
               ${activeCategory === cat.id
-                ? 'bg-black text-white shadow-sm'
-                : 'bg-muted/50 text-muted-foreground hover:bg-muted'}
+                ? 'bg-black text-white border-black shadow-lg scale-105 z-10'
+                : 'bg-card text-muted-foreground border-transparent hover:border-muted-foreground/20'}
             `}
           >
             {cat.label}
-            <span className={`ml-1.5 text-[10px] font-bold ${activeCategory === cat.id ? 'text-gray-400' : 'text-gray-400'}`}>
+            <span className={`ml-2 text-xs font-bold opacity-60`}>
               {getCount(cat.id)}
             </span>
           </button>
