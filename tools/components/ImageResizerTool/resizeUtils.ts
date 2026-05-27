@@ -44,7 +44,7 @@ export const calculateNewDimensions = (
     }
   }
 
-  if (settings.noEnlarge) {
+  if (settings.mode === 'dimensions' && settings.noEnlarge) {
     if (newWidth > originalWidth) {
       const ratio = originalWidth / newWidth;
       newWidth = originalWidth;

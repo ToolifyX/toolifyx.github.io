@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { ResizeSettings } from './resizeUtils';
-import { Maximize2, Percent, Settings2, Download, Archive, Loader2 } from 'lucide-react';
+import { Maximize2, Percent, Settings2, Download, Archive, Loader2, Check } from 'lucide-react';
 
 interface ResizeControlsProps {
   settings: ResizeSettings;
@@ -98,37 +98,39 @@ export default function ResizeControls({ settings, setSettings, onDownloadAll, i
           )}
         </div>
 
-        {/* Global Options */}
-        <div className="space-y-4 pt-4 border-t">
-          <label className="text-[11px] font-bold text-muted-foreground uppercase">Global Options</label>
-          <div className="space-y-3">
-            <label className="flex items-center gap-3 group cursor-pointer">
-              <div className="relative flex items-center">
-                <input
-                  type="checkbox"
-                  checked={settings.maintainAspectRatio}
-                  onChange={(e) => updateSetting('maintainAspectRatio', e.target.checked)}
-                  className="peer h-5 w-5 appearance-none rounded-lg bg-muted border-none checked:bg-primary transition-all cursor-pointer"
-                />
-                <Settings2 className="absolute w-3 h-3 text-white opacity-0 peer-checked:opacity-100 left-1 pointer-events-none transition-opacity" />
-              </div>
-              <span className="text-xs font-bold text-foreground group-hover:text-primary transition-colors">Maintain aspect ratio</span>
-            </label>
+        {/* Global Options - Only shown in Dimensions mode */}
+        {settings.mode === 'dimensions' && (
+          <div className="space-y-4 pt-4 border-t">
+            <label className="text-[11px] font-bold text-muted-foreground uppercase">Global Options</label>
+            <div className="space-y-3">
+              <label className="flex items-center gap-3 group cursor-pointer">
+                <div className="relative flex items-center">
+                  <input
+                    type="checkbox"
+                    checked={settings.maintainAspectRatio}
+                    onChange={(e) => updateSetting('maintainAspectRatio', e.target.checked)}
+                    className="peer h-5 w-5 appearance-none rounded-lg bg-muted border-none checked:bg-primary transition-all cursor-pointer"
+                  />
+                  <Check className="absolute w-3 h-3 text-white opacity-0 peer-checked:opacity-100 left-1 pointer-events-none transition-opacity" />
+                </div>
+                <span className="text-xs font-bold text-foreground group-hover:text-primary transition-colors">Maintain aspect ratio</span>
+              </label>
 
-            <label className="flex items-center gap-3 group cursor-pointer">
-              <div className="relative flex items-center">
-                <input
-                  type="checkbox"
-                  checked={settings.noEnlarge}
-                  onChange={(e) => updateSetting('noEnlarge', e.target.checked)}
-                  className="peer h-5 w-5 appearance-none rounded-lg bg-muted border-none checked:bg-primary transition-all cursor-pointer"
-                />
-                <Settings2 className="absolute w-3 h-3 text-white opacity-0 peer-checked:opacity-100 left-1 pointer-events-none transition-opacity" />
-              </div>
-              <span className="text-xs font-bold text-foreground group-hover:text-primary transition-colors">Do not enlarge if smaller</span>
-            </label>
+              <label className="flex items-center gap-3 group cursor-pointer">
+                <div className="relative flex items-center">
+                  <input
+                    type="checkbox"
+                    checked={settings.noEnlarge}
+                    onChange={(e) => updateSetting('noEnlarge', e.target.checked)}
+                    className="peer h-5 w-5 appearance-none rounded-lg bg-muted border-none checked:bg-primary transition-all cursor-pointer"
+                  />
+                  <Check className="absolute w-3 h-3 text-white opacity-0 peer-checked:opacity-100 left-1 pointer-events-none transition-opacity" />
+                </div>
+                <span className="text-xs font-bold text-foreground group-hover:text-primary transition-colors">Do not enlarge if smaller</span>
+              </label>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Export Format */}
         <div className="space-y-4 pt-4 border-t">
