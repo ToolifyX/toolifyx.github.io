@@ -42,27 +42,27 @@ export default function ToolPage({ params }: Props) {
     .slice(0, 4);
 
   return (
-    <div className="max-w-6xl mx-auto space-y-10 pb-20 px-4">
+    <div className="max-w-6xl mx-auto space-y-8 pb-20 px-4">
       {/* Header & Breadcrumb */}
-      <div className="space-y-4 pt-8">
-        <nav className="flex items-center space-x-2 text-[13px] text-muted-foreground font-medium">
+      <div className="space-y-3 pt-6">
+        <nav className="flex items-center space-x-2 text-[12px] text-muted-foreground font-medium">
           <Link href="/" className="hover:text-foreground transition-colors">Home</Link>
           <span className="opacity-40">/</span>
           <span className="text-foreground">{tool.title}</span>
         </nav>
 
-        <div className="flex items-end gap-5">
-          <div className="space-y-1.5 flex-1">
-            <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground leading-none">
+        <div className="flex items-start md:items-end gap-5">
+          <div className="space-y-1 flex-1">
+            <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground leading-none">
               {tool.title}
             </h1>
-            <p className="text-[15px] md:text-lg text-muted-foreground font-medium leading-relaxed max-w-2xl">
+            <p className="text-[14px] md:text-[16px] text-muted-foreground font-medium leading-relaxed max-w-2xl">
               {tool.description}
             </p>
           </div>
           <div className="hidden md:block">
-             <div className="w-16 h-16 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
-                <DynamicIcon name={tool.icon || 'HelpCircle'} size={32} strokeWidth={2} />
+             <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+                <DynamicIcon name={tool.icon || 'HelpCircle'} size={24} strokeWidth={2} />
              </div>
           </div>
         </div>
@@ -89,29 +89,29 @@ export default function ToolPage({ params }: Props) {
       </div>
 
       {/* Instructions & FAQ (Footer Columns) */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-12 pt-8 border-t">
-        <div className="md:col-span-8 space-y-8">
-          <section className="space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-12 pt-10 border-t">
+        <div className="md:col-span-8 space-y-10">
+          <section className="space-y-6">
             <h2 className="text-xl font-bold tracking-tight">How to use {tool.title}</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {(seo?.howToUse || ["Input your files or text", "Adjust any specific settings", "Download or copy result"]).map((step, i) => (
-                <div key={i} className="flex gap-4 p-4 rounded-xl border bg-muted/30">
-                  <span className="text-lg font-bold text-primary opacity-50">{String(i + 1).padStart(2, '0')}</span>
-                  <p className="text-[14px] text-muted-foreground font-medium leading-snug">{step}</p>
+                <div key={i} className="flex gap-4 p-5 rounded-xl border border-border/50 bg-muted/30 hover:bg-background hover:shadow-sm transition-all duration-300">
+                  <span className="text-xl font-bold text-primary/40">{String(i + 1).padStart(2, '0')}</span>
+                  <p className="text-[14px] text-muted-foreground font-medium leading-relaxed">{step}</p>
                 </div>
               ))}
             </div>
           </section>
 
-          <section className="space-y-4">
+          <section className="space-y-6">
             <h2 className="text-xl font-bold tracking-tight">Frequently Asked Questions</h2>
-            <div className="space-y-4">
+            <div className="grid gap-4">
               {(seo?.faqs || [
                 { question: "Is my data safe?", answer: "Yes, all processing happens locally in your browser. No data is ever uploaded to our servers." },
                 { question: "Do I need to pay?", answer: "No, ToolifyX is completely free to use without any limitations." }
               ]).map((faq, i) => (
-                <div key={i} className="space-y-2">
-                  <h3 className="text-[15px] font-semibold text-foreground">{faq.question}</h3>
+                <div key={i} className="p-5 rounded-xl border border-border/50 bg-muted/30">
+                  <h3 className="text-[15px] font-bold text-foreground mb-2">{faq.question}</h3>
                   <p className="text-[14px] text-muted-foreground leading-relaxed">{faq.answer}</p>
                 </div>
               ))}

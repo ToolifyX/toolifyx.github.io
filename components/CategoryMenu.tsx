@@ -27,21 +27,30 @@ export default function CategoryMenu({ activeCategory, onCategoryChange }: Categ
 
   return (
     <div className="flex overflow-x-auto pb-4 no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0">
-      <div className="flex items-center space-x-1">
-        {categories.map((cat) => (
-          <button
-            key={cat.id}
-            onClick={() => onCategoryChange(cat.id)}
-            className={`
-              whitespace-nowrap px-4 py-1.5 rounded-full text-[13px] font-semibold transition-all
-              ${activeCategory === cat.id
-                ? 'bg-primary/10 text-primary'
-                : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'}
-            `}
-          >
-            {cat.label}
-          </button>
-        ))}
+      <div className="flex items-center gap-2 p-1 bg-muted/30 rounded-2xl border">
+        {categories.map((cat) => {
+          const isActive = activeCategory === cat.id;
+          return (
+            <button
+              key={cat.id}
+              onClick={() => onCategoryChange(cat.id)}
+              className={`
+                relative flex items-center gap-2 px-4 py-2 rounded-xl text-[13px] font-bold transition-all duration-200
+                ${isActive
+                  ? 'bg-background text-foreground shadow-sm ring-1 ring-border'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'}
+              `}
+            >
+              <span className="relative z-10">{cat.label}</span>
+              <span className={`
+                text-[10px] px-1.5 py-0.5 rounded-md font-black
+                ${isActive ? 'bg-primary/10 text-primary' : 'bg-muted-foreground/10 text-muted-foreground'}
+              `}>
+                {getCount(cat.id)}
+              </span>
+            </button>
+          );
+        })}
       </div>
     </div>
   );
