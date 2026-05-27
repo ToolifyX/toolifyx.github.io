@@ -1,89 +1,103 @@
-Refactor Image Converter into multiple specific tools.
+Refactor the UI color system to improve contrast by using a light gray background instead of pure white.
 
 GOAL
 
-Replace generic "Image Converter" with specific conversion tools for better UX and SEO.
+Make UI components (cards, panels, tools) stand out more by:
 
-TOOLS TO CREATE
+- changing main background to gray tone
+- keeping components white
+- improving visual hierarchy
 
-Create separate tools:
+GLOBAL BACKGROUND
 
-1. PNG to JPG
-2. JPG to PNG
-3. JPG to WebP
-4. WebP to JPG
-5. PNG to WebP
-6. WebP to PNG
+Update main layout:
 
-OPTIONAL TOOLS
+- Replace:
+  bg-white
 
-7. HEIC to JPG
-8. AVIF to JPG
-9. SVG to PNG
+- With:
+  bg-gray-50 or bg-gray-100
 
-IMPLEMENTATION
+CONTAINER
 
-Each tool:
+Main container:
 
-- Has its own route:
-/tools/png-to-jpg
-/tools/jpg-to-png
-...
+- max-w-screen-xl mx-auto
+- px-3 py-3
 
-- Has its own component
+CARDS / PANELS
 
-UI
+All tool cards, panels:
 
-Reuse same layout:
+- bg-white
+- border border-gray-200
+- rounded-lg
 
-LEFT:
-- upload
-- file list
+Optional:
+- shadow-sm (very light)
 
-RIGHT:
-- result
-- download
+SPLIT LAYOUT PANELS
 
-LOGIC
+LEFT / RIGHT panels:
 
-Use canvas:
+- bg-white
+- border border-gray-200
+- rounded-lg
+- p-3
 
-- draw image
-- export with target format
+TOOL GRID ITEMS
 
-Example:
+ToolCard:
 
-canvas.toBlob("image/jpeg", quality)
+- bg-white
+- hover:bg-gray-50
+- transition
 
-FILE NAMING
+CATEGORY MENU
 
-input.png → output.jpg
+- background: transparent
+- active tab:
+  bg-white + border
 
-SEO
+SEARCH BAR
 
-Each tool must have:
+- bg-white
+- border border-gray-300
+- focus:ring-1
 
-Title:
-"PNG to JPG Converter – Free Online Tool"
+TYPOGRAPHY
 
-Description:
-"Convert PNG images to JPG instantly in your browser. No upload required."
+- title: text-gray-900
+- description: text-gray-500
 
-CONFIG UPDATE
+DIVIDERS
 
-Update tools/config.ts:
+Use:
 
-- add all tools
-- category: "image"
+- border-gray-200
 
-REMOVE OLD TOOL
+RESULT SCREEN
 
-Delete generic "Image Converter"
+- keep white card on gray background
+- emphasize success state
+
+VISUAL RESULT
+
+- Background: subtle gray
+- Components: white
+- Clean, modern, minimal
+
+CONSTRAINTS
+
+- Do NOT use dark colors
+- Keep minimal aesthetic
+- Avoid heavy shadows
 
 OUTPUT
 
-Return:
+Return updated:
 
-1. all new tool components
-2. updated config.ts
-3. reusable conversion helper
+- layout.tsx
+- global styles (if any)
+- ToolCard
+- panels (left/right)

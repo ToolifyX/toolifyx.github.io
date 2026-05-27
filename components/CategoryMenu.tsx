@@ -27,7 +27,7 @@ export default function CategoryMenu({ activeCategory, onCategoryChange }: Categ
 
   return (
     <div className="flex overflow-x-auto pb-4 no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0">
-      <div className="flex items-center gap-2 p-1 bg-muted/30 rounded-2xl border">
+      <div className="flex items-center gap-2 p-1 bg-card rounded-2xl border border-border/60 shadow-sm">
         {categories.map((cat) => {
           const isActive = activeCategory === cat.id;
           return (

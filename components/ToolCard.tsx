@@ -10,7 +10,7 @@ interface ToolCardProps {
 export default function ToolCard({ tool }: ToolCardProps) {
   return (
     <Link href={`/tools/${tool.slug}`} title={tool.title}>
-      <div className="h-full p-4 border border-border/50 rounded-xl bg-muted/30 hover:bg-background hover:border-primary/30 hover:shadow-sm hover:shadow-primary/5 transition-all duration-300 flex flex-col group relative overflow-hidden">
+      <div className="h-full p-4 border border-border/60 rounded-xl bg-card hover:border-primary/40 hover:shadow-md hover:shadow-primary/5 transition-all duration-300 flex flex-col group relative overflow-hidden">
         <div className="flex items-start gap-4">
           <div className="w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0 transition-all group-hover:bg-primary group-hover:text-primary-foreground group-hover:scale-110">
             <DynamicIcon name={tool.icon || 'HelpCircle'} size={20} strokeWidth={2} />

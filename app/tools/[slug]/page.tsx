@@ -95,7 +95,7 @@ export default function ToolPage({ params }: Props) {
             <h2 className="text-xl font-bold tracking-tight">How to use {tool.title}</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {(seo?.howToUse || ["Input your files or text", "Adjust any specific settings", "Download or copy result"]).map((step, i) => (
-                <div key={i} className="flex gap-4 p-5 rounded-xl border border-border/50 bg-muted/30 hover:bg-background hover:shadow-sm transition-all duration-300">
+                <div key={i} className="flex gap-4 p-5 rounded-xl border border-border/60 bg-card hover:border-primary/20 hover:shadow-sm transition-all duration-300">
                   <span className="text-xl font-bold text-primary/40">{String(i + 1).padStart(2, '0')}</span>
                   <p className="text-[14px] text-muted-foreground font-medium leading-relaxed">{step}</p>
                 </div>
@@ -110,7 +110,7 @@ export default function ToolPage({ params }: Props) {
                 { question: "Is my data safe?", answer: "Yes, all processing happens locally in your browser. No data is ever uploaded to our servers." },
                 { question: "Do I need to pay?", answer: "No, ToolifyX is completely free to use without any limitations." }
               ]).map((faq, i) => (
-                <div key={i} className="p-5 rounded-xl border border-border/50 bg-muted/30">
+                <div key={i} className="p-5 rounded-xl border border-border/60 bg-card">
                   <h3 className="text-[15px] font-bold text-foreground mb-2">{faq.question}</h3>
                   <p className="text-[14px] text-muted-foreground leading-relaxed">{faq.answer}</p>
                 </div>
