@@ -2,6 +2,7 @@ import { tools, getToolBySlug } from '@/tools/config';
 import { seoData } from '@/tools/seo';
 import ToolRenderer from '@/components/ToolRenderer';
 import ToolCard from '@/components/ToolCard';
+import { DynamicIcon } from '@/components/DynamicIcon';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
@@ -90,9 +91,14 @@ export default function ToolPage({ params }: Props) {
       </nav>
 
       {/* Header - Compact */}
-      <div className="space-y-1">
-        <h1 className="text-2xl md:text-3xl font-black tracking-tight">{tool.title}</h1>
-        <p className="text-sm text-muted-foreground">{tool.description}</p>
+      <div className="flex items-center space-x-3">
+        <div className="p-2 md:p-3 rounded-xl bg-primary/10 text-primary">
+          <DynamicIcon name={tool.icon || 'HelpCircle'} size={24} strokeWidth={2.5} />
+        </div>
+        <div className="space-y-0.5">
+          <h1 className="text-2xl md:text-3xl font-black tracking-tight">{tool.title}</h1>
+          <p className="text-sm text-muted-foreground">{tool.description}</p>
+        </div>
       </div>
 
       {/* Tool Main Area */}

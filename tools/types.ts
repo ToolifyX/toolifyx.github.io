@@ -6,4 +6,5 @@ export interface Tool {
   description: string;
   component: string;
   category: ToolCategory;
+  icon?: string;
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Tool } from '@/tools/types';
+import { DynamicIcon } from './DynamicIcon';
 
 interface ToolCardProps {
   tool: Tool;
@@ -9,17 +10,22 @@ interface ToolCardProps {
 export default function ToolCard({ tool }: ToolCardProps) {
   return (
     <Link href={`/tools/${tool.slug}`} title={tool.title}>
-      <div className="h-full p-3 border rounded-lg bg-card hover:border-primary hover:shadow-sm transition-all flex flex-col justify-between space-y-1">
-        <div className="flex flex-col">
-          <h3 className="text-sm font-semibold truncate group-hover:text-primary transition-colors">
-            {tool.title}
-          </h3>
+      <div className="h-full p-3 border rounded-lg bg-card hover:border-primary hover:shadow-sm transition-all flex flex-col justify-between space-y-2 group">
+        <div className="flex flex-col space-y-1.5">
+          <div className="flex items-center space-x-2">
+            <div className="p-1.5 rounded-md bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+              <DynamicIcon name={tool.icon || 'HelpCircle'} size={16} strokeWidth={2.5} />
+            </div>
+            <h3 className="text-sm font-semibold truncate group-hover:text-primary transition-colors">
+              {tool.title}
+            </h3>
+          </div>
           <p className="text-xs text-muted-foreground line-clamp-1">
             {tool.description}
           </p>
         </div>
         <div className="flex items-center justify-between mt-1">
-           <span className="text-[10px] font-medium text-primary uppercase tracking-tighter opacity-70">
+           <span className="text-[10px] font-bold text-muted-foreground/60 uppercase tracking-tighter">
             {tool.category}
           </span>
           <svg

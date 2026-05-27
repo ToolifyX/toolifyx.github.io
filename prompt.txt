@@ -1,84 +1,81 @@
-Enhance the homepage of this Next.js tool platform by adding a tool search system.
-
+Upgrade all IMAGE tools to support multiple file uploads with limits.
 GOAL
 
-Allow users to quickly find tools by typing keywords.
+Allow users to upload multiple images while preventing performance issues.
+REQUIREMENTS
 
-FEATURES
+1. MULTI FILE INPUT
 
-1. Search input (top of homepage)
+- Use:
+  <input type="file" multiple accept="image/*" />
 
-- Placeholder: "Search tools..."
-- Controlled input (useState)
-- Real-time filtering
+- Store files in state:
+  const [files, setFiles] = useState<File[]>([])
+2. LIMIT RULES
 
-2. SEARCH LOGIC
+Implement:
 
-Filter tools from tools/config.ts based on:
+- Max files: 5
+- Max file size: 5MB per file
+- Total size limit: 20MB
+3. VALIDATION
 
-- tool.title
-- tool.slug
-- tool.description
+On file selection:
 
-Case-insensitive matching
+- Reject files if:
+  - too many files
+  - file too large
+  - unsupported type
 
-3. COMBINE WITH CATEGORY FILTER
+- Show error messages:
+  - "Max 5 files allowed"
+  - "File too large (max 5MB)"
+  - "Invalid file type"
+4. FILE PREVIEW
 
-- If category selected → filter by category first
-- Then apply search filter
+- Show list of selected files:
+  - file name
+  - file size (KB/MB)
 
-4. UI BEHAVIOR
+- Optional:
+  - image thumbnail preview
+5. REMOVE FILE
 
-- Show filtered tools list
-- If no results:
-  → show "No tools found"
+- Add remove button per file
+- Allow clearing all files
+6. PROCESSING
 
-5. OPTIONAL UX IMPROVEMENTS
+- Loop through files:
 
-- Debounce input (optional)
-- Highlight matched keyword (optional)
-- Clear button (× icon)
+for (const file of files) {
+  // process using canvas
+}
+7. UX
 
-6. COMPONENT STRUCTURE
+- Show loading state
+- Disable button if no file
+- Show result per file OR batch result
+8. REUSABLE COMPONENT
 
 Create:
 
-/components/ToolSearch.tsx
+/components/ImageUploader.tsx
 
-- input field
-- search state
+Props:
+- maxFiles
+- maxSize
+- onChange(files)
+9. INTEGRATION
 
-7. HOMEPAGE UPDATE
+Update all image tools to use ImageUploader
+10. ERROR HANDLING
 
-Update /app/page.tsx:
-
-- import ToolSearch
-- maintain state:
-  - searchQuery
-  - selectedCategory
-
-- filter tools like:
-
-tools
-  .filter(byCategory)
-  .filter(bySearch)
-
-8. TAILWIND UI
-
-Search input:
-
-- w-full border rounded-lg p-3
-- focus:outline-none focus:ring-2
-
-CONSTRAINTS
-
-- No backend
-- Must work with static export
-- Keep performance good (lightweight)
-
+- Do not crash if invalid files
+- Always show feedback
 OUTPUT
 
 Return:
 
-1. ToolSearch.tsx
-2. Updated homepage (page.tsx)
+1. ImageUploader.tsx
+2. Example usage in ImageCompressor
+3. Updated logic for multi-file processing
