@@ -59,6 +59,15 @@ export default function ImageResizer() {
     setInitialImages(prev => [...prev, ...newInfos]);
   };
 
+  const handleRemoveImage = (id: string) => {
+    setInitialImages(prev => {
+      const filtered = prev.filter(img => img.id !== id);
+      const removed = prev.find(img => img.id === id);
+      if (removed) URL.revokeObjectURL(removed.originalUrl);
+      return filtered;
+    });
+  };
+
   const clearImages = () => {
     initialImages.forEach(img => URL.revokeObjectURL(img.originalUrl));
     setInitialImages([]);
@@ -159,6 +168,7 @@ export default function ImageResizer() {
             images={images}
             settings={settings}
             onDownload={handleDownload}
+            onRemove={handleRemoveImage}
           />
         </div>
 

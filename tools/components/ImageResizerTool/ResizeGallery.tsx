@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { ResizedImage } from './useBatchResizeEngine';
-import { Loader2, Download, FileImage, ArrowRight } from 'lucide-react';
+import { Loader2, Download, FileImage, ArrowRight, Trash2 } from 'lucide-react';
 import { formatBytes } from '@/lib/utils';
 import { ResizeSettings, calculateNewDimensions } from './resizeUtils';
 
@@ -10,9 +10,10 @@ interface ResizeGalleryProps {
   images: ResizedImage[];
   settings: ResizeSettings;
   onDownload: (img: ResizedImage) => void;
+  onRemove: (id: string) => void;
 }
 
-export default function ResizeGallery({ images, settings, onDownload }: ResizeGalleryProps) {
+export default function ResizeGallery({ images, settings, onDownload, onRemove }: ResizeGalleryProps) {
   if (images.length === 0) {
     return (
       <div className="h-full flex flex-col items-center justify-center text-muted-foreground p-12">
@@ -40,6 +41,15 @@ export default function ResizeGallery({ images, settings, onDownload }: ResizeGa
                 alt={img.file.name}
                 className="max-w-full max-h-full object-contain opacity-100"
               />
+
+              {/* Delete Button - Top Right Overlay */}
+              <button
+                onClick={() => onRemove(img.id)}
+                className="absolute top-2 right-2 p-2 bg-black/50 hover:bg-destructive text-white rounded-xl backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all z-10"
+                title="Remove image"
+              >
+                <Trash2 className="w-3.5 h-3.5" />
+              </button>
 
               {/* Resolution Badge */}
               <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between pointer-events-none">
