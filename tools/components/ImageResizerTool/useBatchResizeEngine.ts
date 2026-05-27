@@ -12,6 +12,8 @@ export interface ResizedImage extends ImageInfo {
 export function useBatchResizeEngine(initialImages: ImageInfo[], settings: ResizeSettings) {
   const [images, setImages] = useState<ResizedImage[]>([]);
   const imageElements = useRef<Map<string, HTMLImageElement>>(new Map());
+  const processingRef = useRef<Set<string>>(new Set());
+  const allGeneratedUrls = useRef<Set<string>>(new Set());
 
   // Initialize or update images when initialImages changes
   useEffect(() => {
@@ -28,35 +30,46 @@ export function useBatchResizeEngine(initialImages: ImageInfo[], settings: Resiz
           isProcessing: false
         };
       });
+
+      // Cleanup removed images from imageElements cache
+      const initialIds = new Set(initialImages.map(i => i.id));
+      Array.from(imageElements.current.keys()).forEach(id => {
+        if (!initialIds.has(id)) {
+          imageElements.current.delete(id);
+        }
+      });
+
       return newImages;
     });
   }, [initialImages]);
 
-  const processImage = useCallback(async (id: string, currentSettings: ResizeSettings) => {
-    const imgInfo = images.find(img => img.id === id);
-    if (!imgInfo) return;
+  const processSingleImage = useCallback(async (imgInfo: ResizedImage, currentSettings: ResizeSettings) => {
+    if (processingRef.current.has(imgInfo.id)) return;
+    processingRef.current.add(imgInfo.id);
 
-    setImages(prev => prev.map(img => img.id === id ? { ...img, isProcessing: true } : img));
+    setImages(prev => prev.map(img => img.id === imgInfo.id ? { ...img, isProcessing: true } : img));
 
     try {
-      let imgElement = imageElements.current.get(id);
+      let imgElement = imageElements.current.get(imgInfo.id);
       if (!imgElement) {
         imgElement = await new Promise<HTMLImageElement>((resolve, reject) => {
           const img = new Image();
+          img.crossOrigin = "anonymous";
           img.onload = () => resolve(img);
           img.onerror = reject;
           img.src = imgInfo.originalUrl;
         });
-        imageElements.current.set(id, imgElement);
+        imageElements.current.set(imgInfo.id, imgElement);
       }
 
       const result = await resizeImage(imgElement, currentSettings);
+      allGeneratedUrls.current.add(result.url);
 
       setImages(prev => prev.map(img => {
-        if (img.id === id) {
-          // Revoke old URL if it's not the original one
+        if (img.id === imgInfo.id) {
           if (img.resizedUrl !== img.originalUrl) {
             URL.revokeObjectURL(img.resizedUrl);
+            allGeneratedUrls.current.delete(img.resizedUrl);
           }
           return {
             ...img,
@@ -70,34 +83,33 @@ export function useBatchResizeEngine(initialImages: ImageInfo[], settings: Resiz
         return img;
       }));
     } catch (error) {
-      console.error(`Error processing image ${id}:`, error);
-      setImages(prev => prev.map(img => img.id === id ? { ...img, isProcessing: false } : img));
+      console.error(`Error processing image ${imgInfo.id}:`, error);
+      setImages(prev => prev.map(img => img.id === imgInfo.id ? { ...img, isProcessing: false } : img));
+    } finally {
+      processingRef.current.delete(imgInfo.id);
     }
-  }, [images]);
+  }, []);
 
-  // Re-process all images when settings change
+  // Re-process all images when settings change or new images are added
   useEffect(() => {
     if (images.length === 0) return;
 
     const timeoutId = setTimeout(() => {
       images.forEach(img => {
-        processImage(img.id, settings);
+        processSingleImage(img, settings);
       });
-    }, 400); // Debounce resizing
+    }, 400);
 
     return () => clearTimeout(timeoutId);
-  }, [settings, images.length, processImage]);
+  }, [settings, images.length, processSingleImage]);
 
   // Cleanup URLs on unmount
   useEffect(() => {
     return () => {
-      images.forEach(img => {
-        if (img.resizedUrl !== img.originalUrl) {
-          URL.revokeObjectURL(img.resizedUrl);
-        }
-      });
+      allGeneratedUrls.current.forEach(url => URL.revokeObjectURL(url));
+      allGeneratedUrls.current.clear();
     };
-  }, [images]);
+  }, []);
 
   return {
     images,

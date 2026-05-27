@@ -18,7 +18,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import ImageUploader from '@/components/ImageUploader';
 import ResizeGallery from './ImageResizerTool/ResizeGallery';
 import ResizeControls from './ImageResizerTool/ResizeControls';
-import { useBatchResizeEngine } from './ImageResizerTool/useBatchResizeEngine';
+import { useBatchResizeEngine, ResizedImage } from './ImageResizerTool/useBatchResizeEngine';
 import { ResizeSettings, ImageInfo } from './ImageResizerTool/resizeUtils';
 import { downloadFile } from '@/lib/utils';
 import { downloadAllAsZip } from '@/lib/download';
@@ -43,7 +43,7 @@ export default function ImageResizer() {
 
   const handleFileChange = (files: File[]) => {
     const newInfos = files.map(file => ({
-      id: Math.random().toString(36).substr(2, 9),
+      id: Math.random().toString(36).substring(2, 11),
       file,
       originalUrl: URL.createObjectURL(file),
       originalWidth: 0,
@@ -72,7 +72,7 @@ export default function ImageResizer() {
     setInitialImages([]);
   };
 
-  const handleDownload = (img: any) => {
+  const handleDownload = (img: ResizedImage) => {
     if (img.resizedBlob) {
       downloadFile(img.resizedBlob, `resized_${img.file.name}`);
     }
