@@ -1,15 +1,14 @@
-/** @type {import('next').NextConfig} */
-const isProd = process.env.NODE_ENV === 'production';
+const isProd = process.env.NODE_ENV === "production";
 
+/** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
+  output: "export", // ⚠️ CRITICAL: static export mode
+  trailingSlash: true,
   images: {
-    unoptimized: true,
+    unoptimized: true, // required for GitHub Pages
   },
-  // If you are deploying to username.github.io, you can keep basePath as ''
-  // If you are deploying to username.github.io/repo-name, set basePath to '/repo-name'
-  basePath: isProd ? '' : '',
-  assetPrefix: isProd ? '' : '',
+  basePath: isProd ? "/toolifyx.github.io" : "",
+  assetPrefix: isProd ? "/toolifyx.github.io/" : "",
 };
 
 module.exports = nextConfig;
