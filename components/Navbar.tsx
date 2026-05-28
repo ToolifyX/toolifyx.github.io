@@ -83,32 +83,34 @@ export default function Navbar() {
 
               {/* Grid Dropdown Menu */}
               <div className="absolute right-0 mt-0 w-screen max-w-5xl bg-background border border-border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                <div className="p-6 max-h-[32rem] overflow-y-auto">
+                <div className="p-4 max-h-[32rem] overflow-y-auto">
+                  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                   {Object.entries(otherToolsByCategory).map(([category, categoryTools]) => (
-                    <div key={category} className="mb-6 last:mb-0">
-                      <div className="px-3 py-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+                    <div key={category} className="rounded-md border border-border/60 bg-background/60 p-2">
+                      <div className="px-2 py-1 text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">
                         {categoryLabels[category] || category}
                       </div>
-                      <div className="grid grid-cols-3 gap-4">
+                      <div className="space-y-0.5">
                         {categoryTools.map((tool) => (
                           <Link
                             key={tool.slug}
                             href={`/tools/${tool.slug}`}
-                            className={`flex flex-col items-center gap-3 p-4 rounded-lg transition-all text-center text-sm ${
+                            className={`flex items-center gap-2 px-2 py-1.5 rounded-md transition-colors text-sm ${
                               isToolActive(tool.slug)
                                 ? 'bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400'
                                 : 'text-foreground hover:bg-accent'
                             }`}
                           >
-                            <div className="w-8 h-8 flex items-center justify-center">
-                              {tool.icon && <DynamicIcon name={tool.icon} className="w-6 h-6" strokeWidth={1.5} />}
+                            <div className="w-5 h-5 flex items-center justify-center shrink-0">
+                              {tool.icon && <DynamicIcon name={tool.icon} className="w-4 h-4" strokeWidth={1.5} />}
                             </div>
-                            <span className="font-medium leading-tight text-sm">{tool.title}</span>
+                            <span className="font-medium leading-tight truncate">{tool.title}</span>
                           </Link>
                         ))}
                       </div>
                     </div>
                   ))}
+                  </div>
                 </div>
               </div>
             </div>
@@ -152,22 +154,22 @@ export default function Navbar() {
                       <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider py-1">
                         {categoryLabels[category] || category}
                       </div>
-                      <div className="grid grid-cols-4 gap-3">
+                      <div className="grid grid-cols-3 gap-2">
                         {categoryTools.map((tool) => (
                           <Link
                             key={tool.slug}
                             href={`/tools/${tool.slug}`}
-                            className={`flex flex-col items-center gap-2 p-3 rounded-lg transition-all text-center text-xs ${
+                            className={`flex items-center gap-1.5 px-2 py-1.5 rounded-md transition-colors text-xs ${
                               isToolActive(tool.slug)
                                 ? 'bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400'
                                 : 'text-foreground hover:bg-accent/50'
                             }`}
                             onClick={() => setMobileMenuOpen(false)}
                           >
-                            <div className="w-6 h-6 flex items-center justify-center">
-                              {tool.icon && <DynamicIcon name={tool.icon} className="w-5 h-5" strokeWidth={1.5} />}
+                            <div className="w-4 h-4 flex items-center justify-center shrink-0">
+                              {tool.icon && <DynamicIcon name={tool.icon} className="w-3.5 h-3.5" strokeWidth={1.5} />}
                             </div>
-                            <span className="font-medium leading-tight text-xs">{tool.title}</span>
+                            <span className="font-medium leading-tight truncate">{tool.title}</span>
                           </Link>
                         ))}
                       </div>
