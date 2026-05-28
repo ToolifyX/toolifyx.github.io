@@ -1,92 +1,91 @@
-# 🚀 PROMPT: Update Project Config for GitHub Pages (ToolifyX)
+Add quick access tool links to the Top Navigation Bar next to the logo.
 
-You are working on a React (Vite-based) project called **ToolifyX**.
+GOAL
 
-## 🎯 Task
+Expose the most important tools directly in the header to:
 
-Update the project configuration to support **GitHub Pages deployment** and ensure all routes, assets, and build outputs work correctly in a static hosting environment.
+- increase click-through rate
+- reduce time to find tools
+- mimic iLoveIMG-style navigation
 
----
+TOOLS TO ADD (LEFT → RIGHT)
 
-## ⚙️ Required Changes
+Add these links next to logo:
 
-### 1. Vite Base Path Configuration
+- Image Compressor
+- Image Resizer
+- Image Cropper
+- Convert to JPG
+- PDF Merge
+- PDF Split
 
-Update `vite.config.ts`:
+ROUTES
 
-* Set correct `base` path for GitHub Pages:
+Map each tool to its route:
 
-  * Format: `"/<main>/"`
-* Ensure assets are correctly resolved in production build
+- /tools/image-compressor
+- /tools/image-resizer
+- /tools/image-cropper
+- /tools/convert-to-jpg
+- /tools/pdf-merge
+- /tools/pdf-split
 
----
+TOP BAR STRUCTURE
 
-### 2. Package.json Scripts
+[ LOGO ] 
+[ Image Compressor | Image Resizer | Image Cropper | Convert to JPG | PDF Merge | PDF Split ]
 
-Add or update deployment scripts:
+[ More Tools ▼ ]
 
-* `build`: production build
-* `predeploy`: runs build before deploy
-* `deploy`: uses `gh-pages` to publish `dist` folder
+UI REQUIREMENTS
 
-Ensure `gh-pages` is properly configured.
+- horizontal layout
+- text buttons (not icons)
+- spacing: gap-4 or gap-6
+- font: text-sm / font-medium
+- hover: underline or text-blue-600
+- active tool: highlight
 
----
+RESPONSIVE
 
-### 3. React Router Fix (IMPORTANT if used)
+Desktop:
+- show all tools inline
 
-If the project uses React Router:
+Tablet:
+- collapse into scrollable horizontal row
 
-* Replace `BrowserRouter` with `HashRouter`
-  OR
-* Configure fallback for SPA routing on GitHub Pages
+Mobile:
+- hide tools
+- move into dropdown (hamburger menu)
 
-Ensure routes do not break on refresh.
+MORE TOOLS DROPDOWN
 
----
+Keep "More Tools" dropdown:
 
-### 4. Static Asset Handling
+- show all other tools grouped by category
+- Image / PDF / Dev / Text
 
-Ensure:
+ACTIVE STATE
 
-* All images and assets use correct relative paths
-* No hardcoded absolute server paths (e.g. `/uploads`)
-* File uploads use browser APIs only (`FileReader`, `URL.createObjectURL`)
+If current route matches tool:
 
----
+- highlight text (blue)
+- optional underline
 
-### 5. Build Output
+SCROLL BEHAVIOR
 
-Ensure build output is:
+- sticky top bar
+- always visible
 
-* `dist/` folder (Vite default)
-* Fully static and deployable
+DO NOT
 
----
+- do not overcrowd (>6 tools max)
+- do not use icons only (text is better for SEO)
 
-### 6. GitHub Pages Compatibility Checklist
+OUTPUT
 
-Make sure project:
+Return:
 
-* Works without backend
-* Loads correctly on refresh
-* Supports direct URL access
-* Has correct asset resolution
-
----
-
-## 🌐 Goal Result
-
-After changes:
-
-* Project can be deployed using `npm run deploy`
-* App runs correctly on:
-  `https://github.com/ToolifyX/toolifyx.github.io`
-* No broken routes or missing assets
-
----
-
-## 🧠 Important Constraint
-
-Do NOT introduce backend dependencies.
-Keep everything fully static and GitHub Pages compatible.
+1. Updated Header / Navbar component
+2. ToolLinks array config
+3. Responsive behavior implementation
