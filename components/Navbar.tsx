@@ -30,11 +30,15 @@ export default function Navbar() {
   const categoryLabels: Record<string, string> = {
     image: 'Image Tools',
     pdf: 'PDF Tools',
-    dev: 'Developer Tools',
+    dev: 'Dev Tools',
     text: 'Text Tools',
     design: 'Design Tools',
     utility: 'Utility Tools',
   };
+  const orderedCategories = ['image', 'pdf', 'dev', 'text', 'design', 'utility'];
+  const orderedOtherToolsByCategory = orderedCategories
+    .filter(category => otherToolsByCategory[category]?.length)
+    .map(category => [category, otherToolsByCategory[category]] as const);
 
   const isToolActive = (slug: string) => {
     return pathname === `/tools/${slug}`;
@@ -85,7 +89,7 @@ export default function Navbar() {
               <div className="absolute right-0 mt-0 w-screen max-w-5xl bg-background border border-border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                 <div className="p-4 max-h-[32rem] overflow-y-auto">
                   <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-                  {Object.entries(otherToolsByCategory).map(([category, categoryTools]) => (
+                  {orderedOtherToolsByCategory.map(([category, categoryTools]) => (
                     <div key={category} className="rounded-md border border-border/60 bg-background/60 p-2">
                       <div className="px-2 py-1 text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">
                         {categoryLabels[category] || category}
@@ -149,7 +153,7 @@ export default function Navbar() {
               {/* Mobile More Tools Submenu */}
               {moreToolsOpen && (
                 <div className="mt-3 ml-3 space-y-5 border-l-2 border-border pl-3">
-                  {Object.entries(otherToolsByCategory).map(([category, categoryTools]) => (
+                  {orderedOtherToolsByCategory.map(([category, categoryTools]) => (
                     <div key={category} className="space-y-3">
                       <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider py-1">
                         {categoryLabels[category] || category}
