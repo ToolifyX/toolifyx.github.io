@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ThemeToggle } from './ThemeToggle';
+import { DynamicIcon } from './DynamicIcon';
 import { QUICK_ACCESS_TOOLS } from '@/tools/quickAccessTools';
 import { tools } from '@/tools/config';
 import { ChevronDown, Menu, X } from 'lucide-react';
@@ -80,27 +81,32 @@ export default function Navbar() {
                 <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
               </button>
 
-              {/* Dropdown Menu */}
-              <div className="absolute right-0 mt-0 w-56 bg-background border border-border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                <div className="py-2">
+              {/* Grid Dropdown Menu */}
+              <div className="absolute right-0 mt-0 w-screen max-w-5xl bg-background border border-border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                <div className="p-6 max-h-[32rem] overflow-y-auto">
                   {Object.entries(otherToolsByCategory).map(([category, categoryTools]) => (
-                    <div key={category}>
-                      <div className="px-4 py-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                    <div key={category} className="mb-6 last:mb-0">
+                      <div className="px-3 py-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
                         {categoryLabels[category] || category}
                       </div>
-                      {categoryTools.map((tool) => (
-                        <Link
-                          key={tool.slug}
-                          href={`/tools/${tool.slug}`}
-                          className={`block px-4 py-2 text-sm transition-colors ${
-                            isToolActive(tool.slug)
-                              ? 'bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 font-medium'
-                              : 'text-foreground hover:bg-accent'
-                          }`}
-                        >
-                          {tool.title}
-                        </Link>
-                      ))}
+                      <div className="grid grid-cols-3 gap-4">
+                        {categoryTools.map((tool) => (
+                          <Link
+                            key={tool.slug}
+                            href={`/tools/${tool.slug}`}
+                            className={`flex flex-col items-center gap-3 p-4 rounded-lg transition-all text-center text-sm ${
+                              isToolActive(tool.slug)
+                                ? 'bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400'
+                                : 'text-foreground hover:bg-accent'
+                            }`}
+                          >
+                            <div className="w-8 h-8 flex items-center justify-center">
+                              {tool.icon && <DynamicIcon name={tool.icon} className="w-6 h-6" strokeWidth={1.5} />}
+                            </div>
+                            <span className="font-medium leading-tight text-sm">{tool.title}</span>
+                          </Link>
+                        ))}
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -140,26 +146,31 @@ export default function Navbar() {
 
               {/* Mobile More Tools Submenu */}
               {moreToolsOpen && (
-                <div className="mt-2 ml-3 space-y-2 border-l-2 border-border pl-3">
+                <div className="mt-3 ml-3 space-y-5 border-l-2 border-border pl-3">
                   {Object.entries(otherToolsByCategory).map(([category, categoryTools]) => (
-                    <div key={category} className="space-y-1">
+                    <div key={category} className="space-y-3">
                       <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider py-1">
                         {categoryLabels[category] || category}
                       </div>
-                      {categoryTools.map((tool) => (
-                        <Link
-                          key={tool.slug}
-                          href={`/tools/${tool.slug}`}
-                          className={`block px-2 py-1 text-sm rounded transition-colors ${
-                            isToolActive(tool.slug)
-                              ? 'bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 font-medium'
-                              : 'text-foreground hover:bg-accent/50'
-                          }`}
-                          onClick={() => setMobileMenuOpen(false)}
-                        >
-                          {tool.title}
-                        </Link>
-                      ))}
+                      <div className="grid grid-cols-4 gap-3">
+                        {categoryTools.map((tool) => (
+                          <Link
+                            key={tool.slug}
+                            href={`/tools/${tool.slug}`}
+                            className={`flex flex-col items-center gap-2 p-3 rounded-lg transition-all text-center text-xs ${
+                              isToolActive(tool.slug)
+                                ? 'bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400'
+                                : 'text-foreground hover:bg-accent/50'
+                            }`}
+                            onClick={() => setMobileMenuOpen(false)}
+                          >
+                            <div className="w-6 h-6 flex items-center justify-center">
+                              {tool.icon && <DynamicIcon name={tool.icon} className="w-5 h-5" strokeWidth={1.5} />}
+                            </div>
+                            <span className="font-medium leading-tight text-xs">{tool.title}</span>
+                          </Link>
+                        ))}
+                      </div>
                     </div>
                   ))}
                 </div>
