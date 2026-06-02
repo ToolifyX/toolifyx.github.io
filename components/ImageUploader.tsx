@@ -23,13 +23,13 @@ export default function ImageUploader({
 
   const [invalidFiles, setInvalidFiles] = useState<InvalidFile[]>([]);
   const [limits, setLimits] = useState<UploadLimits | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
 
   useEffect(() => {
     setLimits(getUploadLimits());
   }, []);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFiles = Array.from(e.target.files || []);
+  const handleFiles = (selectedFiles: File[]) => {
     if (selectedFiles.length === 0 || !limits) return;
 
     const { validFiles, invalidFiles: newInvalid } = validateFiles(selectedFiles, files, {
@@ -46,9 +46,32 @@ export default function ImageUploader({
         if (!externalFiles) setInternalFiles(updatedFiles);
         onChange(updatedFiles);
     }
+  };
 
-    // Reset input
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    handleFiles(Array.from(e.target.files || []));
     e.target.value = '';
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+
+    const droppedFiles = Array.from(e.dataTransfer.files);
+    handleFiles(droppedFiles);
   };
 
   const removeFile = (index: number) => {
@@ -75,10 +98,19 @@ export default function ImageUploader({
   return (
     <div className="space-y-6 w-full">
       <div
-        className="border-2 border-dashed rounded-2xl p-8 md:p-12 transition-all flex flex-col items-center justify-center space-y-4 cursor-pointer group hover:border-primary/50 hover:bg-primary/[0.02]"
+        className={`border-2 border-dashed rounded-2xl p-8 md:p-12 transition-all flex flex-col items-center justify-center space-y-4 cursor-pointer group ${
+          isDragging
+            ? 'border-primary bg-primary/10 scale-[1.02]'
+            : 'border-muted-foreground/20 hover:border-primary/50 hover:bg-primary/[0.02]'
+        }`}
         onClick={() => document.getElementById('file-input')?.click()}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
       >
-        <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center transition-all group-hover:scale-110">
+        <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all ${
+          isDragging ? 'bg-primary text-white scale-110' : 'bg-primary/10 text-primary group-hover:scale-110'
+        }`}>
           <Upload className="w-6 h-6" strokeWidth={2} />
         </div>
         <div className="text-center space-y-1">

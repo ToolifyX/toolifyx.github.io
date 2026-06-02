@@ -15,6 +15,7 @@ export default function PDFUploader({ files: externalFiles, onChange, showFileLi
   const files = externalFiles || internalFiles;
 
   const [invalidFiles, setInvalidFiles] = useState<InvalidFile[]>([]);
+  const [isDragging, setIsDragging] = useState(false);
 
   // PDF specific limits
   const limits = {
@@ -24,8 +25,7 @@ export default function PDFUploader({ files: externalFiles, onChange, showFileLi
     allowedTypes: ['application/pdf', '.pdf']
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFiles = Array.from(e.target.files || []);
+  const handleFiles = (selectedFiles: File[]) => {
     if (selectedFiles.length === 0) return;
 
     const { validFiles, invalidFiles: newInvalid } = validateFiles(selectedFiles, files, limits);
@@ -37,9 +37,32 @@ export default function PDFUploader({ files: externalFiles, onChange, showFileLi
         if (!externalFiles) setInternalFiles(updatedFiles);
         onChange(updatedFiles);
     }
+  };
 
-    // Reset input
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    handleFiles(Array.from(e.target.files || []));
     e.target.value = '';
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+
+    const droppedFiles = Array.from(e.dataTransfer.files);
+    handleFiles(droppedFiles);
   };
 
   const removeFile = (index: number) => {
@@ -64,12 +87,21 @@ export default function PDFUploader({ files: externalFiles, onChange, showFileLi
   return (
     <div className="space-y-4 w-full">
       <div
-        className="border-2 border-dashed rounded-xl p-6 transition-all flex flex-col items-center justify-center space-y-2 cursor-pointer group border-muted-foreground/20 hover:border-primary hover:bg-muted/50"
+        className={`border-2 border-dashed rounded-xl p-6 transition-all flex flex-col items-center justify-center space-y-2 cursor-pointer group ${
+          isDragging
+            ? 'border-primary bg-primary/10 scale-[1.01]'
+            : 'border-muted-foreground/20 hover:border-primary hover:bg-muted/50'
+        }`}
         onClick={() => document.getElementById('pdf-input')?.click()}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
       >
-        <Upload className="w-8 h-8 transition-transform group-hover:-translate-y-1 text-muted-foreground group-hover:text-primary" />
+        <Upload className={`w-8 h-8 transition-transform ${
+          isDragging ? 'text-primary scale-110' : 'group-hover:-translate-y-1 text-muted-foreground group-hover:text-primary'
+        }`} />
         <div className="text-center">
-          <p className="text-sm font-medium">Click to upload PDF files</p>
+          <p className="text-sm font-medium">{isDragging ? 'Drop files here' : 'Click to upload PDF files'}</p>
           <div className="flex items-center justify-center gap-1.5 mt-1 text-[10px] uppercase font-bold text-muted-foreground/60 tracking-wider">
             <Info className="w-3 h-3" />
             Up to {limits.maxFiles} files • {limits.maxFileSizeMB}MB each
