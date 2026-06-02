@@ -1,91 +1,195 @@
-Add quick access tool links to the Top Navigation Bar next to the logo.
+Implement Split PDF tool with modular architecture and minimal impact to existing system.
 
 GOAL
 
-Expose the most important tools directly in the header to:
+Build a Split PDF tool similar to iLovePDF with:
 
-- increase click-through rate
-- reduce time to find tools
-- mimic iLoveIMG-style navigation
+- Range split
+- Extract pages
+- Fixed split
 
-TOOLS TO ADD (LEFT → RIGHT)
+Ensure:
 
-Add these links next to logo:
+- no breaking changes
+- reuse existing upload + result system
+- isolated logic
 
-- Image Compressor
-- Image Resizer
-- Image Cropper
-- Convert to JPG
-- PDF Merge
-- PDF Split
+STRICT RULE (IMPORTANT)
 
-ROUTES
+DO NOT modify:
 
-Map each tool to its route:
+- existing tools
+- shared upload logic
+- result screen component
 
-- /tools/image-compressor
-- /tools/image-resizer
-- /tools/image-cropper
-- /tools/convert-to-jpg
-- /tools/pdf-merge
-- /tools/pdf-split
+ONLY extend via new modules.
 
-TOP BAR STRUCTURE
+FILE STRUCTURE
 
-[ LOGO ] 
-[ Image Compressor | Image Resizer | Image Cropper | Convert to JPG | PDF Merge | PDF Split ]
+Create new folder:
 
-[ More Tools ▼ ]
+/tools/pdf/split/
+
+Files:
+
+- SplitPdfTool.tsx (main page)
+- SplitModeTabs.tsx
+- RangeEditor.tsx
+- ExtractEditor.tsx
+- FixedEditor.tsx
+- useSplitPdf.ts (logic)
+- pdfSplitUtils.ts (pure functions)
+
+STATE DESIGN
+
+const [mode, setMode] = useState<
+  "range" | "extract" | "fixed"
+>("range")
+
+MODES TO IMPLEMENT
+
+1. RANGE MODE
+
+UI:
+
+- list of ranges
+- each range:
+  { from: number, to: number }
+
+Actions:
+
+- Add Range
+- Remove Range
+- Update range values
+
+State:
+
+const [ranges, setRanges] = useState([
+  { from: 1, to: 3 }
+])
+
+Option:
+
+- mergeRanges: boolean
+
+2. EXTRACT MODE
+
+UI:
+
+Input field:
+
+"1,3,5-8"
+
+State:
+
+const [pageInput, setPageInput]
+
+3. FIXED MODE
+
+UI:
+
+Split every:
+
+[ pagesPerSplit ]
+
+State:
+
+const [pagesPerSplit, setPagesPerSplit]
+
+CORE LOGIC (IMPORTANT)
+
+Create pure functions:
+
+parsePageInput(input: string) => number[]
+
+splitByRanges(pdf, ranges)
+splitByPages(pdf, pages)
+splitByFixed(pdf, size)
+
+PDF PROCESSING
+
+Use:
+
+pdf-lib (recommended)
+
+FLOW
+
+1. Upload PDF
+2. Select mode
+3. Configure input
+4. Click "Split PDF"
+5. Process
+6. Show ResultScreen
+
+PROCESSING RULE
+
+- process sequentially
+- no Promise.all
+- show progress:
+
+"Processing 2 of 5 files..."
+
+RESULT FORMAT
+
+results = [
+  { file: Blob, name: "split_1.pdf" }
+]
 
 UI REQUIREMENTS
 
-- horizontal layout
-- text buttons (not icons)
-- spacing: gap-4 or gap-6
-- font: text-sm / font-medium
-- hover: underline or text-blue-600
-- active tool: highlight
+Tabs:
 
-RESPONSIVE
+[ Range ] [ Extract ] [ Fixed ]
 
-Desktop:
-- show all tools inline
+RANGE UI
 
-Tablet:
-- collapse into scrollable horizontal row
+Range 1:
+[ from ] [ to ]
 
-Mobile:
-- hide tools
-- move into dropdown (hamburger menu)
++ Add Range
 
-MORE TOOLS DROPDOWN
+☑ Merge all ranges
 
-Keep "More Tools" dropdown:
+EXTRACT UI
 
-- show all other tools grouped by category
-- Image / PDF / Dev / Text
+Pages:
+[ 1,3,5-8 ]
 
-ACTIVE STATE
+FIXED UI
 
-If current route matches tool:
+Split every:
+[ 2 ] pages
 
-- highlight text (blue)
-- optional underline
+VALIDATION
 
-SCROLL BEHAVIOR
+- from <= to
+- page numbers > 0
+- pagesPerSplit > 0
+- reject invalid input
 
-- sticky top bar
-- always visible
+SUMMARY (IMPORTANT UX)
 
-DO NOT
+Show preview:
 
-- do not overcrowd (>6 tools max)
-- do not use icons only (text is better for SEO)
+"This PDF will be split into X files"
+
+INTEGRATION
+
+- Add route: /tools/pdf-split
+- Register tool in config
+- Use existing Upload component
+- Use existing ResultScreen
+
+SAFETY (CRITICAL)
+
+- no global state changes
+- no modification to shared hooks
+- all logic inside /tools/pdf/split
 
 OUTPUT
 
 Return:
 
-1. Updated Header / Navbar component
-2. ToolLinks array config
-3. Responsive behavior implementation
+1. all new files
+2. integration steps
+3. example usage of pdf-lib
