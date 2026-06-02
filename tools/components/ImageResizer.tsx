@@ -121,7 +121,7 @@ export default function ImageResizer() {
   if (initialImages.length === 0) {
     return (
       <div className="max-w-3xl mx-auto p-6">
-        <ImageUploader maxFiles={50} onChange={handleFileChange} />
+        <ImageUploader maxFiles={500} onChange={handleFileChange} />
       </div>
     );
   }

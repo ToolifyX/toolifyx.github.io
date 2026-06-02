@@ -32,31 +32,31 @@ export function getUploadLimits(): UploadLimits {
   switch (profile) {
     case "low":
       return {
-        maxFiles: 4,
-        maxFileSizeMB: 5,
-        totalSizeMB: 15,
-        maxResolution: 1600,
+        maxFiles: 50,
+        maxFileSizeMB: 20,
+        totalSizeMB: 100,
+        maxResolution: 2000,
       };
     case "medium":
       return {
-        maxFiles: 8,
-        maxFileSizeMB: 10,
-        totalSizeMB: 40,
-        maxResolution: 2500,
+        maxFiles: 100,
+        maxFileSizeMB: 50,
+        totalSizeMB: 500,
+        maxResolution: 4000,
       };
     case "high":
       return {
-        maxFiles: 12,
-        maxFileSizeMB: 15,
-        totalSizeMB: 60,
-        maxResolution: 3000,
+        maxFiles: 500,
+        maxFileSizeMB: 100,
+        totalSizeMB: 2000,
+        maxResolution: 8000,
       };
     default:
       return {
-        maxFiles: 8,
-        maxFileSizeMB: 10,
-        totalSizeMB: 40,
-        maxResolution: 2500,
+        maxFiles: 100,
+        maxFileSizeMB: 50,
+        totalSizeMB: 500,
+        maxResolution: 4000,
       };
   }
 }

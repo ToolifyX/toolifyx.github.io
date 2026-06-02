@@ -59,16 +59,16 @@ export default function Navbar() {
             </span>
           </Link>
 
-          {/* Desktop Quick Access Links - Hidden on mobile/tablet */}
-          <div className="hidden lg:flex items-center gap-1 flex-1 mx-6">
+          {/* Desktop Quick Access Links - Visible from tablet up */}
+          <div className="hidden md:flex items-center gap-1 flex-1 mx-4 overflow-x-auto scrollbar-hide">
             {QUICK_ACCESS_TOOLS.map((tool) => (
               <Link
                 key={tool.slug}
                 href={tool.route}
-                className={`px-3 py-2 text-sm font-medium whitespace-nowrap transition-colors rounded-md ${
+                className={`px-3 py-1.5 text-[13px] font-semibold whitespace-nowrap transition-all rounded-full border ${
                   isToolActive(tool.slug)
-                    ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/30 underline'
-                    : 'text-foreground hover:text-blue-600 dark:hover:text-blue-400 hover:underline'
+                    ? 'text-primary bg-primary/10 border-primary/20'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-accent border-transparent'
                 }`}
               >
                 {tool.title}
@@ -185,24 +185,7 @@ export default function Navbar() {
           </div>
         )}
 
-        {/* Tablet Scrollable Row - Hidden on desktop/mobile */}
-        <div className="hidden md:flex lg:hidden overflow-x-auto pb-3 pt-2 px-4 gap-2 scrollbar-hide">
-          <div className="flex gap-2 flex-shrink-0">
-            {QUICK_ACCESS_TOOLS.map((tool) => (
-              <Link
-                key={tool.slug}
-                href={tool.route}
-                className={`px-3 py-1 text-xs sm:text-sm font-medium whitespace-nowrap transition-colors rounded-md flex-shrink-0 ${
-                  isToolActive(tool.slug)
-                    ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/30 underline'
-                    : 'text-foreground hover:text-blue-600 dark:hover:text-blue-400 hover:underline'
-                }`}
-              >
-                {tool.title}
-              </Link>
-            ))}
-          </div>
-        </div>
+        {/* Tablet Scrollable Row removed as it's now in the main bar */}
       </div>
     </nav>
   );

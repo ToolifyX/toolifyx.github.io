@@ -18,9 +18,9 @@ export default function PDFUploader({ files: externalFiles, onChange, showFileLi
 
   // PDF specific limits
   const limits = {
-    maxFiles: 10,
-    maxFileSizeMB: 20,
-    totalSizeMB: 100,
+    maxFiles: 100,
+    maxFileSizeMB: 100,
+    totalSizeMB: 1000,
     allowedTypes: ['application/pdf', '.pdf']
   };
 
