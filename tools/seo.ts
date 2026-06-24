@@ -536,6 +536,20 @@ export const seoData: Record<string, {
       "Download the smaller version."
     ]
   },
+  "pdf-editor": {
+    "seoTitle": "PDF Editor - Free Online PDF Annotator",
+    "metaDescription": "Edit and annotate your PDF files directly in your browser. Add text, highlights, and drawings locally without uploading.",
+    "faqs": [
+      { "question": "Can I edit existing text?", "answer": "This tool allows you to add new text, highlights, and drawings on top of the PDF. It does not support modifying original PDF text streams." },
+      { "question": "Are my files uploaded?", "answer": "No, your files stay in your browser. All editing and rendering happen locally on your device." },
+      { "question": "Is it free to export?", "answer": "Yes, you can export your annotated PDF for free with all changes merged." }
+    ],
+    "howToUse": [
+      "Open your PDF file locally.",
+      "Use the toolbar to add text, highlights, or drawings.",
+      "Click 'Export' to save your changes into a new PDF."
+    ]
+  },
   "color-picker": {
     "seoTitle": "Color Picker - Hex, RGB, HSL Selector",
     "metaDescription": "Pick colors and get instant Hex, RGB, and HSL values. Perfect for developers and designers.",

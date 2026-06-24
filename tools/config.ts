@@ -46,6 +46,7 @@ export const tools: Tool[] = [
   { slug: 'pdf-metadata', title: 'PDF Metadata', description: 'View PDF info and page count.', component: 'PdfMetadataTool', category: 'pdf', icon: 'FileSearch' },
   { slug: 'pdf-rotate', title: 'PDF Rotate', description: 'Rotate all pages in a PDF file.', component: 'PdfRotateTool', category: 'pdf', icon: 'RotateCw' },
   { slug: 'pdf-compress', title: 'PDF Compress', description: 'Reduce PDF file size securely.', component: 'PdfCompressTool', category: 'pdf', icon: 'Shrink' },
+  { slug: 'pdf-editor', title: 'PDF Editor', description: 'Edit PDF text and annotations locally.', component: 'PdfEditor', category: 'pdf', icon: 'Edit3' },
 
   // Design Tools
   { slug: 'color-picker', title: 'Color Picker', description: 'Pick colors and get HEX/RGB values.', component: 'ColorPicker', category: 'design', icon: 'MousePointer2' },

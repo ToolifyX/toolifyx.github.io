@@ -49,6 +49,7 @@ export const toolRegistry: Record<string, React.ComponentType<any>> = {
   PdfMetadataTool: dynamic(() => import('./components/PdfMetadataTool'), { loading, ssr: false }),
   PdfRotateTool: dynamic(() => import('./components/PdfRotateTool'), { loading, ssr: false }),
   PdfCompressTool: dynamic(() => import('./components/PdfCompressTool'), { loading, ssr: false }),
+  PdfEditor: dynamic(() => import('./components/PdfEditor'), { loading, ssr: false }),
 
   // Design Tools
   ColorPicker: dynamic(() => import('./components/ColorPicker'), { loading, ssr: false }),

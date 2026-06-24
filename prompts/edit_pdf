@@ -1,0 +1,165 @@
+Enhance the existing Next.js 14 project into a **fully functional client-side PDF editor web app** that runs entirely in the browser (no backend).
+## 🎯 Goal
+
+Build a modern PDF editor with:
+
+* No server upload
+* Runs locally in browser
+* Fast and responsive UI
+* Full editing features based on overlay + pdf-lib
+## 🧱 Tech Stack (already installed)
+
+* Next.js 14 (App Router)
+* React 18
+* TailwindCSS
+* pdf-lib (core PDF manipulation)
+* jszip (for export if needed)
+## 📂 Project Structure
+
+Create:
+
+/app
+/editor
+page.tsx
+/components
+PdfCanvas.tsx
+Toolbar.tsx
+ThumbnailStrip.tsx
+Sidebar.tsx
+
+/lib
+pdfEngine.ts
+annotationStore.ts
+## 📄 Core Features
+
+### 1. Load PDF (Local Only)
+
+* Use `<input type="file" accept="application/pdf">`
+* Read file as ArrayBuffer
+* Load with pdf-lib
+### 2. Render PDF Pages
+
+* Use canvas to render pages (via PDF.js OR custom renderer)
+* Each page displayed vertically
+* Support zoom in/out
+### 3. Annotation Layer (IMPORTANT)
+
+Implement overlay system:
+
+Each page has:
+
+* base canvas (PDF render)
+* overlay canvas (annotations)
+
+Support:
+
+* Add text box
+* Highlight (semi-transparent rectangle)
+* Free draw (mouse)
+* Insert image
+
+Store annotations in state:
+
+```ts
+type Annotation = {
+  id: string
+  page: number
+  type: "text" | "highlight" | "draw" | "image"
+  x: number
+  y: number
+  width?: number
+  height?: number
+  content?: string
+  color?: string
+}
+```
+### 4. Toolbar (Top)
+
+Actions:
+
+* Add Text
+* Highlight
+* Draw
+* Insert Image
+* Delete selected
+* Undo / Redo
+### 5. Thumbnail Strip (Bottom)
+
+* Horizontal scroll
+* Show all pages
+* Click → scroll to page
+* Highlight current page
+### 6. Page Operations
+
+Using pdf-lib:
+
+* Delete page
+* Reorder pages (drag & drop)
+* Duplicate page
+* Merge another PDF
+### 7. Export PDF
+
+On export:
+
+* Re-open original PDF
+* Apply annotations:
+
+  * draw text using `drawText`
+  * draw rectangles for highlights
+  * embed images
+* Generate new PDF
+* Download file
+### 8. State Management
+
+Use React state or Zustand-style store:
+
+* currentPage
+* zoomLevel
+* annotations[]
+* selectedTool
+### 9. UI/UX
+
+* TailwindCSS clean UI
+* Dark mode support
+* Floating toolbar
+* Smooth scroll
+* Cursor changes based on tool
+* Resize & drag annotations
+## ⚡ Performance
+
+* Lazy render pages (only visible ones)
+* Debounce scroll
+* Avoid re-render full document
+* Use requestAnimationFrame for drawing
+## 🧪 Edge Cases
+
+* Large PDFs (100+ pages)
+* Fast scrolling
+* Undo/redo stack
+* Memory cleanup
+## 🚫 Constraints
+
+* No backend
+* No upload to server
+* No OCR
+* No real text editing inside PDF stream
+## ✅ Expected Result
+
+User can:
+
+* Open PDF locally
+* View pages smoothly
+* Add annotations visually
+* Navigate via thumbnails
+* Export edited PDF
+## 🔥 Important
+
+Focus on:
+
+* Clean architecture
+* Reusable components
+* Smooth UX
+
+Avoid over-engineering.
+
+Generate all necessary files and working code.
