@@ -39,15 +39,12 @@ export default function WordCounter() {
   return (
     <div className="w-full p-4 md:p-8 space-y-6">
       <div className="card border rounded-xl p-6 space-y-6 bg-card shadow-sm">
-        <div className="space-y-3">
-          <label className="block text-sm font-black uppercase tracking-widest text-muted-foreground">Input Text</label>
-          <textarea
-            className="w-full border rounded-xl p-4 min-h-[400px] text-base focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-muted/20"
-            placeholder="Type or paste your text here..."
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-          />
-        </div>
+        <textarea
+          className="w-full border rounded-xl p-4 min-h-[400px] text-base focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-muted/20"
+          placeholder="Type or paste your text here..."
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+        />
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="p-4 bg-muted/30 rounded-xl border text-center space-y-1">

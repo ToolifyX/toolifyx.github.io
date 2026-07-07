@@ -40,15 +40,12 @@ export default function JsonValidator() {
   return (
     <div className="w-full p-4 md:p-8 space-y-6">
       <div className="card border rounded-xl p-6 space-y-6 bg-card shadow-sm">
-        <div className="space-y-3">
-          <label className="block text-sm font-black uppercase tracking-widest text-muted-foreground">JSON to Validate</label>
-          <textarea
-            className="w-full border rounded-xl p-4 min-h-[400px] font-mono text-base focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-muted/20"
-            placeholder='{"key": "value"}'
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-          />
-        </div>
+        <textarea
+          className="w-full border rounded-xl p-4 min-h-[400px] font-mono text-base focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-muted/20"
+          placeholder='{"key": "value"}'
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+        />
 
         <button
           onClick={validate}

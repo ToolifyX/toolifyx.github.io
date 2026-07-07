@@ -66,14 +66,12 @@ export default function UrlTool() {
           </button>
         </div>
 
-        <div className="space-y-3">
-          <label className="block text-sm font-black uppercase tracking-widest text-muted-foreground">Input URL/Text</label>
-          <textarea
-            className="w-full border rounded-xl p-4 min-h-[300px] font-mono text-base focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-muted/20"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-          />
-        </div>
+        <textarea
+          className="w-full border rounded-xl p-4 min-h-[300px] font-mono text-base focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-muted/20"
+          placeholder={`Enter URL to ${mode}...`}
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+        />
 
         <button
           onClick={process}
@@ -90,8 +88,8 @@ export default function UrlTool() {
 
         {output && (
           <div className="space-y-3 animate-in fade-in duration-500">
-            <div className="flex items-center justify-between">
-              <label className="block text-sm font-black uppercase tracking-widest text-muted-foreground">Result</label>
+            <div className="flex items-center justify-between px-1">
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Result</span>
               <button onClick={handleCopy} className="text-xs font-bold text-primary hover:underline uppercase tracking-wider">
                 {copied ? 'Copied!' : 'Copy to Clipboard'}
               </button>

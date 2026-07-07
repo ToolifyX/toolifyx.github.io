@@ -45,34 +45,31 @@ export default function Sha256Generator() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6 space-y-6">
-      <div className="card border rounded-lg p-4 space-y-4">
-        <div className="space-y-2">
-          <label className="block text-sm font-medium">Input Text</label>
-          <textarea
-            className="w-full border rounded p-2 min-h-[120px]"
-            placeholder="Enter text to hash..."
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-          />
-        </div>
+    <div className="w-full p-4 md:p-8 space-y-6">
+      <div className="card border rounded-xl p-6 space-y-6 bg-card shadow-sm">
+        <textarea
+          className="w-full border rounded-xl p-4 min-h-[200px] text-base focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-muted/20"
+          placeholder="Enter text to hash..."
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+        />
 
         <button
           onClick={generateHash}
-          className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition-colors"
+          className="bg-primary text-primary-foreground px-6 py-3 rounded-xl font-bold hover:opacity-90 transition-all"
         >
           Generate SHA-256 Hash
         </button>
 
         {hash && (
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <label className="block text-sm font-medium">SHA-256 Hash Output</label>
-              <button onClick={handleCopy} className="text-xs text-primary hover:underline">
+          <div className="space-y-3 animate-in fade-in duration-500">
+            <div className="flex items-center justify-between px-1">
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">SHA-256 Hash Output</span>
+              <button onClick={handleCopy} className="text-xs font-bold text-primary hover:underline uppercase tracking-wider">
                 {copied ? 'Copied!' : 'Copy to Clipboard'}
               </button>
             </div>
-            <div className="w-full border rounded p-3 font-mono text-sm bg-gray-50 break-all">
+            <div className="w-full border rounded-xl p-4 font-mono text-base bg-muted/10 break-all">
               {hash}
             </div>
           </div>

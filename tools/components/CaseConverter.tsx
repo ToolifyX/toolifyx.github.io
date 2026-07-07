@@ -51,15 +51,12 @@ export default function CaseConverter() {
   return (
     <div className="w-full p-4 md:p-8 space-y-6">
       <div className="card border rounded-xl p-6 space-y-6 bg-card shadow-sm">
-        <div className="space-y-3">
-          <label className="block text-sm font-black uppercase tracking-widest text-muted-foreground">Input Text</label>
-          <textarea
-            className="w-full border rounded-xl p-4 min-h-[400px] text-base focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-muted/20"
-            placeholder="Enter text..."
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-          />
-        </div>
+        <textarea
+          className="w-full border rounded-xl p-4 min-h-[400px] text-base focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-muted/20"
+          placeholder="Enter text to convert..."
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+        />
 
         <div className="flex flex-wrap gap-3">
           <button onClick={() => convert('upper')} className="bg-primary text-primary-foreground px-6 py-2 rounded-xl font-bold hover:opacity-90 transition-all">UPPERCASE</button>

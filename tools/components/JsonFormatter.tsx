@@ -47,15 +47,12 @@ export default function JsonFormatter() {
   return (
     <div className="w-full p-4 md:p-8 space-y-6">
       <div className="card border rounded-xl p-6 space-y-6 bg-card shadow-sm">
-        <div className="space-y-3">
-          <label className="block text-sm font-black uppercase tracking-widest text-muted-foreground">Input JSON</label>
-          <textarea
-            className="w-full border rounded-xl p-4 min-h-[300px] font-mono text-base bg-muted/20 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-            placeholder='{"key": "value"}'
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-          />
-        </div>
+        <textarea
+          className="w-full border rounded-xl p-4 min-h-[300px] font-mono text-base bg-muted/20 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+          placeholder='{"key": "value"}'
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+        />
 
         <div className="flex gap-3">
           <button
@@ -80,8 +77,8 @@ export default function JsonFormatter() {
 
         {output && (
           <div className="space-y-3 animate-in fade-in duration-500">
-            <div className="flex items-center justify-between">
-              <label className="block text-sm font-black uppercase tracking-widest text-muted-foreground">Formatted Output</label>
+            <div className="flex items-center justify-between px-1">
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Formatted Output</span>
               <button
                 onClick={handleCopy}
                 className="text-xs font-bold text-primary hover:underline uppercase tracking-wider"

@@ -32,30 +32,27 @@ export default function SlugGenerator() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6 space-y-6">
-      <div className="card border rounded-lg p-4 space-y-4">
-        <div className="space-y-2">
-          <label className="block text-sm font-medium">Input Text</label>
-          <input
-            className="w-full border rounded p-2"
-            placeholder="Enter title or text..."
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-          />
-        </div>
+    <div className="w-full p-4 md:p-8 space-y-6">
+      <div className="card border rounded-xl p-6 space-y-6 bg-card shadow-sm">
+        <input
+          className="w-full border rounded-xl p-4 text-lg font-bold focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-muted/20"
+          placeholder="Enter title or text to slugify..."
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+        />
 
         {slug && (
-          <div className="space-y-2">
-            <label className="block text-sm font-medium text-green-600">Generated Slug</label>
+          <div className="space-y-3 animate-in fade-in duration-500">
+            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground px-1">Generated Slug</span>
             <div className="flex gap-2">
               <input
                 readOnly
-                className="w-full border rounded p-2 bg-gray-50 font-mono text-sm"
+                className="w-full border rounded-xl p-4 bg-muted/10 font-mono text-base"
                 value={slug}
               />
               <button
                 onClick={handleCopy}
-                className="bg-black text-white px-4 py-2 rounded shrink-0"
+                className="bg-primary text-primary-foreground px-6 py-2 rounded-xl font-bold shrink-0 hover:opacity-90 transition-all"
               >
                 {copied ? 'Copied' : 'Copy'}
               </button>
