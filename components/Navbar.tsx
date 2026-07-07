@@ -60,21 +60,26 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Quick Access Links - Visible from tablet up */}
-          <div className="hidden md:flex items-center gap-1 flex-1 mx-4 overflow-x-auto scrollbar-hide">
-            {QUICK_ACCESS_TOOLS.map((tool) => (
-              <Link
-                key={tool.slug}
-                href={tool.route}
-                className={`px-3 py-1.5 text-[13px] font-semibold whitespace-nowrap transition-all rounded-full border ${
-                  isToolActive(tool.slug)
-                    ? 'text-primary bg-primary/10 border-primary/20'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-accent border-transparent'
-                }`}
-              >
-                {tool.title}
-              </Link>
-            ))}
-          </div>
+          {QUICK_ACCESS_TOOLS.length > 0 && (
+            <div className="hidden md:flex items-center gap-1 flex-1 mx-4 overflow-x-auto scrollbar-hide">
+              {QUICK_ACCESS_TOOLS.map((tool) => (
+                <Link
+                  key={tool.slug}
+                  href={tool.route}
+                  className={`px-3 py-1.5 text-[13px] font-semibold whitespace-nowrap transition-all rounded-full border ${
+                    isToolActive(tool.slug)
+                      ? 'text-primary bg-primary/10 border-primary/20'
+                      : 'text-muted-foreground hover:text-foreground hover:bg-accent border-transparent'
+                  }`}
+                >
+                  {tool.title}
+                </Link>
+              ))}
+            </div>
+          )}
+
+          {/* Spacer if no quick access tools */}
+          {QUICK_ACCESS_TOOLS.length === 0 && <div className="flex-1" />}
 
           {/* Right side controls */}
           <div className="flex items-center gap-2 sm:gap-4">
