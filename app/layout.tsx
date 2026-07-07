@@ -4,6 +4,7 @@ import './globals.css';
 import Navbar from '@/components/Navbar';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import GlobalStateProvider from '@/components/GlobalStateProvider';
+import AnalyticsInitializer from '@/analytics/AnalyticsInitializer';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -26,12 +27,14 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <GlobalStateProvider>
-            <Navbar />
-            <main className="max-w-screen-xl mx-auto px-3 py-3">
-              {children}
-            </main>
-          </GlobalStateProvider>
+          <AnalyticsInitializer>
+            <GlobalStateProvider>
+              <Navbar />
+              <main className="max-w-screen-xl mx-auto px-3 py-3">
+                {children}
+              </main>
+            </GlobalStateProvider>
+          </AnalyticsInitializer>
           <footer className="border-t py-8 mt-auto">
             <div className="container mx-auto px-4 text-center">
               <p className="text-[12px] text-muted-foreground font-medium tracking-tight uppercase">

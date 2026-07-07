@@ -1,0 +1,403 @@
+# Prompt: Implement a Complete Analytics Platform for phung.work (Google Analytics 4 + Microsoft Clarity + PostHog)
+## Objective
+Implement a complete, production-ready analytics platform for **phung.work** that combines:
+* Google Analytics 4 (GA4)
+* Microsoft Clarity
+* PostHog
+The implementation must be **modular**, **privacy-first**, **provider-agnostic**, and designed to support additional analytics providers in the future (Cloudflare Analytics, Plausible, Umami, Mixpanel, etc.) without modifying business logic.
+The analytics system should become a shared infrastructure used by every tool across the website.
+Do not directly call `gtag`, `clarity`, or `posthog` from application pages or components. All analytics must go through a centralized Analytics Manager.
+---
+# Objectives
+The platform should answer questions such as:
+* Which tools are opened the most?
+* Which tools are actually used?
+* Which tools are abandoned before processing?
+* Which tools are downloaded the most?
+* Which categories are most popular?
+* Which searches return no results?
+* Which browsers or devices have the highest error rate?
+* Which pages have the highest bounce rate?
+* Which tools should appear in "Popular Tools"?
+* Which tools should be recommended together?
+* Which features are rarely used?
+The system should support product analytics, SEO analytics, UX analytics, and performance analytics.
+---
+# Architecture
+Create a dedicated analytics module.
+```text
+src/
+ ├── analytics/
+ │
+ ├── core/
+ │      AnalyticsManager.ts
+ │      AnalyticsProvider.ts
+ │      EventQueue.ts
+ │      ConsentManager.ts
+ │      SessionManager.ts
+ │      UserProperties.ts
+ │      EventBuilder.ts
+ │
+ ├── providers/
+ │      GoogleAnalyticsProvider.ts
+ │      MicrosoftClarityProvider.ts
+ │      PostHogProvider.ts
+ │
+ ├── hooks/
+ │      useAnalytics.ts
+ │      useTrackPage.ts
+ │      useTrackTool.ts
+ │      useTrackSearch.ts
+ │      useTrackFavorite.ts
+ │      useTrackDownload.ts
+ │
+ ├── events/
+ │      page.ts
+ │      tool.ts
+ │      search.ts
+ │      download.ts
+ │      favorite.ts
+ │      upload.ts
+ │      error.ts
+ │      performance.ts
+ │
+ ├── types/
+ ├── constants/
+ ├── utils/
+ └── index.ts
+```
+Business code must never communicate directly with GA4, Clarity, or PostHog.
+Everything goes through AnalyticsManager.
+---
+# Environment Variables
+```env
+NEXT_PUBLIC_ENABLE_ANALYTICS=true
+NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXX
+NEXT_PUBLIC_POSTHOG_KEY=
+NEXT_PUBLIC_POSTHOG_HOST=https://app.posthog.com
+NEXT_PUBLIC_CLARITY_PROJECT_ID=
+NEXT_PUBLIC_ANALYTICS_DEBUG=false
+```
+Analytics should automatically disable when configuration is missing.
+---
+# Analytics Providers
+## Google Analytics 4
+Responsible for
+* Website traffic
+* SEO traffic
+* Organic search
+* Page views
+* Conversion events
+* Device analytics
+* Browser analytics
+* Geographic analytics
+---
+## Microsoft Clarity
+Responsible for
+* Session replay
+* Heatmaps
+* Click maps
+* Scroll maps
+* Rage clicks
+* Dead clicks
+* UX diagnostics
+Do not manually implement session recording.
+Use official Clarity SDK.
+---
+## PostHog
+Responsible for
+* Product analytics
+* Funnel analysis
+* User journey
+* Feature adoption
+* Tool usage
+* Search analytics
+* Favorites
+* Processing success
+* Processing failures
+* Custom dashboards
+---
+# Automatic Tracking
+Automatically track
+* Page View
+* Route Change
+* Session Start
+* Session End
+* Browser
+* Device
+* Screen Size
+* Theme
+* Language
+* Referrer
+* UTM parameters
+Support Next.js App Router navigation.
+---
+# Tool Events
+Every tool should automatically report
+Tool Opened
+Tool Started
+Tool Completed
+Tool Failed
+Tool Cancelled
+Tool Shared
+Tool Favorited
+Tool Unfavorited
+Download
+Copy
+Paste
+Upload
+Settings Changed
+Reset
+Clear
+Undo
+Redo
+Preview
+Example
+```json
+{
+  "tool_id": "image-compressor",
+  "tool_name": "Image Compressor",
+  "category": "Image",
+  "processing_time": 1280,
+  "input_size": 4823982,
+  "output_size": 1382034,
+  "compression_ratio": 71,
+  "success": true
+}
+```
+---
+# Search Analytics
+Track
+Search Opened
+Search Submitted
+Keyword
+Result Count
+Clicked Result
+Search Duration
+No Result
+Autocomplete Selection
+Popular Keywords
+Trending Keywords
+Recent Keywords
+Never upload sensitive text.
+Limit keyword length.
+---
+# File Analytics
+Track metadata only.
+Supported
+Images
+PDF
+JSON
+CSV
+TXT
+ZIP
+Never upload
+File names
+File paths
+File contents
+Clipboard contents
+Passwords
+OCR text
+QR data
+Personal information
+Track only
+File type
+Total size
+File count
+Duration
+Success
+---
+# Performance Analytics
+Collect
+Time to Interactive
+Largest Contentful Paint
+Interaction to Next Paint
+First Contentful Paint
+Cumulative Layout Shift
+Navigation Timing
+Processing Duration
+Worker Duration
+Memory Usage (where supported)
+Use
+web-vitals
+Performance API
+---
+# Error Analytics
+Track
+Unhandled exceptions
+Worker failures
+Browser incompatibility
+Unsupported file format
+Out of memory
+Timeout
+Large file failure
+Image decode failure
+PDF parsing failure
+JSON parsing failure
+Only send sanitized error information.
+---
+# User Properties
+Track
+Theme
+Language
+Browser
+OS
+Country (if available from GA)
+Device
+Screen Size
+Preferred Category
+Favorite Count
+Returning User
+Never store personal identifiers.
+---
+# Consent Management
+Implement
+Cookie consent
+Analytics opt-in/out
+Remember user preference
+Disable all providers when consent is denied.
+Respect
+Do Not Track
+Global Privacy Control (if supported)
+---
+# Dashboard Metrics
+The collected events should support dashboards showing
+Top Tools
+Top Categories
+Most Downloaded
+Most Copied
+Most Shared
+Most Favorited
+Average Processing Time
+Average File Size
+Average Compression Ratio
+Daily Active Tools
+Weekly Active Tools
+Monthly Active Tools
+Search Trends
+Zero Result Searches
+Conversion Funnel
+Browser Usage
+Device Usage
+Traffic Source
+Returning Users
+Session Duration
+Popular Hours
+Popular Weekdays
+Error Rate
+Crash Rate
+---
+# Recommendation Engine
+Store enough anonymous analytics to power
+Popular Tools
+Trending Tools
+Related Tools
+Recommended Next Tool
+Recently Used
+Continue Where You Left Off
+Examples
+Users using
+Image Compressor
+also use
+Image Resize
+WebP Converter
+Image Cropper
+PDF users also use
+PDF Merge
+PDF Split
+Image to PDF
+---
+# Offline Support
+Queue analytics events when offline.
+Automatically retry when network returns.
+Use batching.
+Never block UI.
+---
+# Debug Mode
+When
+NEXT_PUBLIC_ANALYTICS_DEBUG=true
+Display every analytics event in the console.
+Include
+Provider
+Event
+Payload
+Timestamp
+Dispatch duration
+---
+# React Hooks
+Provide reusable hooks
+useAnalytics()
+useTrackPage()
+useTrackTool()
+useTrackSearch()
+useTrackDownload()
+useTrackUpload()
+useTrackFavorite()
+useTrackPerformance()
+Developers should never use provider SDKs directly.
+---
+# Accessibility
+Analytics must never interfere with
+Keyboard navigation
+Screen readers
+Focus management
+Performance
+Core Web Vitals
+---
+# Testing
+Create unit and integration tests covering
+Provider initialization
+Consent flow
+Offline queue
+Retry mechanism
+GA4 events
+PostHog events
+Clarity initialization
+Performance tracking
+Tool events
+Search events
+Favorites
+Downloads
+Uploads
+Debug mode
+Disabled analytics
+---
+# Documentation
+Create complete developer documentation including
+Architecture overview
+Provider abstraction
+Adding a new provider
+Adding new events
+Naming conventions
+Privacy policy
+Consent flow
+Debugging
+Environment setup
+Migration guide
+Best practices
+---
+# Deliverables
+Implement a production-ready analytics platform including:
+* AnalyticsManager (single entry point)
+* Provider abstraction layer
+* Google Analytics 4 integration
+* Microsoft Clarity integration
+* PostHog integration
+* Consent management
+* Event queue and batching
+* Offline retry support
+* React hooks
+* Type-safe event models
+* Performance monitoring
+* Search analytics
+* Tool usage analytics
+* Error analytics
+* Recommendation-ready event model
+* Comprehensive unit/integration tests
+* Full developer documentation
+## Implementation Requirements
+* Keep the analytics layer completely decoupled from business logic.
+* Ensure adding or removing an analytics provider requires minimal configuration changes.
+* Prioritize privacy by collecting only anonymous metadata.
+* Minimize impact on performance using lazy loading, deferred initialization, batching, and non-blocking event dispatch.
+* Design the system to scale as phung.work grows from dozens to hundreds of tools while maintaining consistent event naming and high data quality.

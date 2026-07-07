@@ -3,13 +3,18 @@
 import React, { useEffect } from 'react';
 import { toolRegistry } from '@/tools/registry';
 import { Tool } from '@/tools/types';
+import { useTrackTool } from '@/analytics/hooks/useTrackTool';
 
 interface ToolRendererProps {
   tool: Tool;
 }
 
 export default function ToolRenderer({ tool }: ToolRendererProps) {
+  const { trackOpened } = useTrackTool(tool);
+
   useEffect(() => {
+    trackOpened();
+
     if (typeof window !== 'undefined') {
       try {
         const recentlyUsed = JSON.parse(localStorage.getItem('recentlyUsedTools') || '[]');

@@ -8,6 +8,7 @@ import ToolSearch from '@/components/ToolSearch';
 import RecentlyUsedTools from '@/components/RecentlyUsedTools';
 import FavoriteTools from '@/components/FavoriteTools';
 import { ToolCategory } from '@/tools/types';
+import { useTrackSearch } from '@/analytics/hooks/useTrackSearch';
 import Link from 'next/link';
 
 const categories: { id: ToolCategory; label: string; href: string; description: string }[] = [
@@ -23,9 +24,10 @@ const categories: { id: ToolCategory; label: string; href: string; description: 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<ToolCategory | 'all'>('all');
+  const { trackSearch } = useTrackSearch();
 
   const filteredTools = useMemo(() => {
-    return tools
+    const results = tools
       .filter((tool) => selectedCategory === 'all' || tool.category === selectedCategory)
       .filter((tool) => {
         const search = searchQuery.toLowerCase();
@@ -35,6 +37,13 @@ export default function Home() {
           tool.description.toLowerCase().includes(search)
         );
       });
+
+    // Debounced search tracking could be better, but let's do it simply for now
+    if (searchQuery.length > 2) {
+      trackSearch(searchQuery, results.length);
+    }
+
+    return results;
   }, [searchQuery, selectedCategory]);
 
   const handleSearchChange = (val: string) => {
