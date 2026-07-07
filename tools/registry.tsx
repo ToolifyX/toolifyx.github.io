@@ -27,6 +27,13 @@ export const toolRegistry: Record<string, React.ComponentType<any>> = {
   CharacterCounter: dynamic(() => import('./components/CharacterCounter'), { loading, ssr: false }),
   RandomTextGenerator: dynamic(() => import('./components/RandomTextGenerator'), { loading, ssr: false }),
   LoremIpsumGenerator: dynamic(() => import('./components/LoremIpsumGenerator'), { loading, ssr: false }),
+  DuplicateWordRemover: dynamic(() => import('./components/DuplicateWordRemover'), { loading, ssr: false }),
+  FindReplace: dynamic(() => import('./components/FindReplace'), { loading, ssr: false }),
+  LineCounter: dynamic(() => import('./components/LineCounter'), { loading, ssr: false }),
+  SentenceCounter: dynamic(() => import('./components/SentenceCounter'), { loading, ssr: false }),
+  ReadingTime: dynamic(() => import('./components/ReadingTime'), { loading, ssr: false }),
+  MarkdownPreview: dynamic(() => import('./components/MarkdownPreview'), { loading, ssr: false }),
+  TextCompare: dynamic(() => import('./components/TextCompare'), { loading, ssr: false }),
 
   // Image Tools
   ImageCompressor: dynamic(() => import('./components/ImageCompressor'), { loading, ssr: false }),

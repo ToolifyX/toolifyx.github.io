@@ -19,12 +19,37 @@ import { copyToClipboard } from '@/lib/utils';
 
 export default function DuplicateRemover() {
   const [text, setText] = useState('');
+  const [keep, setKeep] = useState<'first' | 'last'>('first');
+  const [caseSensitive, setCaseSensitive] = useState(false);
+  const [ignoreWhitespace, setIgnoreWhitespace] = useState(true);
+  const [sortResult, setSortResult] = useState(false);
   const [copied, setCopied] = useState(false);
 
   const removeDuplicates = () => {
-    const lines = text.split('\n');
-    const uniqueLines = Array.from(new Set(lines));
-    setText(uniqueLines.join('\n'));
+    if (!text.trim()) return;
+    let lines = text.split('\n');
+
+    if (keep === 'last') lines.reverse();
+
+    const seen = new Set<string>();
+    const result: string[] = [];
+
+    lines.forEach(line => {
+      let cleanLine = line;
+      if (ignoreWhitespace) cleanLine = line.trim();
+
+      const compareLine = caseSensitive ? cleanLine : cleanLine.toLowerCase();
+
+      if (!seen.has(compareLine)) {
+        seen.add(compareLine);
+        result.push(line);
+      }
+    });
+
+    if (keep === 'last') result.reverse();
+    if (sortResult) result.sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
+
+    setText(result.join('\n'));
   };
 
   const handleCopy = async () => {
@@ -44,7 +69,27 @@ export default function DuplicateRemover() {
           value={text}
           onChange={(e) => setText(e.target.value)}
         />
-        <div className="flex flex-wrap gap-3">
+
+        <div className="flex flex-wrap gap-6 items-center bg-muted/30 p-4 rounded-xl border border-border/50">
+          <div className="flex items-center gap-4 border-r border-border/50 pr-6 mr-2">
+             <button onClick={() => setKeep('first')} className={`text-xs font-bold uppercase tracking-widest transition-all ${keep === 'first' ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}>First</button>
+             <button onClick={() => setKeep('last')} className={`text-xs font-bold uppercase tracking-widest transition-all ${keep === 'last' ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}`}>Last</button>
+          </div>
+          <label className="flex items-center gap-2 cursor-pointer group">
+            <input type="checkbox" checked={caseSensitive} onChange={e => setCaseSensitive(e.target.checked)} className="w-4 h-4 rounded border-gray-300 text-primary" />
+            <span className="text-sm font-bold text-muted-foreground group-hover:text-foreground">Case Sensitive</span>
+          </label>
+          <label className="flex items-center gap-2 cursor-pointer group">
+            <input type="checkbox" checked={ignoreWhitespace} onChange={e => setIgnoreWhitespace(e.target.checked)} className="w-4 h-4 rounded border-gray-300 text-primary" />
+            <span className="text-sm font-bold text-muted-foreground group-hover:text-foreground">Ignore Whitespace</span>
+          </label>
+          <label className="flex items-center gap-2 cursor-pointer group">
+            <input type="checkbox" checked={sortResult} onChange={e => setSortResult(e.target.checked)} className="w-4 h-4 rounded border-gray-300 text-primary" />
+            <span className="text-sm font-bold text-muted-foreground group-hover:text-foreground">Sort Result</span>
+          </label>
+        </div>
+
+        <div className="flex gap-3">
           <button
             onClick={removeDuplicates}
             className="bg-primary text-primary-foreground px-6 py-3 rounded-xl font-bold hover:opacity-90 transition-all"
