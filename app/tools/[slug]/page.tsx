@@ -83,7 +83,7 @@ export default function ToolPage({ params }: Props) {
         </div>
 
         {/* Actual Tool Canvas */}
-        <div className="min-h-[600px]">
+        <div className="min-h-[700px] flex flex-col">
           <ToolRenderer tool={tool} />
         </div>
       </div>

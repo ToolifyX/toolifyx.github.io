@@ -37,12 +37,12 @@ export default function WordCounter() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6 space-y-6">
-      <div className="card border rounded-lg p-4 space-y-4">
-        <div className="space-y-2">
-          <label className="block text-sm font-medium">Input Text</label>
+    <div className="w-full p-4 md:p-8 space-y-6">
+      <div className="card border rounded-xl p-6 space-y-6 bg-card shadow-sm">
+        <div className="space-y-3">
+          <label className="block text-sm font-black uppercase tracking-widest text-muted-foreground">Input Text</label>
           <textarea
-            className="w-full border rounded p-2 min-h-[200px]"
+            className="w-full border rounded-xl p-4 min-h-[400px] text-base focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-muted/20"
             placeholder="Type or paste your text here..."
             value={text}
             onChange={(e) => setText(e.target.value)}
@@ -50,34 +50,34 @@ export default function WordCounter() {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="p-3 bg-gray-50 rounded border text-center">
-            <div className="text-xl font-bold">{stats.words}</div>
-            <div className="text-xs text-gray-500 uppercase">Words</div>
+          <div className="p-4 bg-muted/30 rounded-xl border text-center space-y-1">
+            <div className="text-2xl font-black text-primary">{stats.words}</div>
+            <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Words</div>
           </div>
-          <div className="p-3 bg-gray-50 rounded border text-center">
-            <div className="text-xl font-bold">{stats.chars}</div>
-            <div className="text-xs text-gray-500 uppercase">Characters</div>
+          <div className="p-4 bg-muted/30 rounded-xl border text-center space-y-1">
+            <div className="text-2xl font-black text-primary">{stats.chars}</div>
+            <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Characters</div>
           </div>
-          <div className="p-3 bg-gray-50 rounded border text-center">
-            <div className="text-xl font-bold">{stats.sentences}</div>
-            <div className="text-xs text-gray-500 uppercase">Sentences</div>
+          <div className="p-4 bg-muted/30 rounded-xl border text-center space-y-1">
+            <div className="text-2xl font-black text-primary">{stats.sentences}</div>
+            <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Sentences</div>
           </div>
-          <div className="p-3 bg-gray-50 rounded border text-center">
-            <div className="text-xl font-bold">{stats.paragraphs}</div>
-            <div className="text-xs text-gray-500 uppercase">Paragraphs</div>
+          <div className="p-4 bg-muted/30 rounded-xl border text-center space-y-1">
+            <div className="text-2xl font-black text-primary">{stats.paragraphs}</div>
+            <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Paragraphs</div>
           </div>
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex gap-3">
           <button
             onClick={handleCopy}
-            className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition-colors"
+            className="bg-primary text-primary-foreground px-6 py-3 rounded-xl font-bold hover:opacity-90 transition-all flex items-center gap-2"
           >
             {copied ? 'Copied!' : 'Copy Text'}
           </button>
           <button
             onClick={() => setText('')}
-            className="border px-4 py-2 rounded hover:bg-gray-50 transition-colors"
+            className="border px-6 py-3 rounded-xl font-bold hover:bg-muted/50 transition-all"
           >
             Clear
           </button>

@@ -49,27 +49,27 @@ export default function UrlTool() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6 space-y-6">
-      <div className="card border rounded-lg p-4 space-y-4">
-        <div className="flex items-center gap-4 border-b pb-4">
+    <div className="w-full p-4 md:p-8 space-y-6">
+      <div className="card border rounded-xl p-6 space-y-6 bg-card shadow-sm">
+        <div className="flex items-center gap-2 border-b pb-4">
           <button
             onClick={() => setMode('encode')}
-            className={`px-4 py-2 rounded text-sm font-medium ${mode === 'encode' ? 'bg-black text-white' : 'hover:bg-gray-100'}`}
+            className={`px-6 py-2 rounded-xl text-sm font-black uppercase tracking-widest transition-all ${mode === 'encode' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted text-muted-foreground'}`}
           >
             Encode
           </button>
           <button
             onClick={() => setMode('decode')}
-            className={`px-4 py-2 rounded text-sm font-medium ${mode === 'decode' ? 'bg-black text-white' : 'hover:bg-gray-100'}`}
+            className={`px-6 py-2 rounded-xl text-sm font-black uppercase tracking-widest transition-all ${mode === 'decode' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted text-muted-foreground'}`}
           >
             Decode
           </button>
         </div>
 
-        <div className="space-y-2">
-          <label className="block text-sm font-medium">Input URL/Text</label>
+        <div className="space-y-3">
+          <label className="block text-sm font-black uppercase tracking-widest text-muted-foreground">Input URL/Text</label>
           <textarea
-            className="w-full border rounded p-2 min-h-[120px] font-mono text-sm"
+            className="w-full border rounded-xl p-4 min-h-[300px] font-mono text-base focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-muted/20"
             value={input}
             onChange={(e) => setInput(e.target.value)}
           />
@@ -77,28 +77,28 @@ export default function UrlTool() {
 
         <button
           onClick={process}
-          className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition-colors"
+          className="bg-primary text-primary-foreground px-6 py-3 rounded-xl font-bold hover:opacity-90 transition-all"
         >
           {mode === 'encode' ? 'Encode URL' : 'Decode URL'}
         </button>
 
         {error && (
-          <div className="p-3 bg-red-50 border border-red-200 text-red-600 rounded text-sm">
+          <div className="p-4 bg-destructive/10 border border-destructive/20 text-destructive rounded-xl text-sm font-medium">
             {error}
           </div>
         )}
 
         {output && (
-          <div className="space-y-2">
+          <div className="space-y-3 animate-in fade-in duration-500">
             <div className="flex items-center justify-between">
-              <label className="block text-sm font-medium">Result</label>
-              <button onClick={handleCopy} className="text-xs text-primary hover:underline">
+              <label className="block text-sm font-black uppercase tracking-widest text-muted-foreground">Result</label>
+              <button onClick={handleCopy} className="text-xs font-bold text-primary hover:underline uppercase tracking-wider">
                 {copied ? 'Copied!' : 'Copy to Clipboard'}
               </button>
             </div>
             <textarea
               readOnly
-              className="w-full border rounded p-2 min-h-[120px] font-mono text-sm bg-gray-50"
+              className="w-full border rounded-xl p-4 min-h-[300px] font-mono text-base bg-muted/10"
               value={output}
             />
           </div>

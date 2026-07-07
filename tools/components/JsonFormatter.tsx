@@ -45,53 +45,53 @@ export default function JsonFormatter() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6 space-y-6">
-      <div className="card border rounded-lg p-4 space-y-4">
-        <div className="space-y-2">
-          <label className="block text-sm font-medium">Input JSON</label>
+    <div className="w-full p-4 md:p-8 space-y-6">
+      <div className="card border rounded-xl p-6 space-y-6 bg-card shadow-sm">
+        <div className="space-y-3">
+          <label className="block text-sm font-black uppercase tracking-widest text-muted-foreground">Input JSON</label>
           <textarea
-            className="w-full border rounded p-2 min-h-[120px] font-mono text-sm"
+            className="w-full border rounded-xl p-4 min-h-[300px] font-mono text-base bg-muted/20 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
             placeholder='{"key": "value"}'
             value={input}
             onChange={(e) => setInput(e.target.value)}
           />
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex gap-3">
           <button
             onClick={handleFormat}
-            className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition-colors"
+            className="bg-primary text-primary-foreground px-6 py-3 rounded-xl font-bold hover:opacity-90 transition-all flex items-center gap-2"
           >
             Format JSON
           </button>
           <button
             onClick={() => { setInput(''); setOutput(''); setError(''); }}
-            className="border px-4 py-2 rounded hover:bg-gray-50 transition-colors"
+            className="border px-6 py-3 rounded-xl font-bold hover:bg-muted/50 transition-all"
           >
             Clear
           </button>
         </div>
 
         {error && (
-          <div className="p-3 bg-red-50 border border-red-200 text-red-600 rounded text-sm">
+          <div className="p-4 bg-destructive/10 border border-destructive/20 text-destructive rounded-xl text-sm font-medium">
             {error}
           </div>
         )}
 
         {output && (
-          <div className="space-y-2">
+          <div className="space-y-3 animate-in fade-in duration-500">
             <div className="flex items-center justify-between">
-              <label className="block text-sm font-medium">Formatted Output</label>
+              <label className="block text-sm font-black uppercase tracking-widest text-muted-foreground">Formatted Output</label>
               <button
                 onClick={handleCopy}
-                className="text-xs text-primary hover:underline"
+                className="text-xs font-bold text-primary hover:underline uppercase tracking-wider"
               >
                 {copied ? 'Copied!' : 'Copy to Clipboard'}
               </button>
             </div>
             <textarea
               readOnly
-              className="w-full border rounded p-2 min-h-[200px] font-mono text-sm bg-gray-50"
+              className="w-full border rounded-xl p-4 min-h-[400px] font-mono text-base bg-muted/10"
               value={output}
             />
           </div>

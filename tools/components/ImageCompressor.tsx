@@ -88,7 +88,7 @@ export default function ImageCompressor() {
   // 1. Result State: "done"
   if (status === 'done') {
     return (
-      <div className="max-w-3xl mx-auto">
+      <div className="w-full p-4 md:p-8">
         <ResultScreen
           results={results}
           onReset={handleReset}
@@ -103,7 +103,7 @@ export default function ImageCompressor() {
 
   // 2. Idle or Processing States: "idle" | "processing"
   return (
-    <div className="max-w-3xl mx-auto space-y-4">
+    <div className="w-full p-4 md:p-8 space-y-6">
       <UploadPanel
         files={files}
         onChange={setFiles}

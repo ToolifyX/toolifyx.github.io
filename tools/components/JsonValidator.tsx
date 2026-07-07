@@ -38,12 +38,12 @@ export default function JsonValidator() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6 space-y-6">
-      <div className="card border rounded-lg p-4 space-y-4">
-        <div className="space-y-2">
-          <label className="block text-sm font-medium">JSON to Validate</label>
+    <div className="w-full p-4 md:p-8 space-y-6">
+      <div className="card border rounded-xl p-6 space-y-6 bg-card shadow-sm">
+        <div className="space-y-3">
+          <label className="block text-sm font-black uppercase tracking-widest text-muted-foreground">JSON to Validate</label>
           <textarea
-            className="w-full border rounded p-2 min-h-[200px] font-mono text-sm"
+            className="w-full border rounded-xl p-4 min-h-[400px] font-mono text-base focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-muted/20"
             placeholder='{"key": "value"}'
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -52,17 +52,17 @@ export default function JsonValidator() {
 
         <button
           onClick={validate}
-          className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition-colors"
+          className="bg-primary text-primary-foreground px-6 py-3 rounded-xl font-bold hover:opacity-90 transition-all"
         >
           Validate JSON
         </button>
 
         {status !== 'idle' && (
-          <div className={`p-4 rounded-md border ${
+          <div className={`p-4 rounded-xl border animate-in fade-in duration-300 ${
             status === 'valid' ? 'bg-green-50 border-green-200 text-green-700' : 'bg-red-50 border-red-200 text-red-700'
           }`}>
-            <p className="font-bold uppercase text-xs mb-1">{status}</p>
-            <p className="text-sm">{message}</p>
+            <p className="font-black uppercase text-[10px] tracking-widest mb-1">{status}</p>
+            <p className="text-sm font-medium">{message}</p>
           </div>
         )}
       </div>

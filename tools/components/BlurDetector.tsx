@@ -73,7 +73,7 @@ export default function BlurDetector() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto space-y-4">
+    <div className="w-full p-4 md:p-8 space-y-6">
       <UploadPanel files={files} onChange={setFiles} maxFiles={limits?.maxFiles} />
       {files.length > 0 && (
         <button
