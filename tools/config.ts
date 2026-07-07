@@ -15,7 +15,6 @@ export const tools: Tool[] = [
   { slug: 'csv-to-json', title: 'CSV → JSON', description: 'Convert CSV data to JSON format.', component: 'CsvToJson', category: 'dev', icon: 'FileJson', iconColor: 'text-sky-400 bg-sky-400/10', themeColor: 'sky' },
   { slug: 'base64-tool', title: 'Base64 Tool', description: 'Encode/Decode text to Base64 format.', component: 'Base64Tool', category: 'dev', icon: 'Binary', iconColor: 'text-cyan-500 bg-cyan-500/10', themeColor: 'cyan' },
   { slug: 'url-tool', title: 'URL Tool', description: 'Encode/Decode URLs and parameters.', component: 'UrlTool', category: 'dev', icon: 'Link', iconColor: 'text-sky-500 bg-sky-500/10', themeColor: 'sky' },
-  { slug: 'uuid-generator', title: 'UUID Generator', description: 'Generate secure Version 4 UUIDs.', component: 'UuidGenerator', category: 'dev', icon: 'Fingerprint', iconColor: 'text-violet-500 bg-violet-500/10', themeColor: 'violet' },
   { slug: 'sha256-generator', title: 'SHA-256 Generator', description: 'Generate secure SHA-256 hashes.', component: 'Sha256Generator', category: 'dev', icon: 'Lock', iconColor: 'text-slate-500 bg-slate-500/10', themeColor: 'slate' },
   { slug: 'regex-tester', title: 'Regex Tester', description: 'Test regular expressions in real-time.', component: 'RegexTester', category: 'dev', icon: 'SearchCode', iconColor: 'text-blue-600 bg-blue-600/10', themeColor: 'blue' },
   { slug: 'timestamp-converter', title: 'Timestamp Converter', description: 'Unix timestamp to date and vice versa.', component: 'TimestampConverter', category: 'dev', icon: 'Clock', iconColor: 'text-indigo-600 bg-indigo-600/10', themeColor: 'indigo' },
@@ -97,8 +96,17 @@ export const tools: Tool[] = [
   { slug: 'font-preview', title: 'Font Preview Tool', description: 'Preview text with different fonts.', component: 'FontPreviewTool', category: 'design', icon: 'Type', iconColor: 'text-purple-400 bg-purple-400/10', themeColor: 'purple' },
 
   // Utility Tools
+  { slug: 'uuid-generator', title: 'UUID Generator', description: 'Generate Version 1, 4, and 7 UUIDs.', component: 'UuidGenerator', category: 'utility', icon: 'Fingerprint', iconColor: 'text-violet-500 bg-violet-500/10', themeColor: 'violet' },
+  { slug: 'uuid-bulk-generator', title: 'UUID Bulk Generator', description: 'Generate thousands of UUIDs efficiently.', component: 'UuidBulkGenerator', category: 'utility', icon: 'Layers', iconColor: 'text-purple-500 bg-purple-500/10', themeColor: 'purple' },
   { slug: 'qr-code-generator', title: 'QR Code Generator', description: 'Generate custom QR codes instantly.', component: 'QrCodeGenerator', category: 'utility', icon: 'QrCode', iconColor: 'text-blue-900 bg-blue-900/10', themeColor: 'slate' },
+  { slug: 'qr-code-scanner', title: 'QR Code Scanner', description: 'Read QR codes from camera or images.', component: 'QrCodeScanner', category: 'utility', icon: 'Scan', iconColor: 'text-cyan-600 bg-cyan-600/10', themeColor: 'cyan' },
+  { slug: 'barcode-generator', title: 'Barcode Generator', description: 'Create various barcode formats.', component: 'BarcodeGenerator', category: 'utility', icon: 'Barcode', iconColor: 'text-slate-800 bg-slate-800/10', themeColor: 'slate' },
+  { slug: 'barcode-reader', title: 'Barcode Reader', description: 'Scan and decode barcodes online.', component: 'BarcodeReader', category: 'utility', icon: 'ScanLine', iconColor: 'text-zinc-700 bg-zinc-700/10', themeColor: 'zinc' },
+  { slug: 'random-number-generator', title: 'Random Number Generator', description: 'Generate random numbers and lists.', component: 'RandomNumberGenerator', category: 'utility', icon: 'Hash', iconColor: 'text-blue-500 bg-blue-500/10', themeColor: 'blue' },
+  { slug: 'dice-roller', title: 'Dice Roller', description: 'Roll virtual dice for games.', component: 'DiceRoller', category: 'utility', icon: 'Dices', iconColor: 'text-red-500 bg-red-500/10', themeColor: 'red' },
+  { slug: 'coin-flip', title: 'Coin Flip', description: 'Flip a virtual coin for decisions.', component: 'CoinFlip', category: 'utility', icon: 'Coins', iconColor: 'text-yellow-500 bg-yellow-500/10', themeColor: 'yellow' },
   { slug: 'password-generator', title: 'Password Generator', description: 'Create strong, secure passwords.', component: 'PasswordGenerator', category: 'utility', icon: 'Key', iconColor: 'text-slate-700 bg-slate-700/10', themeColor: 'slate' },
+  { slug: 'password-strength-checker', title: 'Password Strength', description: 'Analyze password security locally.', component: 'PasswordStrength', category: 'utility', icon: 'ShieldCheck', iconColor: 'text-green-600 bg-green-600/10', themeColor: 'green' },
   { slug: 'unit-converter', title: 'Unit Converter', description: 'Convert length and weight units.', component: 'UnitConverter', category: 'utility', icon: 'Ruler', iconColor: 'text-zinc-600 bg-zinc-600/10', themeColor: 'zinc' },
   { slug: 'percentage-calculator', title: 'Percentage Calculator', description: 'Calculate percentages and changes.', component: 'PercentageCalculator', category: 'utility', icon: 'Percent', iconColor: 'text-neutral-500 bg-neutral-500/10', themeColor: 'neutral' },
 ];

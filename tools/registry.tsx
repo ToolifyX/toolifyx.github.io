@@ -95,7 +95,16 @@ export const toolRegistry: Record<string, React.ComponentType<any>> = {
 
   // Utility Tools
   QrCodeGenerator: dynamic(() => import('./components/QrCodeGenerator'), { loading, ssr: false }),
+  QrCodeScanner: dynamic(() => import('./components/QrCodeScanner'), { loading, ssr: false }),
+  BarcodeGenerator: dynamic(() => import('./components/BarcodeGenerator'), { loading, ssr: false }),
+  BarcodeReader: dynamic(() => import('./components/BarcodeReader'), { loading, ssr: false }),
+  RandomNumberGenerator: dynamic(() => import('./components/RandomNumberGenerator'), { loading, ssr: false }),
+  DiceRoller: dynamic(() => import('./components/DiceRoller'), { loading, ssr: false }),
+  CoinFlip: dynamic(() => import('./components/CoinFlip'), { loading, ssr: false }),
   PasswordGenerator: dynamic(() => import('./components/PasswordGenerator'), { loading, ssr: false }),
+  PasswordStrength: dynamic(() => import('./components/PasswordStrength'), { loading, ssr: false }),
   UnitConverter: dynamic(() => import('./components/UnitConverter'), { loading, ssr: false }),
   PercentageCalculator: dynamic(() => import('./components/PercentageCalculator'), { loading, ssr: false }),
+  UuidGenerator: dynamic(() => import('./components/UuidGenerator'), { loading, ssr: false }),
+  UuidBulkGenerator: dynamic(() => import('./components/UuidBulkGenerator'), { loading, ssr: false }),
 };

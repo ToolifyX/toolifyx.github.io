@@ -1,0 +1,393 @@
+# Prompt: Implement Complete Utility Tools Suite for phung.work
+## Objective
+Build a modern, browser-first **Utility Tools** module for **phung.work** that provides fast, privacy-friendly everyday utilities comparable to DevToys, DevUtils, TinyWow, Browserling, and other professional online tool collections.
+The implementation must integrate seamlessly with the existing architecture and design system of phung.work.
+---
+# Core Principles
+* Everything runs locally in the browser.
+* No backend.
+* No API calls.
+* User data never leaves the browser.
+* Fast and lightweight.
+* Mobile responsive.
+* Desktop optimized.
+* Dark mode support.
+* Accessible (WCAG AA).
+* Modular architecture.
+* Lazy loading.
+* Code splitting.
+* Reusable components.
+* TypeScript-first implementation.
+Do not modify the current routing or application architecture unless absolutely necessary.
+---
+# Shared Features
+Every Utility Tool must include:
+* Hero title
+* Tool description
+* Example usage
+* Copy button
+* Clear button
+* Reset button
+* Share URL
+* Favorite tool
+* Recently used
+* Keyboard shortcuts
+* Processing time
+* Responsive layout
+* Toast notifications
+* Related tools section
+---
+# Tool 1 — UUID Generator
+Generate UUIDs.
+Support:
+* UUID v1
+* UUID v4
+* UUID v7
+Features
+* Single UUID
+* Bulk generation
+* Copy
+* Download TXT
+* Download CSV
+Options
+* Uppercase
+* Lowercase
+* Remove hyphens
+* Include line numbers
+* Generate continuously
+Statistics
+* Total generated
+* Generation time
+---
+# Tool 2 — UUID Bulk Generator
+Purpose
+Generate thousands of UUIDs efficiently.
+Options
+* Amount (1–100000)
+* UUID version
+* Prefix
+* Suffix
+* Separator
+* Output format
+TXT
+CSV
+JSON
+Performance
+* Use Web Workers
+* Streaming generation
+* Memory efficient
+---
+# Tool 3 — QR Code Generator
+Generate customizable QR Codes.
+Supported Content
+* URL
+* Text
+* Email
+* Phone
+* SMS
+* WiFi
+* Contact (vCard)
+* Calendar Event
+* Geo Location
+Customization
+* Size
+* Margin
+* Foreground color
+* Background color
+* Transparent background
+* Rounded modules
+* Dot styles
+* Eye styles
+* Logo upload
+* Error correction
+Levels
+L
+M
+Q
+H
+Export
+PNG
+SVG
+JPG
+WEBP
+Copy image
+Download
+Live preview
+---
+# Tool 4 — QR Code Scanner
+Read QR codes from
+* Camera
+* Uploaded image
+* Clipboard
+* Drag & Drop
+Supported formats
+PNG
+JPG
+WEBP
+GIF
+HEIC
+Features
+* Auto detect
+* Decode multiple QR codes
+* Copy result
+* Open URL
+* Download decoded text
+* Scan history (local)
+---
+# Tool 5 — Barcode Generator
+Supported Formats
+Code128
+Code39
+EAN-8
+EAN-13
+UPC-A
+UPC-E
+ITF
+MSI
+Codabar
+QR (optional)
+Customization
+Width
+Height
+Font
+Text position
+Margin
+Color
+Background
+Export
+PNG
+SVG
+Print friendly
+---
+# Tool 6 — Barcode Reader
+Decode barcodes from
+* Camera
+* Image upload
+* Clipboard
+Support
+EAN
+UPC
+Code39
+Code128
+ITF
+Codabar
+Features
+* Auto detection
+* Multiple barcode recognition
+* Copy value
+* Download results
+* Scan history
+---
+# Tool 7 — Random Number Generator
+Generate random values.
+Modes
+* Integer
+* Decimal
+Options
+Minimum
+Maximum
+Quantity
+Unique values only
+Allow duplicates
+Sorting
+Ascending
+Descending
+Shuffle
+Statistics
+Average
+Median
+Min
+Max
+Export
+TXT
+CSV
+JSON
+---
+# Tool 8 — Dice Roller
+Supported Dice
+D4
+D6
+D8
+D10
+D12
+D20
+D100
+Features
+* Multiple dice
+* Modifier (+/-)
+* Roll history
+* Animated rolling
+* Total result
+* Individual results
+* Probability display
+Example
+2D6+3
+1D20
+4D10
+---
+# Tool 9 — Coin Flip
+Features
+* Single flip
+* Multiple flips
+* Animated coin
+* Heads
+* Tails
+Statistics
+Heads %
+Tails %
+Longest streak
+History
+Simulation
+10
+100
+1000
+10000 flips
+Visualization
+Bar chart
+Probability
+Reset statistics
+---
+# Tool 10 — Password Strength Checker
+Analyze password security locally.
+Display
+Strength
+Very Weak
+Weak
+Fair
+Good
+Strong
+Excellent
+Analysis
+Length
+Uppercase
+Lowercase
+Numbers
+Symbols
+Dictionary words
+Repeated characters
+Sequential characters
+Keyboard patterns
+Entropy
+Estimated crack time
+Suggestions
+Use longer password
+Add symbols
+Avoid dictionary words
+Avoid common patterns
+Completely local processing.
+Never store passwords.
+Never transmit passwords.
+---
+# Shared Components
+Create reusable components.
+Shared Input
+Shared Toolbar
+Shared Export Menu
+Shared Statistics Panel
+Shared Upload Area
+Shared Result Card
+Shared Copy Button
+Shared Download Button
+Shared History Manager
+Shared Favorites Manager
+---
+# Performance
+Support
+Large UUID generation
+Large QR images
+Large barcode images
+Use
+Web Workers
+OffscreenCanvas
+Lazy loading
+Debounce
+Avoid unnecessary rendering
+Memory cleanup
+---
+# Recommended Libraries
+UUID
+uuid
+QR Generator
+qrcode
+QR Scanner
+html5-qrcode
+jsQR
+Barcode Generator
+JsBarcode
+Barcode Reader
+@zxing/browser
+Password Analysis
+zxcvbn-ts
+Charts
+Chart.js
+File Download
+file-saver
+ZIP
+jszip
+---
+# Accessibility
+Keyboard navigation
+Screen reader support
+ARIA labels
+Visible focus states
+High contrast
+WCAG AA
+---
+# SEO
+Create one page per tool.
+Suggested URLs
+/tools/uuid-generator
+/tools/uuid-bulk-generator
+/tools/qr-code-generator
+/tools/qr-code-scanner
+/tools/barcode-generator
+/tools/barcode-reader
+/tools/random-number-generator
+/tools/dice-roller
+/tools/coin-flip
+/tools/password-strength-checker
+Every page includes
+* Unique page title
+* Meta description
+* Canonical URL
+* Open Graph
+* Twitter Card
+* JSON-LD
+* Breadcrumb
+* FAQ Schema
+* HowTo Schema
+* WebApplication Schema
+* Related tools
+* Example usage
+* Frequently Asked Questions
+---
+# Testing
+Create comprehensive tests covering
+* UUID generation correctness
+* UUID version validation
+* QR encoding
+* QR decoding
+* Barcode generation
+* Barcode decoding
+* Random number uniqueness
+* Dice probability calculations
+* Coin flip randomness
+* Password strength scoring
+* Clipboard operations
+* Large dataset performance
+* Memory usage
+* Cross-browser compatibility
+---
+# Deliverables
+Produce production-ready code including:
+* Reusable utility engine
+* Shared UI components
+* Shared hooks
+* Shared services
+* TypeScript models
+* Responsive layouts
+* Unit tests
+* Lazy-loaded modules
+* SEO-ready pages
+* Consistent styling matching phung.work
+The Utility Tools module should provide a polished, professional experience with consistent interaction patterns, reusable infrastructure, excellent performance, and privacy-first processing. Every tool should integrate naturally into the phung.work ecosystem and be easy to maintain and extend in the future.
