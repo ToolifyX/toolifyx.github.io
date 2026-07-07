@@ -56,6 +56,15 @@ export const toolRegistry: Record<string, React.ComponentType<any>> = {
   ImageColorTool: dynamic(() => import('./components/ImageColorTool'), { loading, ssr: false }),
   ThumbnailGenerator: dynamic(() => import('./components/ThumbnailGenerator'), { loading, ssr: false }),
   BlurDetector: dynamic(() => import('./components/BlurDetector'), { loading, ssr: false }),
+  HeicToJpg: dynamic(() => import('./components/HeicToJpg'), { loading, ssr: false }),
+  HeicToPng: dynamic(() => import('./components/HeicToPng'), { loading, ssr: false }),
+  SvgToPng: dynamic(() => import('./components/SvgToPng'), { loading, ssr: false }),
+  SvgOptimizer: dynamic(() => import('./components/SvgOptimizer'), { loading, ssr: false }),
+  IcoGenerator: dynamic(() => import('./components/IcoGenerator'), { loading, ssr: false }),
+  FaviconGenerator: dynamic(() => import('./components/FaviconGenerator'), { loading, ssr: false }),
+  ImageWatermark: dynamic(() => import('./components/ImageWatermark'), { loading, ssr: false }),
+  AspectRatioCalculator: dynamic(() => import('./components/AspectRatioCalculator'), { loading, ssr: false }),
+  ImageOcr: dynamic(() => import('./components/ImageOcr'), { loading, ssr: false }),
   ImageCropTool: dynamic(() => import('./components/ImageCropTool'), { loading, ssr: false }),
 
   // PDF Tools

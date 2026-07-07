@@ -56,6 +56,15 @@ export const tools: Tool[] = [
   { slug: 'image-color-tool', title: 'Image Color Tool', description: 'Extract colors and grayscale.', component: 'ImageColorTool', category: 'image', icon: 'Pipette', iconColor: 'text-green-700 bg-green-700/10', themeColor: 'green' },
   { slug: 'thumbnail-generator', title: 'Thumbnail Generator', description: 'Create custom image thumbnails.', component: 'ThumbnailGenerator', category: 'image', icon: 'Image', iconColor: 'text-emerald-700 bg-emerald-700/10', themeColor: 'emerald' },
   { slug: 'blur-detector', title: 'Blur Detector', description: 'Check image sharpness and blur.', component: 'BlurDetector', category: 'image', icon: 'EyeOff', iconColor: 'text-teal-700 bg-teal-700/10', themeColor: 'teal' },
+  { slug: 'heic-to-jpg', title: 'HEIC → JPG', description: 'Convert Apple HEIC photos to JPG format.', component: 'HeicToJpg', category: 'image', icon: 'RefreshCw', iconColor: 'text-blue-500 bg-blue-500/10', themeColor: 'blue' },
+  { slug: 'heic-to-png', title: 'HEIC → PNG', description: 'Convert Apple HEIC photos to PNG format.', component: 'HeicToPng', category: 'image', icon: 'RefreshCw', iconColor: 'text-indigo-500 bg-indigo-500/10', themeColor: 'indigo' },
+  { slug: 'svg-to-png', title: 'SVG → PNG', description: 'Convert vector SVG to high-res PNG.', component: 'SvgToPng', category: 'image', icon: 'Image', iconColor: 'text-orange-500 bg-orange-500/10', themeColor: 'orange' },
+  { slug: 'svg-optimizer', title: 'SVG Optimizer', description: 'Clean and minify SVG vector files.', component: 'SvgOptimizer', category: 'image', icon: 'Zap', iconColor: 'text-yellow-500 bg-yellow-500/10', themeColor: 'yellow' },
+  { slug: 'ico-generator', title: 'ICO Generator', description: 'Create Windows ICO files from images.', component: 'IcoGenerator', category: 'image', icon: 'Stamp', iconColor: 'text-slate-500 bg-slate-500/10', themeColor: 'slate' },
+  { slug: 'favicon-generator', title: 'Favicon Generator', description: 'Generate all web & mobile favicon sizes.', component: 'FaviconGenerator', category: 'image', icon: 'Globe', iconColor: 'text-blue-400 bg-blue-400/10', themeColor: 'blue' },
+  { slug: 'image-watermark', title: 'Image Watermark', description: 'Add text or image watermarks to photos.', component: 'ImageWatermark', category: 'image', icon: 'FileSignature', iconColor: 'text-red-500 bg-red-500/10', themeColor: 'red' },
+  { slug: 'aspect-ratio-calculator', title: 'Aspect Ratio Calculator', description: 'Calculate dimensions and aspect ratios.', component: 'AspectRatioCalculator', category: 'image', icon: 'Calculator', iconColor: 'text-emerald-500 bg-emerald-500/10', themeColor: 'emerald' },
+  { slug: 'image-ocr', title: 'Image OCR', description: 'Extract text from images using AI.', component: 'ImageOcr', category: 'image', icon: 'ScanText', iconColor: 'text-purple-500 bg-purple-500/10', themeColor: 'purple' },
 
   // PDF Tools
   { slug: 'pdf-merge', title: 'PDF Merge', description: 'Combine multiple PDFs into one.', component: 'PdfMergeTool', category: 'pdf', icon: 'Combine', iconColor: 'text-red-500 bg-red-500/10', themeColor: 'red' },

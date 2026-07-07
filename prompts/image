@@ -1,0 +1,460 @@
+# Prompt: Implement Complete Image Tools Suite for phung.work
+## Objective
+Build a professional, browser-first **Image Tools** module for **phung.work** comparable to TinyWow, iLoveIMG, Squoosh, Canva Utilities and other modern online image tool platforms.
+This module should become one of the flagship sections of the website.
+The implementation must follow the existing architecture, design system, routing, and reusable components already used by phung.work.
+---
+# Core Principles
+* Everything runs locally in the browser whenever technically possible.
+* User images never leave the browser unless explicitly required.
+* No backend dependency for standard image processing.
+* AI features should use WebAssembly/WebGPU/WebML/ONNX Runtime Web where feasible.
+* Fast.
+* Mobile responsive.
+* Desktop optimized.
+* Dark mode.
+* Accessible (WCAG AA).
+* Modular architecture.
+* Lazy loading.
+* Code splitting.
+* Reusable components.
+Do NOT modify existing application architecture unless absolutely necessary.
+---
+# Shared Features
+Every image tool must share the same UX.
+Each page includes:
+* Hero section
+* Tool description
+* Supported formats
+* Upload Area
+* Drag & Drop
+* Paste Image
+* Clipboard support
+* Sample Image
+* Before / After Preview
+* Zoom
+* Pan
+* Side-by-side comparison
+* Image statistics
+* Processing time
+* Download
+* Copy Image
+* Copy Image URL (if generated)
+* Replace image
+* Clear
+* Recent files
+* Favorite tool
+* Related tools
+---
+# Supported Formats
+Input
+* JPG
+* JPEG
+* PNG
+* WEBP
+* GIF
+* SVG
+* BMP
+* TIFF
+* ICO
+* HEIC
+* AVIF
+Output
+* JPG
+* PNG
+* WEBP
+* BMP
+* ICO
+* PDF (where applicable)
+---
+# Common Image Information
+Display
+Filename
+Width
+Height
+Aspect Ratio
+Orientation
+Color Space
+Transparency
+File Size
+Estimated Memory Usage
+EXIF Available
+Creation Date
+Modification Date
+---
+# Tool 1
+## HEIC → JPG
+Features
+Batch conversion
+Quality slider
+50~100
+Auto rotate using EXIF
+Preserve metadata (optional)
+Strip metadata
+Preview output
+Download all
+Download ZIP
+---
+# Tool 2
+## HEIC → PNG
+Same features as above.
+Preserve transparency if possible.
+---
+# Tool 3
+## SVG → PNG
+Options
+Width
+Height
+Scale
+Background
+Transparent
+White
+Black
+Custom
+Resolution presets
+1x
+2x
+3x
+4x
+512
+1024
+2048
+---
+# Tool 4
+## SVG Optimizer
+Optimize SVG.
+Remove
+Metadata
+Comments
+Hidden layers
+Unused IDs
+Unused groups
+Collapse paths
+Merge transforms
+Minify output
+Display
+Original Size
+Optimized Size
+Reduction %
+Preview
+---
+# Tool 5
+## ICO Generator
+Generate Windows ICO.
+Allow multiple resolutions
+16
+24
+32
+48
+64
+128
+256
+Preview every icon.
+Download
+.ico
+---
+# Tool 6
+## Favicon Generator
+Generate
+favicon.ico
+16x16
+32x32
+48x48
+180 Apple Touch
+192 Android
+512 Android
+manifest icons
+Produce downloadable ZIP
+Include manifest template.
+---
+# Tool 7
+## GIF Maker
+Create animated GIF.
+Sources
+Images
+PNG
+JPG
+WEBP
+Controls
+Frame duration
+FPS
+Loop forever
+Reverse
+Reorder frames
+Resize
+Crop
+Quality
+Compression
+Preview animation
+---
+# Tool 8
+## GIF Compressor
+Reduce GIF size.
+Options
+Reduce colors
+Resize
+Lower FPS
+Remove duplicate frames
+Optimize transparency
+Display
+Original
+Compressed
+Reduction %
+---
+# Tool 9
+## Image Watermark
+Watermark types
+Text
+Image
+Controls
+Opacity
+Rotation
+Position
+Center
+Corners
+Tile
+Scale
+Shadow
+Outline
+Batch processing
+Live preview
+---
+# Tool 10
+## Image Rotator
+Rotate
+90°
+180°
+270°
+Custom angle
+Flip
+Horizontal
+Vertical
+Auto crop
+Preserve transparency
+---
+# Tool 11
+## Image Flipper
+Horizontal
+Vertical
+Diagonal
+Batch support
+Lossless when possible.
+---
+# Tool 12
+## Background Remover (AI)
+Run locally.
+Suggested technologies
+ONNX Runtime Web
+U²Net
+MODNet
+RMBG
+Features
+Transparent PNG
+Solid background
+Custom color
+Blur background
+Preview mask
+Edge refinement
+Hair refinement
+Quality modes
+Fast
+Balanced
+High
+---
+# Tool 13
+## OCR
+Extract text from image.
+Supported languages
+English
+Vietnamese
+Japanese
+Chinese
+Korean
+French
+German
+Spanish
+Options
+Keep layout
+Recognize tables
+Confidence score
+Bounding boxes
+Copy text
+Export TXT
+Export JSON
+Export CSV
+Suggested engine
+Tesseract.js
+---
+# Tool 14
+## Screenshot Mockup
+Generate beautiful app screenshots.
+Templates
+iPhone
+Android
+Tablet
+Desktop
+Options
+Frame
+Shadow
+Background
+Gradient
+Solid
+Custom image
+Padding
+Corner radius
+Reflection
+Export
+PNG
+JPG
+WEBP
+---
+# Tool 15
+## Aspect Ratio Calculator
+Input
+Width
+Height
+Display
+Aspect Ratio
+Simplified Ratio
+Closest Standard Ratio
+Examples
+1:1
+3:2
+4:3
+16:9
+18:9
+21:9
+9:16
+Allow
+Lock ratio
+Calculate missing dimension
+---
+# Batch Processing
+Support
+Multiple images
+Progress indicator
+Cancel processing
+Queue management
+ZIP download
+---
+# Editor
+Shared editor component
+Crop
+Resize
+Rotate
+Flip
+Brightness
+Contrast
+Saturation
+Hue
+Blur
+Sharpen
+Undo
+Redo
+Reset
+History
+---
+# Performance
+Use
+createImageBitmap()
+OffscreenCanvas
+Web Workers
+Lazy loading
+Virtual list
+Streaming decode
+Avoid memory leaks
+Support images up to
+100MB
+---
+# Libraries
+Recommended
+browser-image-compression
+heic2any
+libheif-js
+sharp-wasm (optional)
+Pica
+Fabric.js
+Konva
+Cropper.js
+Tesseract.js
+onnxruntime-web
+jszip
+FileSaver
+svgo
+gif.js
+gifuct-js
+UPNG.js
+pdf-lib (if exporting)
+---
+# Accessibility
+Keyboard navigation
+Screen reader support
+ARIA
+Focus states
+High contrast
+---
+# SEO
+Create one landing page per tool.
+Examples
+/tools/heic-to-jpg
+/tools/heic-to-png
+/tools/svg-to-png
+/tools/svg-optimizer
+/tools/ico-generator
+/tools/favicon-generator
+/tools/gif-maker
+/tools/gif-compressor
+/tools/image-watermark
+/tools/image-rotator
+/tools/image-flipper
+/tools/background-remover
+/tools/image-ocr
+/tools/screenshot-mockup
+/tools/aspect-ratio-calculator
+Each page includes
+Unique Title
+Meta Description
+Canonical URL
+Open Graph
+Twitter Card
+JSON-LD
+Breadcrumb
+FAQ Schema
+HowTo Schema
+Related Tools
+Examples
+Supported Formats
+---
+# Testing
+Create unit tests covering
+Image loading
+HEIC conversion
+SVG rendering
+GIF generation
+Compression
+Watermark positioning
+OCR extraction
+Background removal
+Batch processing
+Large images
+Memory usage
+Error recovery
+Cross-browser compatibility
+---
+# Deliverables
+Produce production-ready code including:
+* Reusable image processing engine
+* Shared upload component
+* Shared preview component
+* Shared toolbar
+* Shared download manager
+* Shared metadata viewer
+* Shared batch processor
+* Shared settings panel
+* Reusable hooks
+* TypeScript types
+* Unit tests
+* Responsive layouts
+* Lazy-loaded modules
+* SEO-ready pages
+The Image Tools module should feel like a unified professional image editing toolkit rather than a collection of independent utilities. All tools must share the same design language, interaction patterns, keyboard shortcuts, and reusable infrastructure to ensure long-term maintainability and scalability.
