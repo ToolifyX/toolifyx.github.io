@@ -53,14 +53,14 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-10">
         {!isFiltering && (
           <div className="max-w-7xl mx-auto">
             <RecentlyUsedTools />
           </div>
         )}
 
-        <div className="flex items-center justify-center pb-1">
+        <div className="flex items-center justify-center pb-2">
           <CategoryMenu
             activeCategory={selectedCategory}
             onCategoryChange={setSelectedCategory}

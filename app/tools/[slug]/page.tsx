@@ -37,6 +37,8 @@ export default function ToolPage({ params }: Props) {
     notFound();
   }
 
+  const theme = tool.themeColor || 'blue';
+
   const relatedTools = tools
     .filter((t) => t.category === tool.category && t.slug !== tool.slug)
     .slice(0, 4);
@@ -69,21 +71,21 @@ export default function ToolPage({ params }: Props) {
       </div>
 
       {/* Workspace Canvas (App Window) - Full Screen Width */}
-      <div className="w-full bg-card border-y border-border md:border md:rounded-xl overflow-hidden shadow-sm">
+      <div className={`w-full bg-card border-y border-border md:border md:rounded-xl overflow-hidden shadow-sm transition-colors duration-500 border-${theme}-500/20`}>
         {/* macOS Style Bar */}
-        <div className="px-6 py-3 bg-muted border-b border-border flex items-center justify-between">
+        <div className={`px-6 py-3 border-b border-border flex items-center justify-between transition-colors duration-500 bg-${theme}-500/10`}>
           <div className="flex space-x-1.5">
-            <div className="w-3 h-3 rounded-full bg-border" />
-            <div className="w-3 h-3 rounded-full bg-border" />
-            <div className="w-3 h-3 rounded-full bg-border" />
+            <div className={`w-3 h-3 rounded-full bg-${theme}-500/20`} />
+            <div className={`w-3 h-3 rounded-full bg-${theme}-500/20`} />
+            <div className={`w-3 h-3 rounded-full bg-${theme}-500/20`} />
           </div>
-          <span className="text-[11px] font-bold uppercase tracking-[0.15em] text-muted-foreground">
+          <span className={`text-[11px] font-black uppercase tracking-[0.2em] text-${theme}-600 dark:text-${theme}-400`}>
             Web Utility
           </span>
         </div>
 
         {/* Actual Tool Canvas */}
-        <div className="min-h-[700px] flex flex-col">
+        <div className={`min-h-[700px] flex flex-col transition-colors duration-500 bg-${theme}-500/[0.02]`}>
           <ToolRenderer tool={tool} />
         </div>
       </div>
