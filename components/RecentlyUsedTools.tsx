@@ -28,8 +28,7 @@ export default function RecentlyUsedTools() {
     <section className="space-y-6 animate-in fade-in slide-in-from-top-4 duration-1000 mb-10">
       <div className="flex items-center justify-between px-1">
         <div className="flex items-center gap-2">
-          <h2 className="text-sm font-black uppercase tracking-[0.15em] text-primary">Recently Used</h2>
-          <span className="text-[10px] bg-primary/10 px-1.5 py-0.5 rounded font-bold text-primary">Quick Access</span>
+          <h2 className="text-sm font-black uppercase tracking-[0.15em] text-primary">Recently Used Quick Access</h2>
         </div>
         <button
           onClick={() => {

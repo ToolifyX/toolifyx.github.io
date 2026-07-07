@@ -17,7 +17,7 @@ export default function ToolRenderer({ tool }: ToolRendererProps) {
           const updated = [
             tool.slug,
             ...recentlyUsed.filter((slug: string) => slug !== tool.slug)
-          ].slice(0, 10);
+          ];
           localStorage.setItem('recentlyUsedTools', JSON.stringify(updated));
         } else {
           localStorage.setItem('recentlyUsedTools', JSON.stringify([tool.slug]));
