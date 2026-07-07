@@ -1,0 +1,391 @@
+# Prompt: Implement Complete JSON Tools Suite for phung.work
+## Objective
+Expand the existing JSON tools into a complete, professional JSON toolkit comparable to JSONLint, CodeBeautify, FreeFormatter, and DevUtils.
+The implementation must follow the existing architecture and UI of **phung.work**.
+## Core Principles
+* Everything runs entirely in the browser.
+* No backend.
+* No API calls.
+* No user data leaves the browser.
+* Fast and lightweight.
+* Support files up to 20MB.
+* Mobile responsive.
+* Dark mode compatible.
+* Accessible (WCAG AA).
+* Modular architecture.
+* Reuse existing shared components.
+* Do not modify existing routing or application flow unless absolutely necessary.
+---
+# JSON Tools
+Implement the following tools.
+---
+## 1. JSON Formatter
+Purpose:
+Beautify valid JSON.
+Features:
+* Auto indentation
+* 2 spaces
+* 4 spaces
+* Tabs
+* Preserve Unicode
+* Sort object keys (optional)
+* Remove trailing spaces
+* Live preview
+* Syntax highlighting
+* Line numbers
+* Copy
+* Download
+* Upload JSON
+* Format on paste (optional)
+Show:
+* File size
+* Character count
+* Processing time
+---
+## 2. JSON Validator
+Validate JSON syntax.
+Display:
+* Valid / Invalid
+* Error message
+* Error line
+* Error column
+* Highlight error location
+* Suggest common fixes
+Common errors:
+* Missing comma
+* Missing quote
+* Extra comma
+* Invalid escape
+* Unexpected token
+* Duplicate key warning (optional)
+---
+## 3. JSON Minifier
+Remove:
+* Whitespace
+* Indentation
+* Newlines
+Options:
+* Preserve Unicode
+* Escape Unicode
+* Remove unnecessary spaces only
+Display:
+Original Size
+Minified Size
+Reduction %
+Bytes Saved
+---
+## 4. JSON Escape
+Convert JSON into escaped string.
+Example
+Input
+{
+"name":"John"
+}
+Output
+"{"name":"John"}"
+Options
+Escape quotes
+Escape slashes
+Escape unicode
+Copy result
+---
+## 5. JSON Unescape
+Reverse JSON Escape.
+Support:
+* Escaped quotes
+* Unicode escape
+* Newline
+* Tabs
+* Slash
+* Backslash
+Auto detect invalid escape.
+---
+## 6. JSON Compare
+Compare two JSON documents.
+Ignore:
+* Formatting
+* Object key order
+Highlight:
+Added
+Removed
+Modified
+Moved
+Display:
+Similarity %
+Added keys
+Removed keys
+Modified keys
+Nested changes
+Export comparison report.
+---
+## 7. JSON Diff Viewer
+Professional diff viewer.
+Modes
+Side-by-side
+Inline
+Tree diff
+Color coding
+Green
+Red
+Yellow
+Options
+Ignore array order
+Ignore null
+Ignore whitespace
+Collapse unchanged nodes
+Search differences
+---
+## 8. JSON Viewer
+Interactive viewer.
+Features
+Syntax highlighting
+Collapse
+Expand
+Search
+Copy node
+Copy path
+Copy value
+Show node type
+Show object size
+Show array length
+Expand all
+Collapse all
+Search while typing
+---
+## 9. JSON Tree Viewer
+Interactive tree.
+Display
+Objects
+Arrays
+Primitive values
+Data types
+Icons
+String
+Number
+Boolean
+Null
+Array
+Object
+Context menu
+Copy key
+Copy value
+Copy JSON path
+Expand children
+Collapse children
+---
+## 10. JSON → YAML
+Convert JSON into YAML.
+Options
+Indentation
+2 spaces
+4 spaces
+Validate before conversion
+Copy
+Download .yaml
+Upload JSON
+---
+## 11. JSON → XML
+Convert JSON into XML.
+Options
+Pretty XML
+Compact XML
+Root node name
+Include XML declaration
+Custom root element
+Copy
+Download
+---
+## 12. JSON → CSV
+Convert JSON array into CSV.
+Support
+Nested objects
+Flatten nested keys
+Custom delimiter
+Comma
+Semicolon
+Tab
+Options
+Include header
+Custom quote
+UTF-8 export
+Download CSV
+Preview table
+---
+## 13. CSV → JSON
+Convert CSV into JSON.
+Features
+Auto detect delimiter
+Header row
+Custom delimiter
+Ignore empty rows
+Trim spaces
+Parse numbers
+Parse boolean
+Parse null
+Output
+JSON Array
+Pretty JSON
+Minified JSON
+---
+## Shared Features
+Every JSON tool must include
+Hero title
+Description
+Example input
+Example output
+Upload file
+Drag & Drop
+Copy
+Download
+Clear
+Paste
+Share URL
+Favorite
+Recently used
+Keyboard shortcuts
+Live statistics
+Processing time
+Dark mode
+Responsive layout
+Toast notifications
+---
+## File Support
+Supported files
+.json
+.txt
+.csv
+.yaml
+.yml
+.xml
+Maximum file size
+20MB
+Show
+Filename
+File size
+Encoding
+---
+## Editor
+Use Monaco Editor or CodeMirror.
+Requirements
+Syntax highlighting
+Auto completion
+Bracket matching
+Auto indent
+Line numbers
+Code folding
+Search
+Replace
+Undo
+Redo
+Word wrap
+Theme support
+---
+## Search
+Search while typing
+Case sensitive
+Regex
+Whole word
+Jump to next
+Jump to previous
+Highlight all matches
+---
+## Error Handling
+Friendly error messages.
+Never crash.
+Show
+Error location
+Suggested fix
+Raw parser error
+---
+## Performance
+Debounce processing.
+Avoid unnecessary rendering.
+Lazy rendering.
+Virtual scrolling for large JSON.
+Web Workers for expensive operations.
+Large file support.
+---
+## Accessibility
+Keyboard navigation
+ARIA labels
+Focus management
+Screen reader support
+WCAG AA
+---
+## SEO
+Each tool must have its own page.
+Suggested URLs
+/tools/json-formatter
+/tools/json-validator
+/tools/json-minifier
+/tools/json-escape
+/tools/json-unescape
+/tools/json-compare
+/tools/json-diff
+/tools/json-viewer
+/tools/json-tree-viewer
+/tools/json-to-yaml
+/tools/json-to-xml
+/tools/json-to-csv
+/tools/csv-to-json
+Every page includes
+Unique title
+Unique meta description
+Canonical URL
+Open Graph
+Twitter Card
+Breadcrumb
+FAQ Schema
+WebApplication Schema
+SoftwareApplication Schema
+HowTo Schema
+Related Tools section
+Internal links
+---
+## Libraries
+Recommended
+Monaco Editor
+CodeMirror
+fast-json-patch
+jsondiffpatch
+js-yaml
+xml-js
+PapaParse
+jsonpath-plus
+json5 (optional)
+---
+## Testing
+Create unit tests for
+Formatter
+Validator
+Minifier
+Escape
+Unescape
+JSON Compare
+JSON Diff
+CSV conversion
+YAML conversion
+XML conversion
+Large file handling
+Invalid JSON
+Nested objects
+Unicode
+Performance
+---
+## Deliverables
+Produce production-ready code including
+* Modular architecture
+* Reusable components
+* Shared hooks
+* Shared utilities
+* Reusable dialogs
+* Common toolbar
+* Common file uploader
+* Common editor component
+* Responsive layouts
+* Lazy loading
+* TypeScript types
+* Unit tests
+* SEO-ready pages
+* Consistent design with the rest of phung.work
+The implementation should feel like a professional developer toolbox rather than a collection of isolated utilities. Every JSON-related tool should share a consistent user experience, common components, and high performance while remaining easy to maintain and extend.

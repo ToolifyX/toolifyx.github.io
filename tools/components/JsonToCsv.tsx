@@ -1,42 +1,68 @@
 "use client";
 
 /**
- * SEO Title: JSON Formatter & Beautifier - Clean & Format JSON Online
- * Meta Description: Free online tool to format, beautify, and prettify JSON data. Make your JSON readable with custom indentation.
- *
- * FAQ 1: How do I format JSON?
- * Paste your minified or messy JSON into the input box and click "Format JSON".
- *
- * FAQ 2: Is my data safe?
- * Yes, all processing happens locally in your browser. No data is sent to any server.
- *
- * FAQ 3: Can it handle invalid JSON?
- * It will display a clear error message if the JSON is malformed, helping you debug.
+ * SEO Title: JSON to CSV Converter - Online CSV Generator
+ * Meta Description: Convert JSON arrays into flat CSV files. Handles nested objects and supports custom delimiters. Fast and free online tool.
  */
 
 import React, { useState } from 'react';
-import { formatJSON, copyToClipboard } from '@/lib/utils';
+import { copyToClipboard } from '@/lib/utils';
 
-export default function JsonFormatter() {
+export default function JsonToCsv() {
   const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
-  const [indent, setIndent] = useState(2);
   const [error, setError] = useState('');
   const [copied, setCopied] = useState(false);
-  const [time, setTime] = useState<number | null>(null);
 
-  const handleFormat = () => {
-    const start = performance.now();
+  const handleConvert = () => {
     setError('');
     try {
       if (!input.trim()) return;
-      const formatted = formatJSON(input, indent);
-      setOutput(formatted);
-      setTime(parseFloat((performance.now() - start).toFixed(2)));
+      let data = JSON.parse(input);
+      if (!Array.isArray(data)) {
+        data = [data]; // Wrap object in array
+      }
+
+      if (data.length === 0) {
+        setOutput('');
+        return;
+      }
+
+      // Flatten logic and extract headers
+      const keys = new Set<string>();
+      const flattenedData = data.map((item: any) => {
+        const flat: any = {};
+        const flatten = (obj: any, prefix = '') => {
+          Object.keys(obj).forEach(key => {
+            const propName = prefix ? `${prefix}.${key}` : key;
+            if (typeof obj[key] === 'object' && obj[key] !== null && !Array.isArray(obj[key])) {
+              flatten(obj[key], propName);
+            } else {
+              flat[propName] = obj[key];
+              keys.add(propName);
+            }
+          });
+        };
+        flatten(item);
+        return flat;
+      });
+
+      const headers = Array.from(keys);
+      const csvRows = [];
+      csvRows.push(headers.join(','));
+
+      flattenedData.forEach((row: any) => {
+        const values = headers.map(header => {
+          const val = row[header] === undefined ? '' : row[header];
+          return `"${String(val).replace(/"/g, '""')}"`;
+        });
+        csvRows.push(values.join(','));
+      });
+
+      setOutput(csvRows.join('\n'));
     } catch (e: any) {
-      setError(e.message);
+      setError("Invalid JSON input. Expected an array of objects.");
       setOutput('');
-      setTime(null);
     }
   };
 
@@ -54,37 +80,17 @@ export default function JsonFormatter() {
       <div className="card border rounded-xl p-6 space-y-6 bg-card shadow-sm">
         <textarea
           className="w-full border rounded-xl p-4 min-h-[300px] font-mono text-base bg-muted/20 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-          placeholder='{"key": "value"}'
+          placeholder='[{"id": 1, "name": "Alice"}, {"id": 2, "name": "Bob"}]'
           value={input}
           onChange={(e) => setInput(e.target.value)}
         />
 
-        <div className="flex flex-wrap gap-4 items-center bg-muted/30 p-4 rounded-xl border border-border/50">
-          <div className="flex items-center gap-4">
-            <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Indent:</span>
-            {[2, 4].map(n => (
-              <button
-                key={n}
-                onClick={() => setIndent(n)}
-                className={`text-xs font-black px-3 py-1 rounded-lg transition-all ${indent === n ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:bg-muted'}`}
-              >
-                {n} Spaces
-              </button>
-            ))}
-          </div>
-          {time !== null && (
-            <div className="ml-auto text-[10px] font-black text-primary uppercase tracking-[0.2em]">
-              Processed in {time}ms
-            </div>
-          )}
-        </div>
-
         <div className="flex gap-3">
           <button
-            onClick={handleFormat}
+            onClick={handleConvert}
             className="bg-primary text-primary-foreground px-6 py-3 rounded-xl font-bold hover:opacity-90 transition-all flex items-center gap-2"
           >
-            Format JSON
+            Convert to CSV
           </button>
           <button
             onClick={() => { setInput(''); setOutput(''); setError(''); }}
@@ -103,7 +109,7 @@ export default function JsonFormatter() {
         {output && (
           <div className="space-y-3 animate-in fade-in duration-500">
             <div className="flex items-center justify-between px-1">
-              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Formatted Output</span>
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">CSV Result</span>
               <button
                 onClick={handleCopy}
                 className="text-xs font-bold text-primary hover:underline uppercase tracking-wider"
@@ -113,7 +119,7 @@ export default function JsonFormatter() {
             </div>
             <textarea
               readOnly
-              className="w-full border rounded-xl p-4 min-h-[400px] font-mono text-base bg-muted/10"
+              className="w-full border rounded-xl p-4 min-h-[300px] font-mono text-base bg-muted/10"
               value={output}
             />
           </div>

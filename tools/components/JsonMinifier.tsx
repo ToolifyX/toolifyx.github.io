@@ -1,37 +1,28 @@
 "use client";
 
 /**
- * SEO Title: JSON Formatter & Beautifier - Clean & Format JSON Online
- * Meta Description: Free online tool to format, beautify, and prettify JSON data. Make your JSON readable with custom indentation.
- *
- * FAQ 1: How do I format JSON?
- * Paste your minified or messy JSON into the input box and click "Format JSON".
- *
- * FAQ 2: Is my data safe?
- * Yes, all processing happens locally in your browser. No data is sent to any server.
- *
- * FAQ 3: Can it handle invalid JSON?
- * It will display a clear error message if the JSON is malformed, helping you debug.
+ * SEO Title: JSON Minifier - Compress & Shrink JSON Online
+ * Meta Description: Reduce JSON file size by removing all unnecessary whitespace and newlines. Fast and free online JSON minification tool.
  */
 
 import React, { useState } from 'react';
-import { formatJSON, copyToClipboard } from '@/lib/utils';
+import { copyToClipboard, formatBytes } from '@/lib/utils';
 
-export default function JsonFormatter() {
+export default function JsonMinifier() {
   const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
-  const [indent, setIndent] = useState(2);
   const [error, setError] = useState('');
   const [copied, setCopied] = useState(false);
   const [time, setTime] = useState<number | null>(null);
 
-  const handleFormat = () => {
+  const handleMinify = () => {
     const start = performance.now();
     setError('');
     try {
       if (!input.trim()) return;
-      const formatted = formatJSON(input, indent);
-      setOutput(formatted);
+      const obj = JSON.parse(input);
+      const minified = JSON.stringify(obj);
+      setOutput(minified);
       setTime(parseFloat((performance.now() - start).toFixed(2)));
     } catch (e: any) {
       setError(e.message);
@@ -49,49 +40,38 @@ export default function JsonFormatter() {
     }
   };
 
+  const reduction = input.length > 0 && output.length > 0
+    ? ((input.length - output.length) / input.length * 100).toFixed(1)
+    : 0;
+
   return (
     <div className="w-full p-4 md:p-8 space-y-6">
       <div className="card border rounded-xl p-6 space-y-6 bg-card shadow-sm">
         <textarea
           className="w-full border rounded-xl p-4 min-h-[300px] font-mono text-base bg-muted/20 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-          placeholder='{"key": "value"}'
+          placeholder='{"key": "value", "pretty": true}'
           value={input}
           onChange={(e) => setInput(e.target.value)}
         />
 
-        <div className="flex flex-wrap gap-4 items-center bg-muted/30 p-4 rounded-xl border border-border/50">
-          <div className="flex items-center gap-4">
-            <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Indent:</span>
-            {[2, 4].map(n => (
-              <button
-                key={n}
-                onClick={() => setIndent(n)}
-                className={`text-xs font-black px-3 py-1 rounded-lg transition-all ${indent === n ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:bg-muted'}`}
-              >
-                {n} Spaces
-              </button>
-            ))}
-          </div>
-          {time !== null && (
-            <div className="ml-auto text-[10px] font-black text-primary uppercase tracking-[0.2em]">
-              Processed in {time}ms
-            </div>
-          )}
-        </div>
-
         <div className="flex gap-3">
           <button
-            onClick={handleFormat}
+            onClick={handleMinify}
             className="bg-primary text-primary-foreground px-6 py-3 rounded-xl font-bold hover:opacity-90 transition-all flex items-center gap-2"
           >
-            Format JSON
+            Minify JSON
           </button>
           <button
-            onClick={() => { setInput(''); setOutput(''); setError(''); }}
+            onClick={() => { setInput(''); setOutput(''); setError(''); setTime(null); }}
             className="border px-6 py-3 rounded-xl font-bold hover:bg-muted/50 transition-all"
           >
             Clear
           </button>
+          {time !== null && (
+            <div className="ml-auto text-[10px] font-black text-primary uppercase tracking-[0.2em] self-center">
+              Processed in {time}ms
+            </div>
+          )}
         </div>
 
         {error && (
@@ -101,9 +81,19 @@ export default function JsonFormatter() {
         )}
 
         {output && (
-          <div className="space-y-3 animate-in fade-in duration-500">
+          <div className="space-y-4 animate-in fade-in duration-500">
             <div className="flex items-center justify-between px-1">
-              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Formatted Output</span>
+              <div className="flex gap-4">
+                 <div className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">
+                    Original: <span className="text-foreground">{formatBytes(input.length)}</span>
+                 </div>
+                 <div className="text-[10px] font-black uppercase tracking-[0.2em] text-primary">
+                    Minified: <span className="text-foreground">{formatBytes(output.length)}</span>
+                 </div>
+                 <div className="text-[10px] font-black uppercase tracking-[0.2em] text-green-600">
+                    Saved: <span className="text-foreground">{reduction}%</span>
+                 </div>
+              </div>
               <button
                 onClick={handleCopy}
                 className="text-xs font-bold text-primary hover:underline uppercase tracking-wider"
@@ -113,7 +103,7 @@ export default function JsonFormatter() {
             </div>
             <textarea
               readOnly
-              className="w-full border rounded-xl p-4 min-h-[400px] font-mono text-base bg-muted/10"
+              className="w-full border rounded-xl p-4 min-h-[200px] font-mono text-base bg-muted/10"
               value={output}
             />
           </div>
