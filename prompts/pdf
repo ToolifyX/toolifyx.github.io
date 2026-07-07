@@ -1,0 +1,276 @@
+Dưới đây là prompt đầy đủ để Gemini/Cursor triển khai PDF Tools Suite cho phung.work theo cùng chuẩn với các prompt trước (JSON / Image Tools).
+### Prompt: Implement Complete PDF Tools Suite for phung.work
+### Objective
+Build a professional, browser-first PDF Tools module for phung.work, comparable to iLovePDF, SmallPDF, PDF24, Sejda, TinyWow and other modern online PDF platforms.
+The implementation must follow the existing architecture, design system, routing, and reusable components already used by phung.work.
+### Core Principles
+* Everything runs locally in the browser whenever technically possible.
+* No backend dependency for standard PDF processing.
+* User files never leave the browser unless explicitly required.
+* Fast, responsive, and memory-efficient.
+* Mobile responsive.
+* Desktop optimized.
+* Dark mode compatible.
+* Accessible (WCAG AA).
+* Modular architecture.
+* Code splitting and lazy loading.
+* Reusable components and hooks.
+* Do not modify existing application flow or routing unless absolutely necessary.
+### Shared Features
+Every PDF tool must include:
+* Hero title
+* Description
+* Supported formats
+* Drag & Drop upload
+* Multi-file upload
+* File list with reorder support
+* Page thumbnails
+* Page count
+* File size
+* Processing progress
+* Cancel processing
+* Download result
+* Download ZIP (for multiple outputs)
+* Replace file
+* Clear all
+* Recently used
+* Favorite tool
+* Related tools
+* Toast notifications
+### Supported Formats
+### Input
+Upload
+* PDF
+* JPG
+* PNG
+* WEBP
+* BMP
+* TIFF
+### Output
+Export
+* PDF
+* JPG
+* PNG
+* DOCX
+* XLSX
+* TXT
+* ZIP
+### Tool 1: PDF → JPG
+### Features
+High priority
+* Convert all pages
+* Convert selected pages
+* Quality slider (50–100)
+* DPI options: 72, 150, 300, 600
+* Preview thumbnails
+* Download individual pages
+* Download ZIP
+* Preserve page rotation
+* Background color options
+### Tool 2: PDF → PNG
+### Features
+High priority
+* Transparent background support
+* High-resolution export
+* Page range selection
+* Batch download
+* ZIP export
+### Tool 3: PDF → Word
+### Features
+Medium complexity
+* Extract text content
+* Preserve paragraphs
+* Preserve headings
+* Basic table detection
+* Generate .docx
+* Download DOCX
+### Tool 4: PDF → Excel
+### Features
+Advanced
+* Detect tables
+* Extract rows/columns
+* Multiple sheets support
+* Generate .xlsx
+* Preview extracted data
+### Tool 5: PDF → Text
+### Features
+Easy
+* Extract plain text
+* Preserve line breaks
+* Preserve page breaks (optional)
+* Download .txt
+* Copy to clipboard
+### Tool 6: OCR PDF
+### Features
+AI / OCR
+Supported languages: English, Vietnamese, Japanese, Chinese, Korean, French, German, Spanish
+Options:
+* Searchable PDF output
+* Text-only output
+* Confidence score
+* Page-by-page OCR
+* Bounding box visualization
+Suggested engine: Tesseract.js
+### Tool 7: Remove Pages
+### Features
+Easy
+* Thumbnail selection
+* Multi-select pages
+* Select ranges (1-3, 5, 8-10)
+* Undo selection
+* Preview result
+### Tool 8: Extract Pages
+### Features
+Easy
+* Extract selected pages
+* Extract ranges
+* Save as new PDF
+* Extract multiple groups
+### Tool 9: Add Watermark
+### Features
+Popular
+Watermark types:
+* Text
+* Image
+Controls:
+* Opacity
+* Rotation
+* Font
+* Size
+* Color
+* Position
+* Tile pattern
+* Page range
+Live preview before applying.
+### Tool 10: Remove Password
+### Features
+Protected PDFs
+* Enter current password
+* Validate password
+* Remove encryption
+* Download unlocked PDF
+### Tool 11: Protect PDF
+### Features
+Security
+* Set user password
+* Set owner password
+* Encryption level
+* Allow printing
+* Allow copying
+* Allow editing
+* Allow annotations
+* Password strength indicator
+### Tool 12: Page Numbers
+### Features
+Easy
+Number formats:
+* 1, 2, 3
+* Page 1
+* 1 / 10
+* Roman numerals
+Positions:
+* Top-left
+* Top-center
+* Top-right
+* Bottom-left
+* Bottom-center
+* Bottom-right
+Customize:
+* Font
+* Size
+* Color
+* Starting number
+* Page range
+### Shared PDF Viewer
+Implement a reusable PDF preview component with:
+* Thumbnail sidebar
+* Page navigation
+* Zoom in/out
+* Fit width
+* Fit page
+* Rotate view
+* Search text
+* Keyboard shortcuts
+* Virtual rendering for large PDFs
+### Performance Requirements
+Support files up to 100MB
+Use:
+* Web Workers
+* Lazy page rendering
+* Streaming processing where possible
+* Memory cleanup after export
+* Progress indicators for long operations
+Avoid UI blocking during conversions.
+### Recommended Libraries
+* pdf-lib — merge, split, watermark, page operations
+* pdf.js — rendering and text extraction
+* Tesseract.js — OCR
+* JSZip — ZIP downloads
+* FileSaver — file downloads
+* xlsx — Excel generation
+* docx — Word generation
+* canvas / OffscreenCanvas — page rasterization
+### SEO Requirements
+Create a dedicated page for each tool:
+URLs
+/tools/pdf-to-jpg
+/tools/pdf-to-png
+/tools/pdf-to-word
+/tools/pdf-to-excel
+/tools/pdf-to-text
+/tools/ocr-pdf
+/tools/remove-pdf-pages
+/tools/extract-pdf-pages
+/tools/add-pdf-watermark
+/tools/remove-pdf-password
+/tools/protect-pdf
+/tools/add-page-numbers
+Each page must include:
+* Unique title
+* Unique meta description
+* Canonical URL
+* Open Graph tags
+* Twitter Card
+* Breadcrumb schema
+* FAQ schema
+* HowTo schema
+* WebApplication schema
+* Related tools section
+* Example input/output
+* Step-by-step instructions
+### Accessibility
+* Keyboard navigation
+* ARIA labels
+* Screen reader support
+* Visible focus states
+* High contrast support
+* WCAG AA compliance
+### Testing
+Create unit/integration tests for:
+* PDF page extraction
+* Page removal
+* Watermark positioning
+* Password protection
+* Password removal
+* OCR extraction
+* Image conversion
+* Text extraction
+* Large file handling
+* Error recovery
+* Memory usage
+* Cross-browser compatibility
+### Deliverables
+Produce production-ready code including:
+* Reusable PDF processing engine
+* Shared PDF viewer component
+* Shared upload manager
+* Shared export manager
+* Shared page selector
+* Shared progress dialog
+* Reusable hooks and services
+* TypeScript types
+* Unit tests
+* Responsive layouts
+* Lazy-loaded modules
+* SEO-ready pages
+The final result should feel like a unified professional PDF toolkit rather than a collection of independent utilities. All PDF tools must share the same design language, interaction patterns, keyboard shortcuts, and reusable infrastructure to ensure long-term maintainability and scalability within the phung.work ecosystem.
