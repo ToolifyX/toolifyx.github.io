@@ -14,7 +14,7 @@ type QrType = 'url' | 'text' | 'email' | 'phone' | 'sms' | 'wifi';
 
 export default function QrCodeGenerator() {
   const [type, setType] = useState<QrType>('url');
-  const [text, setText] = useState('https://toolifyx.github.io');
+  const [text, setText] = useState('https://ssolstice.dev');
   const [url, setUrl] = useState('');
   const [options, setOptions] = useState({
     size: 512,

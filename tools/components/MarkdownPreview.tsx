@@ -20,7 +20,7 @@ export default function MarkdownPreview({ tool }: Props) {
 
   const initialText = isHtmlToMd
     ? '<h1>Hello World</h1>\n<p>This is <b>HTML</b></p>'
-    : '# Markdown Preview\n\nType here to see the **magic** happen!\n\n- Lists\n- Tables\n- [Links](https://toolifyx.github.io)\n\n```js\nconsole.log("Hello World");\n```';
+    : '# Markdown Preview\n\nType here to see the **magic** happen!\n\n- Lists\n- Tables\n- [Links](https://ssolstice.dev)\n\n```js\nconsole.log("Hello World");\n```';
 
   const [input, setInput] = useState(initialText);
   const [output, setOutput] = useState('');
