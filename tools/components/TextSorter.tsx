@@ -37,19 +37,38 @@ export default function TextSorter() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6 space-y-6">
-      <div className="card border rounded-lg p-4 space-y-4">
+    <div className="w-full p-4 md:p-8 space-y-6">
+      <div className="card border rounded-xl p-6 space-y-6 bg-card shadow-sm">
         <textarea
-          className="w-full border rounded p-2 min-h-[200px]"
-          placeholder="Enter list to sort..."
+          className="w-full border rounded-xl p-4 min-h-[400px] text-base focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-muted/20"
+          placeholder="Enter lines to sort (e.g. lists, names, data)..."
           value={text}
           onChange={(e) => setText(e.target.value)}
         />
-        <div className="flex gap-2">
-          <button onClick={() => sortLines('asc')} className="bg-black text-white px-4 py-2 rounded">Sort A → Z</button>
-          <button onClick={() => sortLines('desc')} className="bg-black text-white px-4 py-2 rounded">Sort Z → A</button>
-          <button onClick={handleCopy} className="border px-4 py-2 rounded">
-            {copied ? 'Copied!' : 'Copy'}
+        <div className="flex flex-wrap gap-3">
+          <button
+            onClick={() => sortLines('asc')}
+            className="bg-primary text-primary-foreground px-6 py-3 rounded-xl font-bold hover:opacity-90 transition-all"
+          >
+            Sort A → Z
+          </button>
+          <button
+            onClick={() => sortLines('desc')}
+            className="bg-primary text-primary-foreground px-6 py-3 rounded-xl font-bold hover:opacity-90 transition-all"
+          >
+            Sort Z → A
+          </button>
+          <button
+            onClick={handleCopy}
+            className="border px-6 py-3 rounded-xl font-bold hover:bg-muted/50 transition-all"
+          >
+            {copied ? 'Copied!' : 'Copy Result'}
+          </button>
+          <button
+            onClick={() => setText('')}
+            className="border px-6 py-3 rounded-xl font-bold hover:bg-muted/50 transition-all sm:ml-auto"
+          >
+            Clear
           </button>
         </div>
       </div>

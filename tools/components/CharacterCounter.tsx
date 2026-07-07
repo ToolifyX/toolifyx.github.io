@@ -23,24 +23,30 @@ export default function CharacterCounter() {
   const noSpaces = text.replace(/\s/g, '').length;
 
   return (
-    <div className="max-w-2xl mx-auto p-6 space-y-6">
-      <div className="card border rounded-lg p-4 space-y-4">
+    <div className="w-full p-4 md:p-8 space-y-6">
+      <div className="card border rounded-xl p-6 space-y-6 bg-card shadow-sm">
         <textarea
-          className="w-full border rounded p-2 min-h-[200px]"
-          placeholder="Start typing..."
+          className="w-full border rounded-xl p-4 min-h-[400px] text-base focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-muted/20"
+          placeholder="Start typing or paste text to count characters..."
           value={text}
           onChange={(e) => setText(e.target.value)}
         />
-        <div className="grid grid-cols-2 gap-4">
-          <div className="p-4 bg-muted rounded border text-center">
-            <div className="text-3xl font-bold">{total}</div>
-            <div className="text-xs text-muted-foreground uppercase">Characters (with spaces)</div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="p-6 bg-muted/30 rounded-xl border text-center space-y-1">
+            <div className="text-4xl font-black text-primary">{total}</div>
+            <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Characters (with spaces)</div>
           </div>
-          <div className="p-4 bg-muted rounded border text-center">
-            <div className="text-3xl font-bold">{noSpaces}</div>
-            <div className="text-xs text-muted-foreground uppercase">Characters (no spaces)</div>
+          <div className="p-6 bg-muted/30 rounded-xl border text-center space-y-1">
+            <div className="text-4xl font-black text-primary">{noSpaces}</div>
+            <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Characters (no spaces)</div>
           </div>
         </div>
+        <button
+          onClick={() => setText('')}
+          className="border px-6 py-3 rounded-xl font-bold hover:bg-muted/50 transition-all w-full"
+        >
+          Clear
+        </button>
       </div>
     </div>
   );
