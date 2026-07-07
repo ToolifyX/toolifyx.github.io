@@ -35,7 +35,7 @@ export default function PdfSecurity({ tool }: Props) {
       if (isUnlock) {
         // Unlock
         try {
-          pdfDoc = await PDFDocument.load(buffer, { password });
+          pdfDoc = await PDFDocument.load(buffer, { password } as any);
         } catch (e) {
           throw new Error("Invalid password or failed to decrypt PDF.");
         }
@@ -51,7 +51,7 @@ export default function PdfSecurity({ tool }: Props) {
       // without third party extensions. For this MVP, we focus on the "Unlock" capability which is highly requested.
 
       const pdfBytes = await pdfDoc.save();
-      const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+      const blob = new Blob([pdfBytes as any], { type: 'application/pdf' });
       downloadFile(blob, `${isUnlock ? 'unlocked' : 'processed'}_${files[0].name}`);
     } catch (err: any) {
       setError(err.message);

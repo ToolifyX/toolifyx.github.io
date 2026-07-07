@@ -4,7 +4,7 @@ import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { tools } from '@/tools/config';
 import { Tool } from '@/tools/types';
-import { Search, Star, History, Command, ArrowRight, X, Sparkles } from 'lucide-react';
+import { Search, Star, History, ArrowRight, X } from 'lucide-react';
 import { DynamicIcon } from './DynamicIcon';
 import { useFavorites, useRecentTools } from '@/lib/hooks';
 
@@ -18,39 +18,50 @@ export default function CommandPalette({ isOpen, onClose }: { isOpen: boolean, o
 
   // Simple fuzzy search implementation
   const results = useMemo(() => {
-    if (!query.trim()) {
-      // Show recents and favorites when empty
-      const combined = [...recentTools];
-      favorites.forEach(slug => {
-        if (!combined.some(t => t.slug === slug)) {
-          const tool = tools.find(t => t.slug === slug);
-          if (tool) combined.push(tool);
-        }
-      });
-      return combined.slice(0, 10);
+    try {
+      let filtered = [];
+      if (!query.trim()) {
+        // Show recents and favorites when empty
+        const combined = [...(recentTools || [])];
+        (favorites || []).forEach(slug => {
+          if (!combined.some(t => t.slug === slug)) {
+            const tool = tools.find(t => t.slug === slug);
+            if (tool) combined.push(tool);
+          }
+        });
+        filtered = combined;
+      } else {
+        const s = query.toLowerCase();
+        filtered = tools
+          .filter(t =>
+            (t.title || '').toLowerCase().includes(s) ||
+            (t.description || '').toLowerCase().includes(s) ||
+            (t.slug || '').toLowerCase().includes(s) ||
+            (t.category || '').toLowerCase().includes(s)
+          )
+          .sort((a, b) => {
+            const aTitle = (a.title || '').toLowerCase();
+            const bTitle = (b.title || '').toLowerCase();
+            if (aTitle === s) return -1;
+            if (bTitle === s) return 1;
+            const aFav = isFavorite(a.slug);
+            const bFav = isFavorite(b.slug);
+            if (aFav && !bFav) return -1;
+            if (!aFav && bFav) return 1;
+            return 0;
+          });
+      }
+      return filtered.slice(0, 10);
+    } catch (e) {
+      console.error('Search error', e);
+      return [];
     }
+  }, [query, recentTools, favorites, isFavorite]);
 
-    const s = query.toLowerCase();
-    return tools
-      .filter(t =>
-        t.title.toLowerCase().includes(s) ||
-        t.description.toLowerCase().includes(s) ||
-        t.slug.toLowerCase().includes(s) ||
-        t.category.toLowerCase().includes(s)
-      )
-      .sort((a, b) => {
-        // Prioritize exact match in title
-        const aTitle = a.title.toLowerCase();
-        const bTitle = b.title.toLowerCase();
-        if (aTitle === s) return -1;
-        if (bTitle === s) return 1;
-        // Prioritize favorites
-        if (isFavorite(a.slug) && !isFavorite(b.slug)) return -1;
-        if (!isFavorite(a.slug) && isFavorite(b.slug)) return 1;
-        return 0;
-      })
-      .slice(0, 10);
-  }, [query, recentTools, favorites]);
+  // Reset selection when query changes
+  useEffect(() => {
+    setSelectedIndex(0);
+  }, [query]);
 
   useEffect(() => {
     if (isOpen) {
@@ -153,7 +164,7 @@ export default function CommandPalette({ isOpen, onClose }: { isOpen: boolean, o
               <span className="flex items-center gap-1"><span className="p-1 rounded bg-muted border text-foreground">Enter</span> Select</span>
            </div>
            <div className="flex items-center gap-1 text-[9px] font-black uppercase tracking-widest text-primary/60">
-              <Command className="w-3 h-3" /> ToolifyX Search
+              <Search className="w-3 h-3" /> ToolifyX Search
            </div>
         </div>
       </div>

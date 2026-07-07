@@ -37,6 +37,13 @@ export default function Home() {
       });
   }, [searchQuery, selectedCategory]);
 
+  const handleSearchChange = (val: string) => {
+    setSearchQuery(val);
+    if (val.trim() !== '' && selectedCategory !== 'all') {
+      setSelectedCategory('all');
+    }
+  };
+
   const isFiltering = searchQuery !== '' || selectedCategory !== 'all';
 
   return (
@@ -51,7 +58,7 @@ export default function Home() {
         </p>
 
         <div className="pt-4 max-w-xl mx-auto">
-          <ToolSearch query={searchQuery} onChange={setSearchQuery} />
+          <ToolSearch query={searchQuery} onChange={handleSearchChange} />
         </div>
       </div>
 

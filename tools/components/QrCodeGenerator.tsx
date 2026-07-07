@@ -6,6 +6,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
+// @ts-ignore
 import QRCode from 'qrcode';
 import { Download, Zap, Settings2, Share2, Palette, Globe, Mail, Phone, MessageSquare, Wifi, MapPin } from 'lucide-react';
 import { downloadFile } from '@/lib/utils';
@@ -38,11 +39,11 @@ export default function QrCodeGenerator() {
       };
 
       if (format === 'svg') {
-        QRCode.toString(text, { ...config, type: 'svg' }, (err, svg) => {
+        QRCode.toString(text, { ...config, type: 'svg' }, (err: any, svg: string) => {
           if (!err) setUrl('data:image/svg+xml;base64,' + btoa(svg));
         });
       } else {
-        QRCode.toDataURL(text, config, (err, dataUrl) => {
+        QRCode.toDataURL(text, config, (err: any, dataUrl: string) => {
           if (!err) setUrl(dataUrl);
         });
       }

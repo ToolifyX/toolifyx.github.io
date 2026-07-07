@@ -106,7 +106,6 @@ export const toolRegistry: Record<string, React.ComponentType<any>> = {
   PasswordStrength: dynamic(() => import('./components/PasswordStrength'), { loading, ssr: false }),
   UnitConverter: dynamic(() => import('./components/UnitConverter'), { loading, ssr: false }),
   PercentageCalculator: dynamic(() => import('./components/PercentageCalculator'), { loading, ssr: false }),
-  UuidGenerator: dynamic(() => import('./components/UuidGenerator'), { loading, ssr: false }),
   UuidBulkGenerator: dynamic(() => import('./components/UuidBulkGenerator'), { loading, ssr: false }),
 
   // SEO Tools

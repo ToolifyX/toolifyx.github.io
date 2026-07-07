@@ -71,7 +71,7 @@ export default function PdfPageEditor({ tool }: Props) {
       copiedPages.forEach(p => newPdf.addPage(p));
 
       const pdfBytes = await newPdf.save();
-      const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+      const blob = new Blob([pdfBytes as any], { type: 'application/pdf' });
       downloadFile(blob, `${isExtract ? 'extracted' : 'edited'}_document.pdf`);
     } catch (err) {
       console.error(err);

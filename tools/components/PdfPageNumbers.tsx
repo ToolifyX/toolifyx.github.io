@@ -47,7 +47,7 @@ export default function PdfPageNumbers() {
     });
 
     const pdfBytes = await pdfDoc.save();
-    return new Blob([pdfBytes], { type: 'application/pdf' });
+    return new Blob([pdfBytes as any], { type: 'application/pdf' });
   };
 
   const handleProcess = async () => {

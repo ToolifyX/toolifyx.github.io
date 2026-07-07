@@ -7,7 +7,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { copyToClipboard, downloadFile } from '@/lib/utils';
-import { Tags, Copy, Download, RefreshCw, Share2, Twitter, Facebook } from 'lucide-react';
+import { Tags, Copy, Download, RefreshCw, Share2 } from 'lucide-react';
 
 export default function MetaTagGenerator() {
   const [meta, setMeta] = useState({

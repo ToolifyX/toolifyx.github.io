@@ -1,0 +1,79 @@
+2026-07-07T13:50:25.957806Z	Cloning repository...
+2026-07-07T13:50:26.902735Z	From https://github.com/ToolifyX/toolifyx.github.io
+2026-07-07T13:50:26.903075Z	 * branch            6a6598e2e0ccad5120ab4fa23c14e772d003ab2b -> FETCH_HEAD
+2026-07-07T13:50:26.903137Z	
+2026-07-07T13:50:26.981385Z	HEAD is now at 6a6598e fave
+2026-07-07T13:50:26.981746Z	
+2026-07-07T13:50:27.028055Z	
+2026-07-07T13:50:27.028596Z	Using v2 root directory strategy
+2026-07-07T13:50:27.043098Z	Success: Finished cloning repository files
+2026-07-07T13:50:28.387647Z	Checking for configuration in a Wrangler configuration file (BETA)
+2026-07-07T13:50:28.388476Z	
+2026-07-07T13:50:28.548682Z	No Wrangler configuration file found. Continuing.
+2026-07-07T13:50:28.768518Z	Detected the following tools from environment: npm@10.9.2, nodejs@22.16.0
+2026-07-07T13:50:28.768881Z	Installing project dependencies: npm clean-install --progress=false
+2026-07-07T13:50:41.282996Z	npm warn deprecated next@14.1.4: This version has a security vulnerability. Please upgrade to a patched version. See https://nextjs.org/blog/security-update-2025-12-11 for more details.
+2026-07-07T13:50:41.326141Z	
+2026-07-07T13:50:41.32646Z	added 178 packages, and audited 179 packages in 12s
+2026-07-07T13:50:41.326558Z	
+2026-07-07T13:50:41.32661Z	31 packages are looking for funding
+2026-07-07T13:50:41.326648Z	  run `npm fund` for details
+2026-07-07T13:50:41.447402Z	
+2026-07-07T13:50:41.447658Z	2 vulnerabilities (1 moderate, 1 critical)
+2026-07-07T13:50:41.447713Z	
+2026-07-07T13:50:41.447822Z	To address all issues, run:
+2026-07-07T13:50:41.447903Z	  npm audit fix --force
+2026-07-07T13:50:41.44802Z	
+2026-07-07T13:50:41.448139Z	Run `npm audit` for details.
+2026-07-07T13:50:41.526602Z	Executing user command: npm run build
+2026-07-07T13:50:41.783722Z	
+2026-07-07T13:50:41.783992Z	> toolifyx.github.io@0.1.0 build
+2026-07-07T13:50:41.784053Z	> next build
+2026-07-07T13:50:41.784095Z	
+2026-07-07T13:50:42.341093Z	⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
+2026-07-07T13:50:42.3455Z	Attention: Next.js now collects completely anonymous telemetry regarding usage.
+2026-07-07T13:50:42.345946Z	This information is used to shape Next.js' roadmap and prioritize features.
+2026-07-07T13:50:42.346043Z	You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+2026-07-07T13:50:42.346103Z	https://nextjs.org/telemetry
+2026-07-07T13:50:42.346142Z	
+2026-07-07T13:50:42.428183Z	   ▲ Next.js 14.1.4
+2026-07-07T13:50:42.428427Z	
+2026-07-07T13:50:42.498544Z	   Creating an optimized production build ...
+2026-07-07T13:50:53.838356Z	 ⚠ Compiled with warnings
+2026-07-07T13:50:53.838662Z	
+2026-07-07T13:50:53.839373Z	./tools/components/OgPreview.tsx
+2026-07-07T13:50:53.839496Z	Attempted import error: 'Facebook' is not exported from '__barrel_optimize__?names=Facebook,MessageSquare,Share2!=!lucide-react' (imported as 'Facebook').
+2026-07-07T13:50:53.83957Z	
+2026-07-07T13:50:53.839634Z	Import trace for requested module:
+2026-07-07T13:50:53.839727Z	./tools/components/OgPreview.tsx
+2026-07-07T13:50:53.839809Z	./tools/registry.tsx
+2026-07-07T13:50:53.839848Z	./components/ToolRenderer.tsx
+2026-07-07T13:50:53.839883Z	
+2026-07-07T13:51:09.172721Z	 ⚠ Compiled with warnings
+2026-07-07T13:51:09.173016Z	
+2026-07-07T13:51:09.173094Z	./tools/components/OgPreview.tsx
+2026-07-07T13:51:09.173135Z	Attempted import error: 'Facebook' is not exported from '__barrel_optimize__?names=Facebook,MessageSquare,Share2!=!lucide-react' (imported as 'Facebook').
+2026-07-07T13:51:09.173184Z	
+2026-07-07T13:51:09.17322Z	Import trace for requested module:
+2026-07-07T13:51:09.173256Z	./tools/components/OgPreview.tsx
+2026-07-07T13:51:09.173286Z	./tools/registry.tsx
+2026-07-07T13:51:09.173399Z	./components/ToolRenderer.tsx
+2026-07-07T13:51:09.173466Z	
+2026-07-07T13:51:09.346617Z	 ✓ Compiled successfully
+2026-07-07T13:51:09.347404Z	   Linting and checking validity of types ...
+2026-07-07T13:51:15.329863Z	Failed to compile.
+2026-07-07T13:51:15.330121Z	
+2026-07-07T13:51:15.330201Z	./tools/components/HeicToJpg.tsx:79:9
+2026-07-07T13:51:15.330251Z	Type error: Type '{ files: File[]; onChange: Dispatch<SetStateAction<File[]>>; maxFiles: number | undefined; accept: { 'image/heic': string[]; 'image/heif': string[]; }; }' is not assignable to type 'IntrinsicAttributes & UploadPanelProps'.
+2026-07-07T13:51:15.330338Z	  Property 'accept' does not exist on type 'IntrinsicAttributes & UploadPanelProps'.
+2026-07-07T13:51:15.330375Z	
+2026-07-07T13:51:15.33063Z	[0m [90m 77 |[39m         onChange[33m=[39m{setFiles}[0m
+2026-07-07T13:51:15.33086Z	[0m [90m 78 |[39m         maxFiles[33m=[39m{limits[33m?[39m[33m.[39mmaxFiles}[0m
+2026-07-07T13:51:15.330927Z	[0m[31m[1m>[22m[39m[90m 79 |[39m         accept[33m=[39m{{ [32m'image/heic'[39m[33m:[39m [[32m'.heic'[39m][33m,[39m [32m'image/heif'[39m[33m:[39m [[32m'.heif'[39m] }}[0m
+2026-07-07T13:51:15.330985Z	[0m [90m    |[39m         [31m[1m^[22m[39m[0m
+2026-07-07T13:51:15.331038Z	[0m [90m 80 |[39m       [33m/[39m[33m>[39m[0m
+2026-07-07T13:51:15.331073Z	[0m [90m 81 |[39m[0m
+2026-07-07T13:51:15.331106Z	[0m [90m 82 |[39m       {files[33m.[39mlength [33m>[39m [35m0[39m [33m&&[39m results[33m.[39mlength [33m===[39m [35m0[39m [33m&&[39m ([0m
+2026-07-07T13:51:15.402494Z	Failed: Error while executing user command. Exited with error code: 1
+2026-07-07T13:51:15.409122Z	Failed: build command exited with code: 1
+2026-07-07T13:51:16.11991Z	Failed: error occurred while running build command
