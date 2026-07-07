@@ -13,6 +13,7 @@ export default function CommandPalette({ isOpen, onClose }: { isOpen: boolean, o
   const [query, setQuery] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const { favorites, isFavorite } = useFavorites();
   const { recentTools } = useRecentTools();
 
@@ -62,6 +63,16 @@ export default function CommandPalette({ isOpen, onClose }: { isOpen: boolean, o
   useEffect(() => {
     setSelectedIndex(0);
   }, [query]);
+
+  // Scroll active item into view
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      const activeItem = scrollContainerRef.current.querySelector(`[data-index="${selectedIndex}"]`);
+      if (activeItem) {
+        activeItem.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      }
+    }
+  }, [selectedIndex]);
 
   useEffect(() => {
     if (isOpen) {
@@ -120,7 +131,7 @@ export default function CommandPalette({ isOpen, onClose }: { isOpen: boolean, o
            </div>
         </div>
 
-        <div className="max-h-[400px] overflow-y-auto p-2 custom-scrollbar">
+        <div ref={scrollContainerRef} className="max-h-[400px] overflow-y-auto p-2 custom-scrollbar">
           {results.length === 0 ? (
             <div className="py-12 text-center space-y-2 opacity-50">
                <Search className="w-8 h-8 mx-auto text-muted-foreground" />
@@ -135,6 +146,7 @@ export default function CommandPalette({ isOpen, onClose }: { isOpen: boolean, o
                {results.map((tool, i) => (
                  <button
                    key={tool.slug}
+                   data-index={i}
                    onClick={() => { router.push(`/tools/${tool.slug}`); onClose(); }}
                    onMouseEnter={() => setSelectedIndex(i)}
                    className={`w-full flex items-center justify-between p-3 rounded-xl transition-all ${selectedIndex === i ? 'bg-primary text-primary-foreground shadow-lg scale-[1.01] z-10' : 'hover:bg-muted/50'}`}
