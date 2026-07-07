@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { X, Upload, FileWarning, Info, CheckCircle2, AlertCircle } from 'lucide-react';
 import { getUploadLimits, UploadLimits } from '@/lib/adaptiveUpload';
 import { validateFiles, InvalidFile } from '@/lib/fileValidation';
@@ -10,13 +10,15 @@ interface ImageUploaderProps {
   onChange: (files: File[]) => void;
   showFileList?: boolean;
   maxFiles?: number;
+  accept?: Record<string, string[]>;
 }
 
 export default function ImageUploader({
   files: externalFiles,
   onChange,
   showFileList = true,
-  maxFiles: customMaxFiles
+  maxFiles: customMaxFiles,
+  accept
 }: ImageUploaderProps) {
   const [internalFiles, setInternalFiles] = useState<File[]>([]);
   const files = externalFiles || internalFiles;
@@ -29,6 +31,18 @@ export default function ImageUploader({
     setLimits(getUploadLimits());
   }, []);
 
+  const allowedTypesList = useMemo(() => {
+    if (!accept) return ['image/*'];
+    return Object.entries(accept).flat(2);
+  }, [accept]);
+
+  const acceptString = useMemo(() => {
+    if (!accept) return "image/*";
+    return Object.entries(accept)
+      .map(([mime, exts]) => [mime, ...exts].join(','))
+      .join(',');
+  }, [accept]);
+
   const handleFiles = (selectedFiles: File[]) => {
     if (selectedFiles.length === 0 || !limits) return;
 
@@ -36,7 +50,7 @@ export default function ImageUploader({
         maxFiles: customMaxFiles || limits.maxFiles,
         maxFileSizeMB: limits.maxFileSizeMB,
         totalSizeMB: limits.totalSizeMB,
-        allowedTypes: ['image/*']
+        allowedTypes: allowedTypesList
     });
 
     setInvalidFiles(newInvalid);
@@ -123,7 +137,7 @@ export default function ImageUploader({
           id="file-input"
           type="file"
           multiple
-          accept="image/*"
+          accept={acceptString}
           className="hidden"
           onChange={handleFileChange}
         />

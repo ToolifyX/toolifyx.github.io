@@ -6,7 +6,7 @@
  */
 
 import React, { useState } from 'react';
-import { Share2, Globe, Facebook, MessageSquare, AlertCircle } from 'lucide-react';
+import { Share2, Globe, MessageSquare, AlertCircle } from 'lucide-react';
 
 export default function OgPreview() {
   const [data, setData] = useState({
@@ -51,7 +51,7 @@ export default function OgPreview() {
            <div className="card border rounded-2xl bg-card shadow-sm h-full flex flex-col p-8 space-y-8 bg-muted/5">
               <div className="space-y-3">
                  <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-blue-600 mb-2">
-                    <Facebook className="w-3.5 h-3.5" /> Facebook / LinkedIn Preview
+                    <Share2 className="w-3.5 h-3.5" /> Facebook / LinkedIn Preview
                  </div>
                  <div className="border rounded-xl bg-white overflow-hidden shadow-xl max-w-[500px] mx-auto group cursor-default">
                     <div className="aspect-[1.91/1] bg-muted relative overflow-hidden">
