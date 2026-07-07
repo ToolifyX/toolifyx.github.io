@@ -6,6 +6,7 @@ import { GoogleAnalyticsProvider } from './providers/GoogleAnalyticsProvider';
 import { MicrosoftClarityProvider } from './providers/MicrosoftClarityProvider';
 import { PostHogProvider } from './providers/PostHogProvider';
 import { useTrackPage } from './hooks/useTrackPage';
+import { analyticsConfig, validateConfig } from './config';
 import './utils/errorTracker'; // Register global error handlers
 
 export default function AnalyticsInitializer({ children }: { children: React.ReactNode }) {
@@ -13,14 +14,16 @@ export default function AnalyticsInitializer({ children }: { children: React.Rea
   useTrackPage();
 
   useEffect(() => {
-    if (process.env.NEXT_PUBLIC_ENABLE_ANALYTICS !== 'true') return;
+    if (!analyticsConfig.enabled) return;
 
-    // Register providers
+    validateConfig();
+
+    // Register providers (Manager will only add those that are enabled)
     analytics.registerProvider(new GoogleAnalyticsProvider());
     analytics.registerProvider(new MicrosoftClarityProvider());
     analytics.registerProvider(new PostHogProvider());
 
-    // Initialize all providers
+    // Initialize all registered providers
     analytics.init();
   }, []);
 

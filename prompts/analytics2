@@ -1,0 +1,187 @@
+# Prompt: Update Analytics Configuration to Read Environment Variables from the Project
+## Objective
+The Cloudflare Pages project has already been configured with all required **Environment Variables**.
+Update the analytics implementation so it automatically reads configuration from the project's environment variables instead of using hardcoded values.
+The implementation must work in:
+* Local development (`.env.local`)
+* Cloudflare Pages Preview
+* Cloudflare Pages Production
+No code changes should be required when deploying between environments.
+---
+# Existing Environment Variables
+The following variables are already configured in the Cloudflare Pages project.
+```text
+NEXT_PUBLIC_ENABLE_ANALYTICS
+NEXT_PUBLIC_GA_MEASUREMENT_ID
+NEXT_PUBLIC_POSTHOG_KEY
+NEXT_PUBLIC_POSTHOG_HOST
+NEXT_PUBLIC_CLARITY_PROJECT_ID
+NEXT_PUBLIC_ANALYTICS_DEBUG
+```
+Do not hardcode any IDs or keys.
+Always read them from `process.env`.
+---
+# Create Centralized Configuration
+Create a single configuration module.
+Example location
+```text
+src/config/analytics.ts
+```
+This module should expose
+* analytics enabled
+* GA Measurement ID
+* PostHog Key
+* PostHog Host
+* Clarity Project ID
+* Debug Mode
+The rest of the application must import configuration only from this module.
+Never access `process.env` directly outside this file.
+---
+# Validation
+Validate all configuration values during application startup.
+If analytics are disabled
+```text
+NEXT_PUBLIC_ENABLE_ANALYTICS=false
+```
+Do not initialize any provider.
+If a provider is missing required configuration
+Examples
+Missing GA Measurement ID
+Missing PostHog Key
+Missing Clarity Project ID
+Skip initializing only that provider.
+Do not crash the application.
+Display warnings only in development mode.
+Example
+```text
+[Analytics]
+Google Analytics disabled
+Reason:
+NEXT_PUBLIC_GA_MEASUREMENT_ID is missing.
+```
+---
+# Provider Initialization
+Update all providers.
+Google Analytics
+Initialize only when
+* analytics enabled
+* Measurement ID exists
+Microsoft Clarity
+Initialize only when
+* analytics enabled
+* Project ID exists
+PostHog
+Initialize only when
+* analytics enabled
+* API Key exists
+* Host exists
+---
+# Debug Mode
+When
+```text
+NEXT_PUBLIC_ANALYTICS_DEBUG=true
+```
+Enable verbose logging.
+Example
+```text
+Analytics initialized
+GA4
+Enabled
+Measurement ID:
+G-XXXXXXX
+----------------
+PostHog
+Enabled
+Host:
+https://app.posthog.com
+----------------
+Microsoft Clarity
+Enabled
+Project:
+XXXXXXXX
+```
+Log every tracked event.
+Example
+```text
+Event
+tool_opened
+Provider
+GA4
+PostHog
+Payload
+{
+  tool:"json-formatter"
+}
+```
+Disable all debug logs in production.
+---
+# Analytics Manager
+Update AnalyticsManager so it automatically detects available providers.
+Example
+```text
+Google Analytics
+✓ Enabled
+Microsoft Clarity
+✓ Enabled
+PostHog
+✓ Enabled
+```
+Only initialized providers should receive events.
+No provider-specific checks should exist elsewhere.
+---
+# Type Safety
+Create a strongly typed configuration interface.
+Avoid
+* any
+* string literals scattered throughout the code
+Centralize all configuration constants.
+---
+# Environment Support
+Support
+Development
+Preview
+Production
+Automatically detect environment.
+Never require code modifications between deployments.
+---
+# Error Handling
+If configuration is invalid
+Do not throw exceptions.
+Log warnings only in development.
+Continue running the application normally.
+Analytics failures must never affect application functionality.
+---
+# Performance
+Initialize providers lazily.
+Load analytics only after the application becomes interactive.
+Do not block rendering.
+Use dynamic imports where appropriate.
+---
+# Documentation
+Update the project documentation.
+Include
+## Required Environment Variables
+```text
+NEXT_PUBLIC_ENABLE_ANALYTICS
+NEXT_PUBLIC_GA_MEASUREMENT_ID
+NEXT_PUBLIC_POSTHOG_KEY
+NEXT_PUBLIC_POSTHOG_HOST
+NEXT_PUBLIC_CLARITY_PROJECT_ID
+NEXT_PUBLIC_ANALYTICS_DEBUG
+```
+Explain
+* What each variable is used for
+* Which providers require it
+* Default behavior when missing
+* How to configure locally
+* How Cloudflare Pages injects variables during build
+---
+# Acceptance Criteria
+The implementation is complete when:
+* No analytics IDs are hardcoded anywhere in the project.
+* All providers read configuration exclusively from the centralized configuration module.
+* The application runs correctly in Local, Preview, and Production environments.
+* Missing configuration disables only the affected provider without breaking the app.
+* Analytics are initialized lazily and do not impact page load performance.
+* Debug logging is available only when `NEXT_PUBLIC_ANALYTICS_DEBUG=true`.
+* The codebase is clean, modular, type-safe, and ready to support additional analytics providers in the future.
