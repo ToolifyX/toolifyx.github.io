@@ -49,8 +49,8 @@ export default function Home() {
   return (
     <div className="space-y-8 pb-12 max-w-7xl mx-auto px-4">
       {/* Hero Section - Professional & Minimalist */}
-      <div className="text-center space-y-3 pt-6 md:pt-10 max-w-3xl mx-auto">
-        <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">
+      <div className="text-center space-y-4 pt-10 md:pt-16 max-w-4xl mx-auto">
+        <h1 className="text-4xl md:text-6xl lg:text-5xl font-black tracking-tight text-foreground">
           Every tool for <span className="text-primary">everyone.</span>
         </h1>
         <p className="text-sm md:text-base text-muted-foreground leading-relaxed max-w-xl mx-auto">
