@@ -5,6 +5,7 @@ import { tools } from '@/tools/config';
 import ToolCard from '@/components/ToolCard';
 import CategoryMenu from '@/components/CategoryMenu';
 import ToolSearch from '@/components/ToolSearch';
+import RecentlyUsedTools from '@/components/RecentlyUsedTools';
 import { ToolCategory } from '@/tools/types';
 import Link from 'next/link';
 
@@ -53,6 +54,12 @@ export default function Home() {
       </div>
 
       <div className="space-y-6">
+        {!isFiltering && (
+          <div className="max-w-7xl mx-auto">
+            <RecentlyUsedTools />
+          </div>
+        )}
+
         <div className="flex items-center justify-center pb-1">
           <CategoryMenu
             activeCategory={selectedCategory}
