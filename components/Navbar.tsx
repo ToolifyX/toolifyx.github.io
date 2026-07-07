@@ -51,11 +51,13 @@ export default function Navbar() {
         {/* Main navbar row */}
         <div className="h-14 flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group flex-shrink-0">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-primary-foreground font-black text-lg transition-transform group-hover:scale-105">
-              T
-            </div>
-            <span className="text-sm font-bold tracking-tight uppercase hidden sm:inline">
+          <Link href="/" className="flex items-center gap-2.5 group flex-shrink-0">
+            <img
+              src="/logo_web.webp"
+              alt="ToolifyX Logo"
+              className="h-9 w-auto transition-transform group-hover:scale-105"
+            />
+            <span className="text-xl font-black tracking-tighter uppercase hidden sm:inline-block">
               Toolify<span className="text-primary">X</span>
             </span>
           </Link>
