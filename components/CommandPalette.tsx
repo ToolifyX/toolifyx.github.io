@@ -65,9 +65,12 @@ export default function CommandPalette({ isOpen, onClose }: { isOpen: boolean, o
 
   useEffect(() => {
     if (isOpen) {
-      setQuery('');
+      // Don't clear query to preserve previous search state
       setSelectedIndex(0);
-      setTimeout(() => inputRef.current?.focus(), 10);
+      setTimeout(() => {
+        inputRef.current?.focus();
+        inputRef.current?.select();
+      }, 10);
     }
   }, [isOpen]);
 

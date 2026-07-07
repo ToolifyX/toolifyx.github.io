@@ -17,21 +17,23 @@ export default function ToolSearch({ query, onChange }: ToolSearchProps) {
       <input
         type="text"
         placeholder="Search for a tool..."
-        className="w-full h-12 bg-card border border-input focus:border-primary focus:ring-1 focus:ring-primary rounded-lg py-4 pl-11 pr-20 transition-all text-[15px] font-medium outline-none placeholder:text-muted-foreground shadow-sm"
+        className="w-full h-12 bg-card border border-input focus:border-primary focus:ring-1 focus:ring-primary rounded-lg py-4 pl-11 pr-14 transition-all text-[15px] font-medium outline-none placeholder:text-muted-foreground shadow-sm"
         value={query}
         onChange={(e) => onChange(e.target.value)}
+        autoComplete="off"
+        spellCheck="false"
       />
-      <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+      <div className="absolute inset-y-0 right-0 flex items-center pr-1">
         {query ? (
           <button
             onClick={() => onChange('')}
-            className="pointer-events-auto p-1 text-muted-foreground hover:text-foreground transition-colors"
+            className="p-3 text-muted-foreground hover:text-foreground transition-colors"
             aria-label="Clear search"
           >
             <X className="w-4 h-4" />
           </button>
         ) : (
-          <div className="hidden sm:flex items-center gap-1 px-1.5 py-1 rounded border bg-muted/50 text-[10px] font-black text-muted-foreground/60 shadow-sm transition-opacity group-focus-within:opacity-0">
+          <div className="hidden sm:flex items-center gap-1 px-2 py-1 rounded border bg-muted/50 text-[10px] font-black text-muted-foreground/40 shadow-sm pointer-events-none transition-opacity group-focus-within:opacity-0 mr-1">
             <span>Ctrl</span>
             <span>K</span>
           </div>
