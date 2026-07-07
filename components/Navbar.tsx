@@ -32,10 +32,11 @@ export default function Navbar() {
     pdf: 'PDF Tools',
     dev: 'Dev Tools',
     text: 'Text Tools',
+    seo: 'SEO Tools',
     design: 'Design Tools',
     utility: 'Utility Tools',
   };
-  const orderedCategories = ['text', 'dev', 'image', 'pdf', 'design', 'utility'];
+  const orderedCategories = ['text', 'dev', 'image', 'pdf', 'seo', 'design', 'utility'];
   const orderedOtherToolsByCategory = orderedCategories
     .filter(category => otherToolsByCategory[category]?.length)
     .map(category => [category, otherToolsByCategory[category]] as const);

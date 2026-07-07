@@ -20,6 +20,7 @@ export const tools: Tool[] = [
   { slug: 'timestamp-converter', title: 'Timestamp Converter', description: 'Unix timestamp to date and vice versa.', component: 'TimestampConverter', category: 'dev', icon: 'Clock', iconColor: 'text-indigo-600 bg-indigo-600/10', themeColor: 'indigo' },
   { slug: 'html-minifier', title: 'HTML Minifier', description: 'Compress HTML by removing whitespace.', component: 'HtmlMinifier', category: 'dev', icon: 'Code', iconColor: 'text-orange-500 bg-orange-500/10', themeColor: 'orange' },
   { slug: 'css-minifier', title: 'CSS Minifier', description: 'Minify CSS stylesheets instantly.', component: 'CssMinifier', category: 'dev', icon: 'Palette', iconColor: 'text-blue-400 bg-blue-400/10', themeColor: 'blue' },
+  { slug: 'js-minifier', title: 'JavaScript Minifier', description: 'Compress JS code for better performance.', component: 'JsMinifier', category: 'dev', icon: 'FileCode', iconColor: 'text-yellow-500 bg-yellow-500/10', themeColor: 'yellow' },
 
   // Text Tools
   { slug: 'word-counter', title: 'Word Counter', description: 'Count words, chars, and sentences.', component: 'WordCounter', category: 'text', icon: 'FileText', iconColor: 'text-orange-600 bg-orange-600/10', themeColor: 'orange' },
@@ -109,6 +110,16 @@ export const tools: Tool[] = [
   { slug: 'password-strength-checker', title: 'Password Strength', description: 'Analyze password security locally.', component: 'PasswordStrength', category: 'utility', icon: 'ShieldCheck', iconColor: 'text-green-600 bg-green-600/10', themeColor: 'green' },
   { slug: 'unit-converter', title: 'Unit Converter', description: 'Convert length and weight units.', component: 'UnitConverter', category: 'utility', icon: 'Ruler', iconColor: 'text-zinc-600 bg-zinc-600/10', themeColor: 'zinc' },
   { slug: 'percentage-calculator', title: 'Percentage Calculator', description: 'Calculate percentages and changes.', component: 'PercentageCalculator', category: 'utility', icon: 'Percent', iconColor: 'text-neutral-500 bg-neutral-500/10', themeColor: 'neutral' },
+
+  // SEO Tools
+  { slug: 'robots-txt-generator', title: 'Robots.txt Generator', description: 'Generate valid robots.txt files with presets.', component: 'RobotsTxtGenerator', category: 'seo', icon: 'Bot', iconColor: 'text-blue-500 bg-blue-500/10', themeColor: 'blue' },
+  { slug: 'meta-tag-generator', title: 'Meta Tag Generator', description: 'Generate HTML metadata for SEO & social.', component: 'MetaTagGenerator', category: 'seo', icon: 'Tags', iconColor: 'text-indigo-500 bg-indigo-500/10', themeColor: 'indigo' },
+  { slug: 'schema-generator', title: 'Schema Generator', description: 'Create JSON-LD structured data for Google.', component: 'SchemaGenerator', category: 'seo', icon: 'Database', iconColor: 'text-cyan-500 bg-cyan-500/10', themeColor: 'cyan' },
+  { slug: 'open-graph-preview', title: 'Open Graph Preview', description: 'Preview how your site looks on social media.', component: 'OgPreview', category: 'seo', icon: 'Share2', iconColor: 'text-sky-500 bg-sky-500/10', themeColor: 'sky' },
+  { slug: 'keyword-density-checker', title: 'Keyword Density', description: 'Analyze your content for keyword frequency.', component: 'KeywordDensity', category: 'seo', icon: 'Search', iconColor: 'text-violet-500 bg-violet-500/10', themeColor: 'violet' },
+  { slug: 'serp-preview', title: 'SERP Snippet Preview', description: 'Preview how your page looks in Google search.', component: 'SerpPreview', category: 'seo', icon: 'Globe', iconColor: 'text-emerald-500 bg-emerald-500/10', themeColor: 'emerald' },
+  { slug: 'meta-extractor', title: 'HTML Meta Extractor', description: 'Extract all SEO tags from any HTML snippet.', component: 'MetaExtractor', category: 'seo', icon: 'ScanText', iconColor: 'text-teal-500 bg-teal-500/10', themeColor: 'teal' },
+  { slug: 'heading-analyzer', title: 'Heading Analyzer', description: 'Analyze H1-H6 structure for SEO hierarchy.', component: 'HeadingAnalyzer', category: 'seo', icon: 'LayoutList', iconColor: 'text-blue-600 bg-blue-600/10', themeColor: 'blue' },
 ];
 
 export const getToolBySlug = (slug: string) => tools.find((t) => t.slug === slug);

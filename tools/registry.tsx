@@ -24,6 +24,7 @@ export const toolRegistry: Record<string, React.ComponentType<any>> = {
   TimestampConverter: dynamic(() => import('./components/TimestampConverter'), { loading, ssr: false }),
   HtmlMinifier: dynamic(() => import('./components/HtmlMinifier'), { loading, ssr: false }),
   CssMinifier: dynamic(() => import('./components/CssMinifier'), { loading, ssr: false }),
+  JsMinifier: dynamic(() => import('./components/JsMinifier'), { loading, ssr: false }),
 
   // Text Tools
   WordCounter: dynamic(() => import('./components/WordCounter'), { loading, ssr: false }),
@@ -107,4 +108,14 @@ export const toolRegistry: Record<string, React.ComponentType<any>> = {
   PercentageCalculator: dynamic(() => import('./components/PercentageCalculator'), { loading, ssr: false }),
   UuidGenerator: dynamic(() => import('./components/UuidGenerator'), { loading, ssr: false }),
   UuidBulkGenerator: dynamic(() => import('./components/UuidBulkGenerator'), { loading, ssr: false }),
+
+  // SEO Tools
+  RobotsTxtGenerator: dynamic(() => import('./components/RobotsTxtGenerator'), { loading, ssr: false }),
+  MetaTagGenerator: dynamic(() => import('./components/MetaTagGenerator'), { loading, ssr: false }),
+  SchemaGenerator: dynamic(() => import('./components/SchemaGenerator'), { loading, ssr: false }),
+  OgPreview: dynamic(() => import('./components/OgPreview'), { loading, ssr: false }),
+  KeywordDensity: dynamic(() => import('./components/KeywordDensity'), { loading, ssr: false }),
+  SerpPreview: dynamic(() => import('./components/SerpPreview'), { loading, ssr: false }),
+  MetaExtractor: dynamic(() => import('./components/MetaExtractor'), { loading, ssr: false }),
+  HeadingAnalyzer: dynamic(() => import('./components/HeadingAnalyzer'), { loading, ssr: false }),
 };

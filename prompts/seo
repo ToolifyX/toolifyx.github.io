@@ -1,0 +1,453 @@
+# Prompt: Implement Complete SEO Tools Suite for phung.work
+## Objective
+Build a professional **SEO Tools** module for **phung.work**, providing a collection of browser-first SEO utilities for developers, marketers, bloggers, and website owners.
+The goal is to create SEO tools comparable to TechnicalSEO, Ahrefs Free Tools, SEMRush Tools, Moz, SmallSEOTools, and SEO Review Tools.
+All tools should follow the existing architecture, design system, reusable components, and routing conventions already used by phung.work.
+---
+# Core Principles
+* Privacy-first.
+* Run completely in the browser whenever possible.
+* No backend for local processing tools.
+* API integration should be optional and isolated.
+* Fast and responsive.
+* Mobile friendly.
+* Dark mode support.
+* Accessible (WCAG AA).
+* Modular architecture.
+* Reusable components.
+* TypeScript-first.
+* Lazy loading and code splitting.
+Do not change the existing application architecture unless absolutely necessary.
+---
+# Shared Features
+Every SEO tool must include:
+* Hero section
+* Tool description
+* Step-by-step usage guide
+* Example input
+* Example output
+* Copy result
+* Download result
+* Share URL
+* Favorite tool
+* Recently used
+* Related tools
+* Processing time
+* Responsive layout
+* Dark mode
+* Keyboard shortcuts
+* Toast notifications
+---
+# Tool 1 — Robots.txt Generator
+Generate valid robots.txt files.
+Support
+* Allow
+* Disallow
+* Sitemap
+* Crawl-delay
+* Host
+* User-agent
+* Multiple user-agents
+* Wildcards
+* End-of-line $
+* Comments
+Common presets
+Google
+Bing
+Yandex
+DuckDuckGo
+GPTBot
+ClaudeBot
+PerplexityBot
+Facebook
+Twitter
+Generate preview.
+Validate syntax.
+Download robots.txt.
+Copy to clipboard.
+---
+# Tool 2 — Sitemap Validator
+Validate XML sitemap.
+Checks
+* XML syntax
+* Invalid URLs
+* Duplicate URLs
+* Missing lastmod
+* Invalid priority
+* Invalid changefreq
+* Invalid namespace
+* Missing XML declaration
+* URL count
+* File size
+Statistics
+Total URLs
+Images
+Videos
+News entries
+Estimated crawl depth
+Display detailed validation report.
+---
+# Tool 3 — Open Graph Preview
+Preview social sharing.
+Fields
+Title
+Description
+Image
+URL
+Site Name
+Locale
+Type
+Display previews similar to
+Facebook
+LinkedIn
+Discord
+Slack
+Telegram
+Validate image size.
+Warn when image ratio is incorrect.
+Preview desktop and mobile.
+---
+# Tool 4 — Twitter Card Preview
+Support
+Summary
+Summary Large Image
+Player
+App Card
+Fields
+Title
+Description
+Image
+Creator
+Site
+Preview exactly like Twitter/X.
+Validate
+Image dimensions
+Character limits
+Missing properties
+---
+# Tool 5 — Meta Tag Generator
+Generate HTML metadata.
+Support
+Title
+Description
+Keywords
+Author
+Robots
+Canonical
+Theme Color
+Language
+Charset
+Viewport
+Open Graph
+Twitter Card
+Apple Tags
+PWA Tags
+Favicon
+Manifest
+Generate clean HTML.
+Copy.
+Download.
+---
+# Tool 6 — Schema Generator
+Generate JSON-LD schema.
+Support
+Organization
+Website
+WebPage
+Article
+BlogPosting
+FAQ
+HowTo
+Breadcrumb
+Person
+Product
+LocalBusiness
+Restaurant
+SoftwareApplication
+MobileApplication
+WebApplication
+Event
+Recipe
+VideoObject
+ImageObject
+Review
+Rating
+Book
+Course
+JobPosting
+Each schema includes
+Validation
+Live preview
+Formatted JSON
+Minified JSON
+Copy
+Download
+---
+# Tool 7 — Canonical URL Checker
+Input
+Website URL
+Analyze
+Canonical URL
+Duplicate canonical
+Multiple canonicals
+Relative canonical
+Invalid canonical
+Missing canonical
+Display recommendations.
+---
+# Tool 8 — Keyword Density Checker
+Input
+Article
+HTML
+Plain text
+Statistics
+Words
+Unique words
+Top keywords
+Density %
+Longest keyword
+Average keyword length
+Stop words
+N-grams
+1-gram
+2-gram
+3-gram
+Highlight repeated keywords.
+Warn about keyword stuffing.
+Export report.
+---
+# Tool 9 — SERP Snippet Preview
+Preview Google search result.
+Fields
+Title
+Description
+URL
+Breadcrumb
+Mobile preview
+Desktop preview
+Display
+Character count
+Pixel width
+Warnings
+Title too long
+Description too long
+Missing keywords
+Low CTR suggestions
+---
+# Tool 10 — HTML Meta Extractor
+Extract all metadata from HTML.
+Show
+Title
+Description
+Keywords
+Canonical
+Open Graph
+Twitter
+Robots
+Schema
+Viewport
+Charset
+Language
+Export JSON.
+---
+# Tool 11 — Heading Structure Analyzer
+Analyze
+H1
+H2
+H3
+H4
+H5
+H6
+Warnings
+Missing H1
+Multiple H1
+Skipped heading levels
+Duplicate headings
+Visual heading tree.
+---
+# Tool 12 — Internal Link Analyzer
+Analyze
+Internal links
+External links
+Nofollow
+Sponsored
+UGC
+Broken anchors
+Duplicate anchors
+Link statistics.
+---
+# Tool 13 — Redirect Checker
+Check
+301
+302
+307
+308
+Redirect chain
+Redirect loops
+Final destination
+HTTPS redirect
+Canonical consistency
+---
+# Tool 14 — URL Encoder / Decoder
+Support
+Encode
+Decode
+UTF-8
+Reserved characters
+Live conversion
+Copy
+Download
+---
+# Tool 15 — HTML Minifier
+Options
+Remove comments
+Collapse whitespace
+Remove optional tags
+Minify inline CSS
+Minify inline JS
+Display reduction percentage.
+---
+# Tool 16 — CSS Minifier
+Features
+Beautify
+Minify
+Statistics
+Lines removed
+Characters removed
+Compression ratio
+---
+# Tool 17 — JavaScript Minifier
+Support
+Beautify
+Minify
+Syntax validation
+Error highlighting
+---
+# Tool 18 — Base64 Encode / Decode
+Support
+Text
+URL-safe Base64
+File
+Image
+Clipboard
+Download
+---
+# Shared Components
+Create reusable components.
+SEO Form
+Result Panel
+Validation Panel
+Statistics Card
+Warnings Card
+Preview Card
+Code Viewer
+Download Menu
+Copy Button
+Example Section
+FAQ Section
+Related Tools
+---
+# Performance
+Use
+Web Workers
+Debounced processing
+Lazy loading
+Virtual rendering
+Streaming parsing
+Large text support
+Support
+HTML files up to 20MB
+XML files up to 20MB
+Text up to 10MB
+---
+# Recommended Libraries
+htmlparser2
+parse5
+cheerio
+xml-js
+fast-xml-parser
+js-beautify
+html-minifier-terser
+clean-css
+terser
+zod
+Monaco Editor
+Prism.js
+highlight.js
+---
+# Accessibility
+Keyboard shortcuts
+Screen reader support
+ARIA labels
+Visible focus
+High contrast
+WCAG AA compliance
+---
+# SEO
+Each tool must have its own landing page.
+Examples
+/tools/robots-txt-generator
+/tools/sitemap-validator
+/tools/open-graph-preview
+/tools/twitter-card-preview
+/tools/meta-tag-generator
+/tools/schema-generator
+/tools/canonical-checker
+/tools/keyword-density-checker
+/tools/serp-snippet-preview
+/tools/html-meta-extractor
+/tools/heading-analyzer
+/tools/internal-link-analyzer
+/tools/redirect-checker
+/tools/url-encoder
+/tools/html-minifier
+/tools/css-minifier
+/tools/javascript-minifier
+/tools/base64-tool
+Every page includes
+* Unique page title
+* Meta description
+* Canonical URL
+* Open Graph
+* Twitter Card
+* Breadcrumb Schema
+* FAQ Schema
+* HowTo Schema
+* WebApplication Schema
+* SoftwareApplication Schema
+* Related tools
+* Usage guide
+* Examples
+* Best practices
+* Common mistakes
+---
+# Testing
+Create unit tests covering
+* Robots generation
+* XML validation
+* Schema generation
+* Keyword calculation
+* Meta extraction
+* HTML parsing
+* Minification
+* Encoding/decoding
+* Redirect validation
+* Large file handling
+* Performance
+* Accessibility
+---
+# Deliverables
+Produce production-ready code including:
+* Modular SEO tools architecture
+* Shared reusable components
+* Shared validation engine
+* Shared parser utilities
+* Shared preview components
+* Reusable hooks and services
+* TypeScript models
+* Unit tests
+* Responsive layouts
+* Lazy-loaded modules
+* SEO-optimized landing pages
+* Consistent UI matching the existing phung.work design system
+The final SEO Tools module should provide a polished, professional experience with consistent interaction patterns, high performance, reusable infrastructure, and excellent maintainability. Each tool should work independently while sharing common components, making the entire suite scalable as additional SEO tools are added in the future.

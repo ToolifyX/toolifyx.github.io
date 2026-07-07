@@ -1,4 +1,4 @@
-export type ToolCategory = "dev" | "text" | "image" | "pdf" | "design" | "utility";
+export type ToolCategory = "dev" | "text" | "image" | "pdf" | "design" | "utility" | "seo";
 
 export type ImageSubCategory = "Optimize" | "Convert" | "Edit" | "Analyze" | "Utilities";
 
