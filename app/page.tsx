@@ -10,8 +10,8 @@ import { ToolCategory } from '@/tools/types';
 import Link from 'next/link';
 
 const categories: { id: ToolCategory; label: string; href: string; description: string }[] = [
-  { id: 'dev', label: 'Developer Tools', href: '/dev-tools', description: 'JSON, Base64, UUID...' },
   { id: 'text', label: 'Text Tools', href: '/text-tools', description: 'Counter, Case, Slug...' },
+  { id: 'dev', label: 'Developer Tools', href: '/dev-tools', description: 'JSON, Base64, UUID...' },
   { id: 'image', label: 'Image Tools', href: '/image-tools', description: 'Compress, Convert, Resize...' },
   { id: 'pdf', label: 'PDF Tools', href: '/pdf-tools', description: 'Merge, Split, Convert...' },
   { id: 'design', label: 'Design Tools', href: '/design-tools', description: 'Picker, Gradient, Shadow...' },

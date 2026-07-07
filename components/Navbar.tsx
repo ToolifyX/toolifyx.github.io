@@ -35,7 +35,7 @@ export default function Navbar() {
     design: 'Design Tools',
     utility: 'Utility Tools',
   };
-  const orderedCategories = ['image', 'pdf', 'dev', 'text', 'design', 'utility'];
+  const orderedCategories = ['text', 'dev', 'image', 'pdf', 'design', 'utility'];
   const orderedOtherToolsByCategory = orderedCategories
     .filter(category => otherToolsByCategory[category]?.length)
     .map(category => [category, otherToolsByCategory[category]] as const);

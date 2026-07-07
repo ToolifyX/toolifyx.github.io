@@ -1,0 +1,264 @@
+Implement a complete "Text Tools" module for phung.work.
+## Goal
+Build a modern collection of browser-based text utilities.
+Requirements:
+- Everything runs completely client-side.
+- No backend.
+- No API calls.
+- No user data leaves the browser.
+- Mobile responsive.
+- Dark mode compatible.
+- Fast (<50ms for common operations).
+- Able to handle very large text (up to 5MB) without freezing.
+- Follow the existing UI/UX style of phung.work.
+- Reuse shared components whenever possible.
+- Do not modify existing architecture unless necessary.
+GENERAL REQUIREMENTS
+Each tool should include:
+- Page title
+- Description
+- Input textarea
+- Output textarea
+- Live processing when appropriate
+- Copy button
+- Clear button
+- Swap button (when applicable)
+- Download result (.txt)
+- Upload text file (.txt)
+- Character statistics
+- Processing time
+- Keyboard shortcuts
+- Mobile optimized layout
+Common shortcuts:
+Ctrl+A
+Ctrl+C
+Ctrl+V
+Ctrl+L -> Clear
+Ctrl+Enter -> Process
+Show toast messages for:
+Copied
+Downloaded
+Uploaded
+Cleared
+TEXT TOOLS
+Implement the following tools.
+1. Remove Empty Lines
+Input:
+multiple lines
+Output:
+remove all blank lines
+Options:
+- Remove whitespace-only lines
+- Trim remaining lines
+- Preserve original indentation
+Example:
+A
+B
+C
+Result
+A
+B
+C
+2. Remove Duplicate Lines
+Remove duplicated lines.
+Options:
+- Keep first occurrence
+- Keep last occurrence
+- Case sensitive
+- Ignore whitespace
+- Sort result after removing duplicates
+3. Remove Duplicate Words
+Input:
+apple apple banana orange banana
+Result:
+apple banana orange
+Options:
+Case sensitive
+Ignore punctuation
+4. Find and Replace
+Features:
+Find text
+Replace text
+Replace first
+Replace all
+Regex mode
+Match case
+Whole word
+Highlight matches
+Show match count
+5. Markdown Preview
+Split screen layout
+Left:
+Markdown editor
+Right:
+Rendered preview
+Support:
+Headings
+Lists
+Tables
+Task list
+Code blocks
+Blockquote
+Images
+Links
+Horizontal rules
+Syntax highlighting
+Auto scroll synchronization
+6. Markdown → HTML
+Convert markdown into clean HTML.
+Options:
+Beautify HTML
+Minify HTML
+Copy
+Download
+7. HTML → Markdown
+Convert HTML into markdown.
+Should preserve:
+Tables
+Lists
+Links
+Images
+Bold
+Italic
+Headings
+8. Text Compare
+Compare two text blocks.
+Highlight:
+Added
+Removed
+Modified
+Show:
+Similarity %
+Character differences
+Word differences
+Line differences
+9. Diff Checker
+Professional diff viewer.
+Modes:
+Side-by-side
+Inline
+Ignore whitespace
+Ignore case
+Word diff
+Line diff
+Character diff
+10. Line Counter
+Display:
+Total lines
+Empty lines
+Non-empty lines
+Longest line
+Shortest line
+Average line length
+11. Sentence Counter
+Display:
+Sentence count
+Paragraph count
+Average sentence length
+Longest sentence
+Shortest sentence
+Estimated speaking time
+12. Reading Time Calculator
+Calculate:
+Words
+Characters
+Reading time
+Speaking time
+Reading levels:
+Slow (150 WPM)
+Average (200 WPM)
+Fast (250 WPM)
+Show progress indicator.
+13. Word Counter
+Display:
+Words
+Characters
+Characters without spaces
+Paragraphs
+Lines
+Sentences
+Reading time
+Speaking time
+Most frequent words
+Average word length
+14. Character Counter
+Display:
+Characters
+Characters without spaces
+ASCII count
+Unicode count
+Whitespace count
+Digits
+Letters
+Symbols
+COMMON FEATURES
+Every page should include:
+Hero title
+Description
+Examples
+FAQ
+Related tools
+Copy
+Paste
+Upload TXT
+Download TXT
+Share URL
+Favorite
+Recently used
+SEO
+Every tool must have:
+Unique page title
+Unique meta description
+Canonical URL
+OpenGraph tags
+Twitter tags
+JSON-LD
+Breadcrumb
+FAQ schema
+Suggested URLs:
+/tools/remove-empty-lines
+/tools/remove-duplicate-lines
+/tools/remove-duplicate-words
+/tools/find-replace
+/tools/markdown-preview
+/tools/markdown-to-html
+/tools/html-to-markdown
+/tools/text-compare
+/tools/diff-checker
+/tools/line-counter
+/tools/sentence-counter
+/tools/reading-time-calculator
+/tools/word-counter
+/tools/character-counter
+PERFORMANCE
+Debounce live processing.
+Avoid unnecessary re-rendering.
+Support files up to 5MB.
+Processing should not block UI.
+Use Web Workers for expensive operations if needed.
+ACCESSIBILITY
+Keyboard navigation
+ARIA labels
+Screen reader support
+Visible focus states
+WCAG AA contrast
+TESTING
+Create unit tests for:
+Duplicate removal
+Markdown conversion
+HTML conversion
+Diff engine
+Reading time calculation
+Word counting
+Sentence detection
+DELIVERABLES
+Produce:
+- Reusable components
+- Shared utility functions
+- Modular architecture
+- Clean TypeScript
+- Responsive UI
+- Reusable hooks/services
+- SEO-ready pages
+- Easy integration into the existing phung.work codebase
+Do not change existing application flow or routing unless necessary. Prioritize code reuse and maintainability.
