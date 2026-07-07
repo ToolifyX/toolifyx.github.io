@@ -110,8 +110,8 @@ export default function Navbar() {
                                 : 'text-foreground hover:bg-accent'
                             }`}
                           >
-                            <div className="w-5 h-5 flex items-center justify-center shrink-0">
-                              {tool.icon && <DynamicIcon name={tool.icon} className="w-4 h-4" strokeWidth={1.5} />}
+                            <div className={`w-5 h-5 flex items-center justify-center shrink-0 rounded ${tool.iconColor || ''}`}>
+                              {tool.icon && <DynamicIcon name={tool.icon} className="w-3 h-3" strokeWidth={1.5} />}
                             </div>
                             <span className="font-medium leading-tight truncate">{tool.title}</span>
                           </Link>
@@ -175,8 +175,8 @@ export default function Navbar() {
                             }`}
                             onClick={() => setMobileMenuOpen(false)}
                           >
-                            <div className="w-4 h-4 flex items-center justify-center shrink-0">
-                              {tool.icon && <DynamicIcon name={tool.icon} className="w-3.5 h-3.5" strokeWidth={1.5} />}
+                            <div className={`w-4 h-4 flex items-center justify-center shrink-0 rounded-sm ${tool.iconColor || ''}`}>
+                              {tool.icon && <DynamicIcon name={tool.icon} className="w-2.5 h-2.5" strokeWidth={1.5} />}
                             </div>
                             <span className="font-medium leading-tight truncate">{tool.title}</span>
                           </Link>

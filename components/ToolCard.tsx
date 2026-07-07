@@ -12,7 +12,7 @@ export default function ToolCard({ tool }: ToolCardProps) {
     <Link href={`/tools/${tool.slug}`} title={tool.title}>
       <div className="h-full p-4 border border-border rounded-lg bg-card shadow-sm hover:bg-muted/50 transition-all duration-200 flex flex-col group relative overflow-hidden">
         <div className="flex items-start gap-4">
-          <div className="w-10 h-10 rounded-lg bg-muted text-muted-foreground flex items-center justify-center shrink-0 transition-all group-hover:bg-primary group-hover:text-primary-foreground">
+          <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 transition-all group-hover:bg-primary group-hover:text-primary-foreground ${tool.iconColor || 'bg-muted text-muted-foreground'}`}>
             <DynamicIcon name={tool.icon || 'HelpCircle'} size={20} strokeWidth={2} />
           </div>
           <div className="space-y-1 min-w-0">

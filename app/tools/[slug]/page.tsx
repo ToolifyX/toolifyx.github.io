@@ -61,7 +61,7 @@ export default function ToolPage({ params }: Props) {
             </p>
           </div>
           <div className="hidden md:block">
-             <div className="w-10 h-10 rounded-lg bg-card border border-border text-muted-foreground flex items-center justify-center shadow-sm">
+             <div className={`w-10 h-10 rounded-lg flex items-center justify-center shadow-sm border ${tool.iconColor || 'bg-card border-border text-muted-foreground'}`}>
                 <DynamicIcon name={tool.icon || 'HelpCircle'} size={20} strokeWidth={2} />
              </div>
           </div>

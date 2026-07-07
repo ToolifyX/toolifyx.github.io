@@ -10,4 +10,5 @@ export interface Tool {
   category: ToolCategory;
   subCategory?: ImageSubCategory;
   icon?: string;
+  iconColor?: string;
 }
