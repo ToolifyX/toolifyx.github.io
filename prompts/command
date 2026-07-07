@@ -1,0 +1,418 @@
+# Prompt: Implement Global Command Palette (Ctrl + K) & Favorite Tools for phung.work
+## Objective
+Implement two global productivity features for **phung.work**:
+1. Global Command Palette (Ctrl + K)
+2. Favorite Tools
+The experience should be comparable to:
+* Raycast
+* VS Code Command Palette
+* Linear
+* Vercel Dashboard
+* GitHub Command Menu
+* Notion Quick Search
+These features should work across the entire website and integrate seamlessly with the existing design system.
+Do not change the existing routing architecture unless necessary.
+---
+# Feature 1 — Global Command Palette
+## Goal
+Allow users to quickly search and navigate to any tool without browsing categories.
+Keyboard shortcut
+Windows / Linux
+Ctrl + K
+Mac
+⌘ + K
+ESC
+Close
+Arrow Up / Down
+Navigate
+Enter
+Open selected tool
+Tab
+Autocomplete
+---
+# Behavior
+The command palette should open as a centered modal with a backdrop.
+Example
+──────────────────────────────
+🔍 Search tools...
+JSON Formatter
+Image Compressor
+PDF Merge
+UUID Generator
+Word Counter
+QR Code Generator
+...
+──────────────────────────────
+Search should begin immediately as the user types.
+No button click required.
+---
+# Search Scope
+Search all available tools.
+Search by
+* Tool name
+* Description
+* Keywords
+* Categories
+* Tags
+* Synonyms
+Examples
+Searching
+json
+Should return
+JSON Formatter
+JSON Validator
+JSON Compare
+JSON Minifier
+JSON Viewer
+Searching
+image
+Returns
+Image Compressor
+Image Resize
+Image Crop
+Image Metadata
+Image to Base64
+Searching
+compress
+Returns
+Image Compressor
+PDF Compress
+CSS Minifier
+HTML Minifier
+GIF Compressor
+---
+# Fuzzy Search
+Support typo tolerance.
+Example
+json
+Should still return
+JSON Formatter
+Searching
+img
+Should match
+Image
+Searching
+pdfmerge
+Should match
+PDF Merge
+Use
+Fuse.js
+or MiniSearch.
+---
+# Search Ranking
+Rank by
+1. Exact match
+2. Prefix match
+3. Keyword match
+4. Description match
+5. Favorite tools
+6. Recently used
+7. Popular tools
+---
+# Search Metadata
+Each tool should include
+Title
+Description
+Category
+Keywords
+Aliases
+Icon
+Route
+Popularity score
+Favorite state
+Recently used timestamp
+Example
+{
+id: "json-formatter",
+title: "JSON Formatter",
+category: "Developer",
+description: "Beautify and format JSON.",
+keywords: [
+"json",
+"beautify",
+"pretty",
+"format"
+],
+aliases: [
+"pretty json",
+"beautifier"
+],
+route: "/tools/json-formatter"
+}
+---
+# Categories
+Show grouped results.
+Developer
+Text
+Image
+PDF
+Design
+Utility
+SEO
+AI
+Display category badges.
+---
+# Result Card
+Each result displays
+Tool icon
+Title
+Description
+Category
+Favorite button
+Keyboard shortcut hint
+---
+# Recent Searches
+Remember
+Last 10 searches.
+Store locally.
+Display when search is empty.
+---
+# Recently Used Tools
+Display when input is empty.
+Example
+Recent
+JSON Formatter
+Image Compressor
+Password Generator
+---
+# Popular Tools
+Display
+Trending tools
+Most opened tools
+Favorites
+when search box is empty.
+---
+# Search Highlight
+Highlight matching keywords.
+Example
+Search
+json
+Display
+JSON Formatter
+JSON Validator
+---
+# Keyboard Navigation
+Support
+↑ ↓
+Move selection
+Enter
+Open tool
+ESC
+Close
+Ctrl+K
+Toggle
+Ctrl+1~9
+Quick launch (optional)
+---
+# Performance
+Search must feel instant.
+Support
+200+
+500+
+1000+
+Tools
+Use
+Fuse.js
+Debounce
+Index search
+Memoization
+Lazy loading
+---
+# Accessibility
+Keyboard only navigation.
+ARIA
+Screen readers
+Focus trap
+Visible focus
+---
+# Feature 2 — Favorite Tools
+## Goal
+Allow users to bookmark frequently used tools.
+Everything stored locally.
+No account required.
+---
+# Favorite Button
+Every tool page includes
+❤️ Favorite
+Top-right toolbar
+Click
+Toggle favorite.
+Animated.
+Toast
+Added to Favorites
+Removed from Favorites
+---
+# Favorite Storage
+Use
+IndexedDB
+or
+localStorage
+Persist forever.
+---
+# Favorite Page
+Create
+/favorites
+Display
+Grid
+List
+Search
+Sort
+Category filter
+Recently added
+Alphabetical
+Most used
+---
+# Favorite Card
+Each card displays
+Tool icon
+Tool name
+Category
+Description
+Last opened
+Open button
+Remove favorite
+---
+# Favorite Sidebar
+Optional
+Show favorite tools in desktop sidebar.
+Pin favorite tools.
+---
+# Favorite in Search
+Command Palette should prioritize favorite tools.
+Example
+Search
+json
+Results
+⭐ JSON Formatter
+⭐ JSON Validator
+JSON Compare
+JSON Tree
+---
+# Favorite Statistics
+Display
+Total favorites
+Most opened favorite
+Recently added
+Category distribution
+---
+# Empty State
+No favorites yet.
+Display
+"Add your favorite tools for faster access."
+Button
+Browse Tools
+---
+# Shared Components
+Create reusable components.
+CommandPalette
+SearchInput
+SearchResult
+CategorySection
+FavoriteButton
+FavoriteCard
+FavoriteGrid
+FavoriteList
+RecentTools
+RecentSearches
+SearchHighlight
+SearchEmptyState
+SearchHistory
+---
+# Hooks
+useCommandPalette()
+useSearch()
+useFavorites()
+useRecentTools()
+useSearchHistory()
+---
+# Local Storage
+Persist
+Favorites
+Recent tools
+Recent searches
+Last selected category
+Command palette state
+---
+# Keyboard Shortcuts
+Ctrl + K
+Open search
+ESC
+Close
+Enter
+Open tool
+Arrow keys
+Navigate
+Ctrl + D
+Toggle favorite (optional)
+---
+# Animations
+Use Framer Motion.
+Animate
+Modal open
+Search results
+Favorite icon
+List reorder
+Category transition
+Hover effects
+---
+# Performance
+Support
+1000+ tools
+Instant search
+Lazy loading
+Memoization
+Indexed search
+Avoid unnecessary renders
+---
+# SEO
+Favorite page
+/favorites
+Include
+Title
+Meta Description
+Breadcrumb
+OpenGraph
+Canonical
+Search page should not be indexed.
+Add
+noindex
+to command palette routes if needed.
+---
+# Recommended Libraries
+Fuse.js
+Framer Motion
+Zustand
+Dexie (IndexedDB)
+Radix Dialog
+shadcn/ui
+Lucide Icons
+---
+# Testing
+Create tests covering
+* Search accuracy
+* Fuzzy search
+* Keyboard navigation
+* Search ranking
+* Favorite persistence
+* Favorite toggle
+* Recent history
+* Performance with 1000+ tools
+* Accessibility
+* Mobile responsiveness
+---
+# Deliverables
+Produce production-ready code including:
+* Global Command Palette
+* Global Search Index
+* Favorite Management System
+* Recent Tools Manager
+* Search History Manager
+* Reusable Components
+* Reusable Hooks
+* TypeScript Models
+* Unit Tests
+* Responsive Layout
+* Dark Mode
+* Lazy Loading
+* High Performance
+The implementation should feel like a premium desktop application, providing users with a fast, intuitive way to discover, navigate, and organize tools. Both features must integrate naturally into the existing phung.work ecosystem while remaining scalable for hundreds of future tools.

@@ -6,6 +6,7 @@ import ToolCard from '@/components/ToolCard';
 import CategoryMenu from '@/components/CategoryMenu';
 import ToolSearch from '@/components/ToolSearch';
 import RecentlyUsedTools from '@/components/RecentlyUsedTools';
+import FavoriteTools from '@/components/FavoriteTools';
 import { ToolCategory } from '@/tools/types';
 import Link from 'next/link';
 
@@ -57,6 +58,7 @@ export default function Home() {
       <div className="space-y-10">
         {!isFiltering && (
           <div className="max-w-7xl mx-auto">
+            <FavoriteTools />
             <RecentlyUsedTools />
           </div>
         )}

@@ -3,6 +3,7 @@ import { seoData } from '@/tools/seo';
 import ToolRenderer from '@/components/ToolRenderer';
 import ToolCard from '@/components/ToolCard';
 import { DynamicIcon } from '@/components/DynamicIcon';
+import FavoriteButton from '@/components/FavoriteButton';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
@@ -62,9 +63,12 @@ export default function ToolPage({ params }: Props) {
               {tool.description}
             </p>
           </div>
-          <div className="hidden md:block">
-             <div className={`w-10 h-10 rounded-lg flex items-center justify-center shadow-sm border ${tool.iconColor || 'bg-card border-border text-muted-foreground'}`}>
-                <DynamicIcon name={tool.icon || 'HelpCircle'} size={20} strokeWidth={2} />
+          <div className="hidden md:block flex-shrink-0">
+             <div className="flex items-center gap-3">
+                <FavoriteButton slug={tool.slug} />
+                <div className={`w-10 h-10 rounded-lg flex items-center justify-center shadow-sm border ${tool.iconColor || 'bg-card border-border text-muted-foreground'}`}>
+                   <DynamicIcon name={tool.icon || 'HelpCircle'} size={20} strokeWidth={2} />
+                </div>
              </div>
           </div>
         </div>
