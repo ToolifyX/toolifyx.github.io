@@ -9,10 +9,4 @@ export interface QuickAccessTool {
   route: string;
 }
 
-export const QUICK_ACCESS_TOOLS: QuickAccessTool[] = [
-  {
-    slug: 'apps',
-    title: 'apps',
-    route: '/apps',
-  },
-];
+export const QUICK_ACCESS_TOOLS: QuickAccessTool[] = [];

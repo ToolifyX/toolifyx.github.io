@@ -7,7 +7,7 @@ import { ThemeToggle } from './ThemeToggle';
 import { DynamicIcon } from './DynamicIcon';
 import { QUICK_ACCESS_TOOLS } from '@/tools/quickAccessTools';
 import { tools } from '@/tools/config';
-import { ChevronDown, Menu, X } from 'lucide-react';
+import { ChevronDown, Menu, X, Smartphone } from 'lucide-react';
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -87,6 +87,19 @@ export default function Navbar() {
 
           {/* Right side controls */}
           <div className="flex items-center gap-2 sm:gap-4">
+            {/* Apps Link - Always Visible Icon */}
+            <Link
+              href="/apps"
+              title="Mobile Apps"
+              className={`p-2 transition-all rounded-md flex items-center justify-center ${
+                pathname === '/apps'
+                  ? 'text-primary bg-primary/10'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-accent'
+              }`}
+            >
+              <Smartphone className="w-5 h-5" />
+            </Link>
+
             {/* More Tools Dropdown - Desktop */}
             <div className="hidden md:block relative group">
               <button className="px-3 py-2 text-sm font-medium text-foreground hover:text-blue-600 dark:hover:text-blue-400 hover:underline transition-colors flex items-center gap-1 rounded-md group-hover:bg-accent">
@@ -150,7 +163,7 @@ export default function Navbar() {
         {mobileMenuOpen && (
           <div className="md:hidden border-t bg-background/95 py-4 px-4 space-y-4">
             {/* Quick Access Tools Mobile */}
-            {QUICK_ACCESS_TOOLS.length > 0 && (
+            {(QUICK_ACCESS_TOOLS.length > 0) && (
               <div className="flex flex-wrap gap-2 pb-2 border-b border-border/50">
                 {QUICK_ACCESS_TOOLS.map((tool) => (
                   <Link
