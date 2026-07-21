@@ -1,5 +1,4 @@
-- [x] Update `tools/types.ts` to include `"apps"` in `ToolCategory`
-- [x] Update `components/CategoryMenu.tsx` to include the `"apps"` category and show count
-- [x] Create `components/AppCard.tsx` for mobile apps display
-- [x] Update `app/page.tsx` categories list and filtering logic to include mobile apps
-- [x] Verify search functionality and category switching on home page
+- [ ] Create `app/about/page.tsx` with content and styling
+- [ ] Update `app/layout.tsx` footer with link to About page
+- [ ] Update `components/Navbar.tsx` mobile menu with About link
+- [ ] Run `npm run build` to verify

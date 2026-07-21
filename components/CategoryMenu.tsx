@@ -12,7 +12,7 @@ interface CategoryMenuProps {
 
 const categories: { id: ToolCategory | 'all'; label: string }[] = [
   { id: 'all', label: 'All' },
-  { id: 'dev', label: 'Dev' },
+  { id: 'dev', label: 'Develop' },
   { id: 'text', label: 'Text' },
   { id: 'image', label: 'Image' },
   { id: 'pdf', label: 'PDF' },

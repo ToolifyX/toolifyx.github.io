@@ -1,42 +1,36 @@
-# Add "Apps" Category to Home Page
+# Implement "About" Screen
 
-Add a new "Apps" category to the category selection menu and tool discovery sections on the home page to showcase mobile applications.
+Create a dedicated "About" page to describe ToolifyX's mission, privacy-first approach, and technical details.
 
 ## User Review Required
 
-- The "Apps" tab will be added to the category list on the home page.
-- When selected, it will display the 16 mobile apps recently added.
-- "All" count will remain 106 (or be updated to 122 if preferred, but usually "All" refers to the web tools). Based on the user's prompt, they might want to keep the current counts and just add "Apps" as a new category.
+- A new page `/about` will be created.
+- A link to the "About" page will be added to the website footer.
+- The "About" page will emphasize that all processing is local and private.
 
 ## Proposed Changes
 
-### Types & Config
-#### [MODIFY] [types.ts](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/tools/types.ts)
-- Add `"apps"` to the `ToolCategory` type definition.
-
-### Components
-#### [MODIFY] [CategoryMenu.tsx](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/components/CategoryMenu.tsx)
-- Add the `"apps"` category to the menu list.
-- Import `mobileApps` from `@/lib/appsData` to calculate the count for the "Apps" tab.
-
-#### [NEW] [AppCard.tsx](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/components/AppCard.tsx)
-- Create a new component to display mobile apps in the home grid.
-- Similar styling to `ToolCard` but links directly to the Google Play Store and supports image icons (`iconPath`).
-
 ### Pages
-#### [MODIFY] [page.tsx](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/app/page.tsx)
-- Add `"apps"` to the `categories` array used for the discovery sections.
-- Update the filtering logic to handle the "apps" category.
-- When the "apps" category is active, render `AppCard` components instead of `ToolCard`.
-- When searching, include mobile apps in the results.
+#### [NEW] [app/about/page.tsx](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/app/about/page.tsx)
+- Create a clean, readable page using the project's typography and layout.
+- Include sections for:
+    - **What is ToolifyX?**: A brief overview of the platform.
+    - **Privacy First**: Explaining that all tools run locally in the browser and no data is uploaded to servers.
+    - **Open & Secure**: Mentioning the browser-native nature of the tools.
+
+### Layout & Navigation
+#### [MODIFY] [app/layout.tsx](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/app/layout.tsx)
+- Update the footer to include a link to the `/about` page.
+
+#### [MODIFY] [components/Navbar.tsx](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/components/Navbar.tsx)
+- (Optional) Add the "About" link to the mobile menu for better discoverability on smaller screens.
 
 ## Verification Plan
 
 ### Automated Tests
-- Run `npm run build` to ensure type safety across the new category and unified filtering logic.
+- Run `npm run build` to ensure the new page is correctly prerendered and types are valid.
 
 ### Manual Verification
-1. Open the home page and verify the "Apps" tab appears in the category menu with the correct count (16).
-2. Click the "Apps" tab and verify the mobile apps are displayed in the grid.
-3. Search for a mobile app (e.g., "ROLLO") and ensure it appears in the results.
-4. Verify that clicking an app card opens the correct Google Play Store page in a new tab.
+1. Navigate to `/about` directly and verify the content.
+2. Check the footer on the home page and other tool pages to ensure the "About" link is present and working.
+3. Verify the layout looks good on both desktop and mobile devices.
