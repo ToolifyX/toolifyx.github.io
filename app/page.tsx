@@ -2,7 +2,9 @@
 
 import React, { useState, useMemo } from 'react';
 import { tools } from '@/tools/config';
+import { mobileApps } from '@/lib/appsData';
 import ToolCard from '@/components/ToolCard';
+import AppCard from '@/components/AppCard';
 import CategoryMenu from '@/components/CategoryMenu';
 import ToolSearch from '@/components/ToolSearch';
 import RecentlyUsedTools from '@/components/RecentlyUsedTools';
@@ -12,6 +14,7 @@ import { useTrackSearch } from '@/analytics/hooks/useTrackSearch';
 import Link from 'next/link';
 
 const categories: { id: ToolCategory; label: string; href: string; description: string }[] = [
+  { id: 'apps', label: 'Mobile Apps', href: '/apps', description: 'Photography, Utility, Security...' },
   { id: 'text', label: 'Text Tools', href: '/text-tools', description: 'Counter, Case, Slug...' },
   { id: 'dev', label: 'Developer Tools', href: '/dev-tools', description: 'JSON, Base64, UUID...' },
   { id: 'image', label: 'Image Tools', href: '/image-tools', description: 'Compress, Convert, Resize...' },
@@ -26,11 +29,13 @@ export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState<ToolCategory | 'all'>('all');
   const { trackSearch } = useTrackSearch();
 
-  const filteredTools = useMemo(() => {
-    const results = tools
+  const filteredItems = useMemo(() => {
+    const search = searchQuery.toLowerCase();
+
+    const matchedTools = tools
       .filter((tool) => selectedCategory === 'all' || tool.category === selectedCategory)
       .filter((tool) => {
-        const search = searchQuery.toLowerCase();
+        if (!search) return true;
         return (
           tool.title.toLowerCase().includes(search) ||
           tool.slug.toLowerCase().includes(search) ||
@@ -38,7 +43,22 @@ export default function Home() {
         );
       });
 
-    // Debounced search tracking could be better, but let's do it simply for now
+    const matchedApps = mobileApps
+      .filter(() => selectedCategory === 'all' || selectedCategory === 'apps')
+      .filter((app) => {
+        if (!search) return true;
+        return (
+          app.name.toLowerCase().includes(search) ||
+          app.description.toLowerCase().includes(search) ||
+          app.category.toLowerCase().includes(search)
+        );
+      });
+
+    const results = [
+      ...matchedTools.map(t => ({ ...t, type: 'tool' as const })),
+      ...matchedApps.map(a => ({ ...a, type: 'app' as const }))
+    ];
+
     if (searchQuery.length > 2) {
       trackSearch(searchQuery, results.length);
     }
@@ -90,8 +110,8 @@ export default function Home() {
           <div className="space-y-6">
             <div className="flex items-center justify-between px-1">
               <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-                {searchQuery ? `Results for "${searchQuery}"` : 'Filtered Tools'}
-                <span className="ml-2 lowercase font-normal">({filteredTools.length})</span>
+                {searchQuery ? `Results for "${searchQuery}"` : 'Filtered Content'}
+                <span className="ml-2 lowercase font-normal">({filteredItems.length})</span>
               </h2>
               <button
                 onClick={() => { setSearchQuery(''); setSelectedCategory('all'); }}
@@ -101,15 +121,19 @@ export default function Home() {
               </button>
             </div>
 
-            {filteredTools.length > 0 ? (
+            {filteredItems.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 animate-in fade-in duration-500">
-                {filteredTools.map((tool) => (
-                  <ToolCard key={tool.slug} tool={tool} />
+                {filteredItems.map((item) => (
+                  item.type === 'tool' ? (
+                    <ToolCard key={item.slug} tool={item} />
+                  ) : (
+                    <AppCard key={item.id} app={item} />
+                  )
                 ))}
               </div>
             ) : (
               <div className="text-center py-20 border rounded-2xl bg-muted/20">
-                <p className="text-sm text-muted-foreground">No tools match your search criteria.</p>
+                <p className="text-sm text-muted-foreground">No matches found for your criteria.</p>
               </div>
             )}
           </div>
@@ -117,6 +141,39 @@ export default function Home() {
           /* Default Discovery View: Compact Categories */
           <div className="space-y-16">
             {categories.map((cat) => {
+              if (cat.id === 'apps') {
+                return (
+                  <section key={cat.id} className="space-y-6">
+                    <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 px-1">
+                      <div className="space-y-1 max-w-2xl">
+                        <div className="flex items-center gap-2">
+                          <h2 className="text-sm font-black uppercase tracking-[0.15em] text-foreground">{cat.label}</h2>
+                          <span className="text-[10px] bg-muted px-1.5 py-0.5 rounded font-bold text-muted-foreground">{mobileApps.length}</span>
+                        </div>
+                        <p className="text-sm text-muted-foreground leading-relaxed">
+                          {cat.description}
+                        </p>
+                      </div>
+                      <Link
+                        href={cat.href}
+                        className="text-xs font-bold text-primary hover:underline flex items-center gap-1 shrink-0 transition-all hover:gap-2"
+                      >
+                        Explore All
+                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                        </svg>
+                      </Link>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                      {mobileApps.slice(0, 8).map((app) => (
+                        <AppCard key={app.id} app={app} />
+                      ))}
+                    </div>
+                  </section>
+                );
+              }
+
               const categoryTools = tools.filter((t) => t.category === cat.id);
               if (categoryTools.length === 0) return null;
 

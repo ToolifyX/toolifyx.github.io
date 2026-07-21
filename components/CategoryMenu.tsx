@@ -3,6 +3,7 @@
 import React from 'react';
 import { ToolCategory } from '@/tools/types';
 import { tools } from '@/tools/config';
+import { mobileApps } from '@/lib/appsData';
 
 interface CategoryMenuProps {
   activeCategory: ToolCategory | 'all';
@@ -17,11 +18,13 @@ const categories: { id: ToolCategory | 'all'; label: string }[] = [
   { id: 'pdf', label: 'PDF' },
   { id: 'design', label: 'Design' },
   { id: 'utility', label: 'Utility' },
+  { id: 'apps', label: 'Apps' },
 ];
 
 export default function CategoryMenu({ activeCategory, onCategoryChange }: CategoryMenuProps) {
   const getCount = (id: ToolCategory | 'all') => {
     if (id === 'all') return tools.length;
+    if (id === 'apps') return mobileApps.length;
     return tools.filter(t => t.category === id).length;
   };
 

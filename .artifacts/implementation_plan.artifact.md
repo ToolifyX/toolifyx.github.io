@@ -1,46 +1,42 @@
-# Add "apps" Tab for Mobile App Promotion
+# Add "Apps" Category to Home Page
 
-Add a new tab named "apps" to the navigation bar and a dedicated page to showcase mobile applications from the developer's Google Play Store profile.
+Add a new "Apps" category to the category selection menu and tool discovery sections on the home page to showcase mobile applications.
 
 ## User Review Required
 
-- The tab in the navigation bar will be labeled **"apps"** (lowercase) as requested.
-- A new page `/apps` will be created to feature the developer's apps.
-- Links will point directly to the Google Play Store.
+- The "Apps" tab will be added to the category list on the home page.
+- When selected, it will display the 16 mobile apps recently added.
+- "All" count will remain 106 (or be updated to 122 if preferred, but usually "All" refers to the web tools). Based on the user's prompt, they might want to keep the current counts and just add "Apps" as a new category.
 
 ## Proposed Changes
 
-### Data Layer
-#### [NEW] [appsData.ts](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/lib/appsData.ts)
-- Define the list of apps with titles, descriptions, package IDs, and icons.
-- Featured apps: ROLLO, OldSoul, Filmory, DualView, AuraPro, Fieldly, 10MB Browser, IPTV+ Player, etc.
+### Types & Config
+#### [MODIFY] [types.ts](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/tools/types.ts)
+- Add `"apps"` to the `ToolCategory` type definition.
 
-### UI Components
-#### [NEW] [app/apps/page.tsx](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/app/apps/page.tsx)
-- Create a clean, visually appealing showcase page.
-- Use a grid layout with cards for each app.
-- Include "Download on Google Play" badges/buttons.
+### Components
+#### [MODIFY] [CategoryMenu.tsx](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/components/CategoryMenu.tsx)
+- Add the `"apps"` category to the menu list.
+- Import `mobileApps` from `@/lib/appsData` to calculate the count for the "Apps" tab.
 
-### Navigation Integration
-#### [MODIFY] [tools/quickAccessTools.ts](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/tools/quickAccessTools.ts)
-- Add the `apps` entry to `QUICK_ACCESS_TOOLS` to ensure it appears in the top Navbar.
+#### [NEW] [AppCard.tsx](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/components/AppCard.tsx)
+- Create a new component to display mobile apps in the home grid.
+- Similar styling to `ToolCard` but links directly to the Google Play Store and supports image icons (`iconPath`).
 
-```typescript
-export const QUICK_ACCESS_TOOLS: QuickAccessTool[] = [
-  {
-    slug: 'apps',
-    title: 'apps',
-    route: '/apps',
-  },
-];
-```
+### Pages
+#### [MODIFY] [page.tsx](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/app/page.tsx)
+- Add `"apps"` to the `categories` array used for the discovery sections.
+- Update the filtering logic to handle the "apps" category.
+- When the "apps" category is active, render `AppCard` components instead of `ToolCard`.
+- When searching, include mobile apps in the results.
 
 ## Verification Plan
 
 ### Automated Tests
-- Run `npm run lint` to verify code quality.
+- Run `npm run build` to ensure type safety across the new category and unified filtering logic.
 
 ### Manual Verification
-1. Verify the "apps" tab is present in the Navbar on both desktop and mobile.
-2. Ensure clicking "apps" navigates to the showcase page.
-3. Verify that app links correctly open the Google Play Store in a new tab.
+1. Open the home page and verify the "Apps" tab appears in the category menu with the correct count (16).
+2. Click the "Apps" tab and verify the mobile apps are displayed in the grid.
+3. Search for a mobile app (e.g., "ROLLO") and ensure it appears in the results.
+4. Verify that clicking an app card opens the correct Google Play Store page in a new tab.
