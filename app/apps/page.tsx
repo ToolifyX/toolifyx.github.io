@@ -38,8 +38,12 @@ export default function AppsPage() {
               className="group relative overflow-hidden rounded-3xl border bg-card p-8 hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500"
             >
               <div className="flex flex-col sm:flex-row gap-6 items-start">
-                <div className="w-20 h-20 rounded-2xl bg-primary/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-500">
-                  <DynamicIcon name={app.iconName} className="w-10 h-10 text-primary" strokeWidth={1.5} />
+                <div className="w-20 h-20 rounded-2xl bg-primary/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-500 overflow-hidden">
+                  {app.iconPath ? (
+                    <img src={app.iconPath} alt={app.name} className="w-full h-full object-cover" />
+                  ) : (
+                    <DynamicIcon name={app.iconName || 'HelpCircle'} className="w-10 h-10 text-primary" strokeWidth={1.5} />
+                  )}
                 </div>
                 <div className="space-y-3 flex-1">
                   <div className="flex items-center justify-between">
@@ -79,8 +83,12 @@ export default function AppsPage() {
               className="group flex flex-col p-5 rounded-2xl border bg-card/50 hover:bg-card hover:border-primary/30 hover:shadow-lg transition-all"
             >
               <div className="flex items-center gap-4 mb-4">
-                <div className="w-12 h-12 rounded-xl bg-muted group-hover:bg-primary/10 flex items-center justify-center shrink-0 transition-colors">
-                  <DynamicIcon name={app.iconName} className="w-6 h-6 text-muted-foreground group-hover:text-primary" strokeWidth={1.5} />
+                <div className="w-12 h-12 rounded-xl bg-muted group-hover:bg-primary/10 flex items-center justify-center shrink-0 transition-colors overflow-hidden">
+                  {app.iconPath ? (
+                    <img src={app.iconPath} alt={app.name} className="w-full h-full object-cover" />
+                  ) : (
+                    <DynamicIcon name={app.iconName || 'HelpCircle'} className="w-6 h-6 text-muted-foreground group-hover:text-primary" strokeWidth={1.5} />
+                  )}
                 </div>
                 <div className="min-w-0">
                   <h4 className="font-bold text-sm truncate group-hover:text-primary transition-colors">{app.name}</h4>
