@@ -166,7 +166,7 @@ export default function Home() {
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                      {mobileApps.slice(0, 8).map((app) => (
+                      {mobileApps.slice(0, 10).map((app) => (
                         <AppCard key={app.id} app={app} />
                       ))}
                     </div>
