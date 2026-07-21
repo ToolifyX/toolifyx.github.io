@@ -54,9 +54,6 @@ export default function AppsPage() {
                   <p className="text-muted-foreground leading-relaxed text-sm">
                     {app.description}
                   </p>
-                  <div className="pt-2">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Play Store" className="h-10 w-auto" />
-                  </div>
                 </div>
               </div>
             </a>

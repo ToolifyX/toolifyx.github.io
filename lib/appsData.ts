@@ -35,7 +35,6 @@ export const mobileApps: MobileApp[] = [
     packageId: 'com.ssolstice.camera.manual',
     iconPath: '/icon_manual.webp',
     category: 'Photography',
-    featured: true,
   },
   {
     id: 'dualview',
@@ -44,7 +43,6 @@ export const mobileApps: MobileApp[] = [
     packageId: 'com.ssolstice.dualcamera',
     iconPath: '/logo_dualview.webp',
     category: 'Video',
-    featured: true,
   },
   {
     id: 'fieldly-gps',
@@ -53,7 +51,6 @@ export const mobileApps: MobileApp[] = [
     packageId: 'com.ssolstice.time',
     iconPath: '/logo_fiedly.png',
     category: 'Utility',
-    featured: true,
   },
   {
     id: 'filmory',
@@ -62,7 +59,6 @@ export const mobileApps: MobileApp[] = [
     packageId: 'com.ssolstice.filmory',
     iconPath: '/logo_filmory.webp',
     category: 'Photography',
-    featured: true,
   },
   {
     id: 'auraraw',
@@ -71,7 +67,6 @@ export const mobileApps: MobileApp[] = [
     packageId: 'com.s2olstice.auraraw.camera',
     iconPath: '/icon_auraraw.webp',
     category: 'Photography',
-    featured: true,
   },
   {
     id: 'everlog',
@@ -80,7 +75,6 @@ export const mobileApps: MobileApp[] = [
     packageId: 'com.ssolstice.everlog',
     iconPath: '/logo_everlog.webp',
     category: 'Productivity',
-    featured: true,
   },
   {
     id: 'privatevault',
@@ -89,7 +83,6 @@ export const mobileApps: MobileApp[] = [
     packageId: 'com.ssolstice.vault',
     iconPath: '/logo_privatevault.webp',
     category: 'Security',
-    featured: true,
   },
   {
     id: 'photomap',
@@ -98,23 +91,6 @@ export const mobileApps: MobileApp[] = [
     packageId: 'com.ssolstice.journiq',
     iconPath: '/logo_photomap.webp',
     category: 'Travel',
-    featured: true,
-  },
-  {
-    id: 'aurapro',
-    name: 'AuraPro – Manual Camera',
-    description: 'Unlock full manual control over your camera for the perfect shot every time.',
-    packageId: 'com.s2olstice.aurapro',
-    iconName: 'Sliders',
-    category: 'Photography',
-  },
-  {
-    id: 'filshot',
-    name: 'FilShot – Film Camera',
-    description: 'Quick and easy film photography with a variety of vintage presets.',
-    packageId: 'com.ssolstice.vintage.camera.editor',
-    iconPath: '/logo_filshot.webp',
-    category: 'Photography',
   },
   {
     id: 'laphoto',
