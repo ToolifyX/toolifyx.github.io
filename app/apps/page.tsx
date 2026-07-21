@@ -55,9 +55,7 @@ export default function AppsPage() {
                     {app.description}
                   </p>
                   <div className="pt-2">
-                    <div className="inline-flex items-center gap-2 bg-foreground text-background px-4 py-2 rounded-xl text-xs font-bold group-hover:bg-primary group-hover:text-white transition-colors">
-                      Get on Google Play
-                    </div>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Play Store" className="h-10 w-auto" />
                   </div>
                 </div>
               </div>
@@ -98,12 +96,6 @@ export default function AppsPage() {
               <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed mb-4 flex-1">
                 {app.description}
               </p>
-              <div className="flex items-center justify-between mt-auto pt-2 border-t border-border/50">
-                 <span className="text-[10px] font-bold text-muted-foreground group-hover:text-primary transition-colors flex items-center gap-1">
-                   Details <ExternalLink className="w-2.5 h-2.5" />
-                 </span>
-                 <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Play Store" className="h-5 w-auto" />
-              </div>
             </a>
           ))}
         </div>

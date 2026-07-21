@@ -129,7 +129,7 @@ export const mobileApps: MobileApp[] = [
     name: 'Fake GPS Location',
     description: 'Simulate or spoof your GPS location with ease for testing or privacy purposes.',
     packageId: 'com.ssolstice.fakegps',
-    iconName: '/logo_fakegps.webp',
+    iconPath: '/logo_fakegps.webp',
     category: 'Utility',
   },
   {
