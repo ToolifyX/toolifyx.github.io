@@ -1,21 +1,24 @@
-# Walkthrough - Implemented "About" Page
+# Walkthrough - Removed "Apps" from Navigation Bars
 
-I have added a comprehensive "About" page to ToolifyX to highlight its privacy-first mission and local processing capabilities.
+I have removed the "Apps" text and icon from the top navigation bar and the footer to streamline the interface, while keeping the "Apps" category available on the Home page.
 
 ## Changes Made
 
-### 1. Added Support Contact Info
-- **Global Footer:** Added Email (`ssolstice216@gmail.com`) and Telegram (`@S2olstice`) icons to the footer of every page.
-- **About Page:** Created a dedicated **Support Section** at the bottom of the [/about](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/app/about/page.tsx) page with larger, clickable cards for both email and Telegram.
+### 1. Navigation Bar (Top)
+- Removed the **Smartphone icon** link to the Apps page from the top-right header.
+- Cleaned up the `Smartphone` icon import in [Navbar.tsx](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/components/Navbar.tsx).
+- This ensures the top bar focuses strictly on the logo, tool navigation, and theme settings.
 
-### 2. Enhanced UI/UX
-- Used **Lucide icons** (`Mail` and `Send`) with consistent styling (primary color accents, hover effects).
-- Added `title` tags and accessibility labels to ensure links are user-friendly.
+### 2. Footer (Bottom)
+- Removed the **"Apps"** text link from the footer navigation row in [layout.tsx](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/app/layout.tsx).
+- The footer now only displays **Home** and **About** alongside the support icons.
+
+### 3. Preserved Home Page Integration
+- The **"Apps" category** remains fully functional in the category selector on the Home page.
+- Users can still discover and search for mobile apps directly from the main grid.
 
 ## Verification Results
-- [x] **Footer:** Icons are centered and correctly linked.
-- [x] **About Page:** Contact section is visually integrated and responsive.
-- [x] **Links:** `mailto:` correctly opens the email client, and the Telegram link points to the `@S2olstice` profile.
-
-> [!NOTE]
-> The About page strongly emphasizes that ToolifyX is **private and secure**, as all processing happens locally in the user's browser.
+- [x] **Header:** No "Apps" text or icon is visible.
+- [x] **Footer:** "Apps" link has been removed.
+- [x] **Home Page:** The "Apps" tab still exists in the tool category menu with its count (16).
+- [x] **Navigation:** The `/apps` page is still accessible via the "Explore All" link on the Home page if needed.

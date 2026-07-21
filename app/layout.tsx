@@ -42,7 +42,6 @@ export default function RootLayout({
             <div className="container mx-auto px-4 text-center space-y-6">
               <div className="flex justify-center gap-6 text-sm font-bold uppercase tracking-widest text-muted-foreground/60">
                 <Link href="/" className="hover:text-primary transition-colors">Home</Link>
-                <Link href="/apps" className="hover:text-primary transition-colors">Apps</Link>
                 <Link href="/about" className="hover:text-primary transition-colors">About</Link>
               </div>
 
