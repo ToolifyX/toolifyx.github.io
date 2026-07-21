@@ -41,7 +41,8 @@ export default function Navbar() {
     .filter(category => otherToolsByCategory[category]?.length)
     .map(category => [category, otherToolsByCategory[category]] as const);
 
-  const isToolActive = (slug: string) => {
+  const isToolActive = (slug: string, route?: string) => {
+    if (route) return pathname === route;
     return pathname === `/tools/${slug}`;
   };
 
@@ -70,7 +71,7 @@ export default function Navbar() {
                   key={tool.slug}
                   href={tool.route}
                   className={`px-3 py-1.5 text-[13px] font-semibold whitespace-nowrap transition-all rounded-full border ${
-                    isToolActive(tool.slug)
+                    isToolActive(tool.slug, tool.route)
                       ? 'text-primary bg-primary/10 border-primary/20'
                       : 'text-muted-foreground hover:text-foreground hover:bg-accent border-transparent'
                   }`}
@@ -148,6 +149,26 @@ export default function Navbar() {
         {/* Mobile Menu - Dropdown below navbar */}
         {mobileMenuOpen && (
           <div className="md:hidden border-t bg-background/95 py-4 px-4 space-y-4">
+            {/* Quick Access Tools Mobile */}
+            {QUICK_ACCESS_TOOLS.length > 0 && (
+              <div className="flex flex-wrap gap-2 pb-2 border-b border-border/50">
+                {QUICK_ACCESS_TOOLS.map((tool) => (
+                  <Link
+                    key={tool.slug}
+                    href={tool.route}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`px-3 py-1.5 text-xs font-semibold rounded-full border ${
+                      isToolActive(tool.slug, tool.route)
+                        ? 'text-primary bg-primary/10 border-primary/20'
+                        : 'text-muted-foreground bg-accent/30 border-transparent'
+                    }`}
+                  >
+                    {tool.title}
+                  </Link>
+                ))}
+              </div>
+            )}
+
             {/* Mobile More Tools Section */}
             <div>
               <button

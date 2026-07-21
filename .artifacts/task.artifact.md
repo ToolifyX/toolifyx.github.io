@@ -1,0 +1,5 @@
+- [x] Create `lib/appsData.ts` with Google Play app details
+- [x] Create `app/apps/page.tsx` for the apps showcase
+- [x] Update `tools/quickAccessTools.ts` to add the "apps" tab
+- [x] Update `Navbar.tsx` to correctly highlight the "apps" tab and show it on mobile
+- [x] Verify the changes
