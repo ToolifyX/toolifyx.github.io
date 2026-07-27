@@ -312,7 +312,7 @@ export const QUICK_ACCESS_TOOLS = [
 
 ## ✨ Conclusion
 
-The enhanced navbar transforms ToolifyX from a minimal interface to a user-centric design that:
+The enhanced navbar transforms PhungX from a minimal interface to a user-centric design that:
 
 1. **Reduces friction** - Popular tools always visible
 2. **Improves discovery** - Better navigation structure

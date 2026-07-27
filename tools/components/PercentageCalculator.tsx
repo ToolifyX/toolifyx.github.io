@@ -11,7 +11,7 @@
  * Use the third row to find the percentage change between two values.
  *
  * FAQ 3: Is it free?
- * Yes, all tools on ToolifyX are free forever.
+ * Yes, all tools on PhungX are free forever.
  */
 
 import React, { useState } from 'react';

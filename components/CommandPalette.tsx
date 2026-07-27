@@ -179,7 +179,7 @@ export default function CommandPalette({ isOpen, onClose }: { isOpen: boolean, o
               <span className="flex items-center gap-1"><span className="p-1 rounded bg-muted border text-foreground">Enter</span> Select</span>
            </div>
            <div className="flex items-center gap-1 text-[9px] font-black uppercase tracking-widest text-primary/60">
-              <Search className="w-3 h-3" /> ToolifyX Search
+              <Search className="w-3 h-3" /> PhungX Search
            </div>
         </div>
       </div>

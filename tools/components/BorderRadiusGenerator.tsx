@@ -11,7 +11,7 @@
  * You can go up to 100px or more, which often results in a circle for square elements.
  *
  * FAQ 3: Is it free to use?
- * Yes, all design tools on ToolifyX are 100% free.
+ * Yes, all design tools on PhungX are 100% free.
  */
 
 import React, { useState } from 'react';

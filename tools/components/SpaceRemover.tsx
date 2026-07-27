@@ -11,7 +11,7 @@
  * Yes, the tool automatically filters out blank lines.
  *
  * FAQ 3: Is it free?
- * Yes, all tools on ToolifyX are free and open-source.
+ * Yes, all tools on PhungX are free and open-source.
  */
 
 import React, { useState } from 'react';

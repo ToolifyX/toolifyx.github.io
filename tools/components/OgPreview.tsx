@@ -10,11 +10,11 @@ import { Share2, Globe, MessageSquare, AlertCircle } from 'lucide-react';
 
 export default function OgPreview() {
   const [data, setData] = useState({
-    title: 'ToolifyX - Every tool for everyone',
+    title: 'PhungX - Every tool for everyone',
     description: 'Fast, private, browser-native tools for developers and creators. Over 50+ utilities including SEO, Text, Image, and PDF tools.',
-    url: 'https://toolifyx.github.io',
+    url: 'https://phungx.github.io',
     image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop',
-    siteName: 'ToolifyX'
+    siteName: 'PhungX'
   });
 
   return (

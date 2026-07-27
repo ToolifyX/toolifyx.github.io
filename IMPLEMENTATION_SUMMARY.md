@@ -38,7 +38,7 @@ File: `components/Navbar.tsx`
 
 ```
 Header (sticky, z-50)
-├── Logo (ToolifyX)
+├── Logo (PhungX)
 ├── Quick Access Tools (desktop: inline, tablet: scrollable)
 ├── More Tools Dropdown
 │   ├── Image Tools

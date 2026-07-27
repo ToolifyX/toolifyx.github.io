@@ -9,9 +9,9 @@ import React, { useState } from 'react';
 import { Globe, Smartphone, Laptop, AlertCircle, RefreshCw } from 'lucide-react';
 
 export default function SerpPreview() {
-  const [title, setTitle] = useState('My Awesome Website | ToolifyX');
+  const [title, setTitle] = useState('My Awesome Website | PhungX');
   const [description, setDescription] = useState('Discover the best free online tools for developers and creators. Fast, secure, and privacy-focused utilities for your daily workflow.');
-  const [url, setUrl] = useState('https://toolifyx.github.io/tools/seo');
+  const [url, setUrl] = useState('https://phungx.github.io/tools/seo');
   const [device, setDevice] = useState<'desktop' | 'mobile'>('desktop');
 
   return (
@@ -67,7 +67,7 @@ export default function SerpPreview() {
                        <div className="flex items-center gap-2 text-sm text-[#202124] mb-1">
                           <div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center text-[10px] shrink-0 border border-border/50">G</div>
                           <div className="min-w-0">
-                             <div className="text-[12px] leading-tight truncate">ToolifyX</div>
+                             <div className="text-[12px] leading-tight truncate">PhungX</div>
                              <div className="text-[10px] text-[#5f6368] truncate">{url}</div>
                           </div>
                        </div>

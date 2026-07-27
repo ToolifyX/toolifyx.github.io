@@ -105,7 +105,7 @@ export default function ImageResizer() {
         });
 
       if (zipItems.length > 0) {
-        await downloadAllAsZip(zipItems, "toolifyx-resized-images.zip");
+        await downloadAllAsZip(zipItems, "phungx-resized-images.zip");
       } else {
         alert("Failed to process images for download.");
       }

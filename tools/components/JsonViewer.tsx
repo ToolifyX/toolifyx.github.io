@@ -9,7 +9,7 @@ import React, { useState, useMemo } from 'react';
 import { ChevronRight, ChevronDown, Braces, List, Type, Hash, ToggleLeft, Minus } from 'lucide-react';
 
 export default function JsonViewer() {
-  const [input, setInput] = useState('{\n  "id": 1,\n  "name": "ToolifyX",\n  "features": ["Fast", "Private", "Free"],\n  "details": {\n    "version": "1.0",\n    "active": true\n  }\n}');
+  const [input, setInput] = useState('{\n  "id": 1,\n  "name": "PhungX",\n  "features": ["Fast", "Private", "Free"],\n  "details": {\n    "version": "1.0",\n    "active": true\n  }\n}');
   const [error, setError] = useState('');
 
   const parsedData = useMemo(() => {

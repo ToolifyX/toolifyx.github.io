@@ -2,7 +2,7 @@
 
 ## 🎯 Project Overview
 
-Successfully added quick access tool links to the top navigation bar of ToolifyX, increasing click-through rate and reducing tool discovery time. Implementation includes responsive design, dark mode support, and comprehensive documentation.
+Successfully added quick access tool links to the top navigation bar of PhungX, increasing click-through rate and reducing tool discovery time. Implementation includes responsive design, dark mode support, and comprehensive documentation.
 
 ---
 

@@ -55,11 +55,11 @@ export default function Navbar() {
           <Link href="/" className="flex items-center gap-2.5 group flex-shrink-0">
             <img
               src="/logo_web.webp"
-              alt="ToolifyX Logo"
+              alt="PhungX Logo"
               className="h-9 w-auto transition-transform group-hover:scale-105"
             />
             <span className="text-xl font-black tracking-tighter uppercase hidden sm:inline-block">
-              Toolify<span className="text-primary">X</span>
+              Phung<span className="text-primary">X</span>
             </span>
           </Link>
 

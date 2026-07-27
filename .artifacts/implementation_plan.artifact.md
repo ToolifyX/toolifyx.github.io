@@ -1,36 +1,59 @@
-# Implement "About" Screen
+# Rebrand PhungX to PhungX
 
-Create a dedicated "About" page to describe ToolifyX's mission, privacy-first approach, and technical details.
+This plan covers the project-wide rebranding of the platform from **PhungX** to **PhungX**.
 
 ## User Review Required
 
-- A new page `/about` will be created.
-- A link to the "About" page will be added to the website footer.
-- The "About" page will emphasize that all processing is local and private.
+> [!IMPORTANT]
+> This is a project-wide search and replace operation. It will affect the website title, logo text, footer, about page, and all documentation.
+
+- **Brand Change:** PhungX → PhungX
+- **Slug Change (if applicable):** If "toolifyx" appears in URLs or internal identifiers, it will be updated to "phungx".
 
 ## Proposed Changes
 
-### Pages
-#### [NEW] [app/about/page.tsx](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/app/about/page.tsx)
-- Create a clean, readable page using the project's typography and layout.
-- Include sections for:
-    - **What is ToolifyX?**: A brief overview of the platform.
-    - **Privacy First**: Explaining that all tools run locally in the browser and no data is uploaded to servers.
-    - **Open & Secure**: Mentioning the browser-native nature of the tools.
+### Configuration
+#### [MODIFY] [package.json](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/package.json)
+- Update the project name from `toolifyx.github.io` to `phungx.github.io`.
 
-### Layout & Navigation
+### Core Layout & UI
 #### [MODIFY] [app/layout.tsx](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/app/layout.tsx)
-- Update the footer to include a link to the `/about` page.
+- Update the site metadata title.
 
 #### [MODIFY] [components/Navbar.tsx](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/components/Navbar.tsx)
-- (Optional) Add the "About" link to the mobile menu for better discoverability on smaller screens.
+- Update the logo text (PhungX → PhungX).
+- Update alt text for the logo image.
+
+#### [MODIFY] [app/(main)/layout.tsx](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/app/(main)/layout.tsx)
+- Update the footer copyright and brand mention.
+
+### Pages
+#### [MODIFY] [app/(main)/about/page.tsx](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/app/(main)/about/page.tsx)
+- Replace all occurrences of "PhungX" in the content.
+
+#### [MODIFY] [app/(main)/page.tsx](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/app/(main)/page.tsx)
+- Update any hero text or SEO descriptions.
+
+#### [MODIFY] [app/lingosnap/page.tsx](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/app/lingosnap/page.tsx)
+- Update footer link text.
+
+### Components
+#### [MODIFY] [components/CommandPalette.tsx](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/components/CommandPalette.tsx)
+- Update search placeholder/title.
+
+### Documentation
+#### [MODIFY] All `.md` files
+- Update project name in `INDEX.md`, `WALKTHROUGH.md`, etc.
 
 ## Verification Plan
 
 ### Automated Tests
-- Run `npm run build` to ensure the new page is correctly prerendered and types are valid.
+- Run `npm run lint` to check for any broken references.
+- Run `npm run build` to ensure the project still compiles correctly.
 
 ### Manual Verification
-1. Navigate to `/about` directly and verify the content.
-2. Check the footer on the home page and other tool pages to ensure the "About" link is present and working.
-3. Verify the layout looks good on both desktop and mobile devices.
+1. Check the browser tab title.
+2. Verify the logo text in the Navbar.
+3. Scroll to the footer to see the updated copyright.
+4. Visit the About page to confirm the mission statement has been rebranded.
+5. Search for "PhungX" in the codebase again to ensure 0 results.

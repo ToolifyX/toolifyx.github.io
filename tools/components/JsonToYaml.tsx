@@ -65,7 +65,7 @@ export default function JsonToYaml() {
       <div className="card border rounded-xl p-6 space-y-6 bg-card shadow-sm">
         <textarea
           className="w-full border rounded-xl p-4 min-h-[300px] font-mono text-base bg-muted/20 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-          placeholder='{"project": "ToolifyX", "active": true}'
+          placeholder='{"project": "PhungX", "active": true}'
           value={input}
           onChange={(e) => setInput(e.target.value)}
         />
