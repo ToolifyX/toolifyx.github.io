@@ -85,15 +85,6 @@ export const toolRegistry: Record<string, React.ComponentType<any>> = {
   PdfCompressTool: dynamic(() => import('./components/PdfCompressTool'), { loading, ssr: false }),
   PdfEditor: dynamic(() => import('./components/PdfEditor'), { loading, ssr: false }),
 
-  // Design Tools
-  ColorPicker: dynamic(() => import('./components/ColorPicker'), { loading, ssr: false }),
-  GradientGenerator: dynamic(() => import('./components/GradientGenerator'), { loading, ssr: false }),
-  BoxShadowGenerator: dynamic(() => import('./components/BoxShadowGenerator'), { loading, ssr: false }),
-  BorderRadiusGenerator: dynamic(() => import('./components/BorderRadiusGenerator'), { loading, ssr: false }),
-  ColorPaletteGenerator: dynamic(() => import('./components/ColorPaletteGenerator'), { loading, ssr: false }),
-  ContrastChecker: dynamic(() => import('./components/ContrastChecker'), { loading, ssr: false }),
-  FontPreviewTool: dynamic(() => import('./components/FontPreviewTool'), { loading, ssr: false }),
-
   // Utility Tools
   QrCodeGenerator: dynamic(() => import('./components/QrCodeGenerator'), { loading, ssr: false }),
   QrCodeScanner: dynamic(() => import('./components/QrCodeScanner'), { loading, ssr: false }),

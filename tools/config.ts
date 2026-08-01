@@ -87,15 +87,6 @@ export const tools: Tool[] = [
   { slug: 'pdf-compress', title: 'PDF Compress', description: 'Reduce PDF file size securely.', component: 'PdfCompressTool', category: 'pdf', icon: 'Shrink', iconColor: 'text-rose-400 bg-rose-400/10', themeColor: 'rose' },
   { slug: 'pdf-editor', title: 'PDF Editor', description: 'Edit PDF text and annotations locally.', component: 'PdfEditor', category: 'pdf', icon: 'Edit3', iconColor: 'text-red-700 bg-red-700/10', themeColor: 'red' },
 
-  // Design Tools
-  { slug: 'color-picker', title: 'Color Picker', description: 'Pick colors and get HEX/RGB values.', component: 'ColorPicker', category: 'design', icon: 'MousePointer2', iconColor: 'text-purple-500 bg-purple-500/10', themeColor: 'purple' },
-  { slug: 'gradient-generator', title: 'Gradient Generator', description: 'Design custom CSS linear gradients.', component: 'GradientGenerator', category: 'design', icon: 'Layers', iconColor: 'text-pink-500 bg-pink-500/10', themeColor: 'pink' },
-  { slug: 'box-shadow-generator', title: 'Box Shadow Generator', description: 'Create custom CSS box shadows.', component: 'BoxShadowGenerator', category: 'design', icon: 'Shadow', iconColor: 'text-fuchsia-500 bg-fuchsia-500/10', themeColor: 'fuchsia' },
-  { slug: 'border-radius-generator', title: 'Border Radius Generator', description: 'Create rounded corners for UI.', component: 'BorderRadiusGenerator', category: 'design', icon: 'Square', iconColor: 'text-purple-600 bg-purple-600/10', themeColor: 'purple' },
-  { slug: 'color-palette-generator', title: 'Color Palette Generator', description: 'Generate random color schemes.', component: 'ColorPaletteGenerator', category: 'design', icon: 'Palette', iconColor: 'text-pink-600 bg-pink-600/10', themeColor: 'pink' },
-  { slug: 'contrast-checker', title: 'Contrast Checker', description: 'Check WCAG contrast accessibility.', component: 'ContrastChecker', category: 'design', icon: 'SunMoon', iconColor: 'text-fuchsia-600 bg-fuchsia-600/10', themeColor: 'fuchsia' },
-  { slug: 'font-preview', title: 'Font Preview Tool', description: 'Preview text with different fonts.', component: 'FontPreviewTool', category: 'design', icon: 'Type', iconColor: 'text-purple-400 bg-purple-400/10', themeColor: 'purple' },
-
   // Utility Tools
   { slug: 'uuid-generator', title: 'UUID Generator', description: 'Generate Version 1, 4, and 7 UUIDs.', component: 'UuidGenerator', category: 'utility', icon: 'Fingerprint', iconColor: 'text-violet-500 bg-violet-500/10', themeColor: 'violet' },
   { slug: 'uuid-bulk-generator', title: 'UUID Bulk Generator', description: 'Generate thousands of UUIDs efficiently.', component: 'UuidBulkGenerator', category: 'utility', icon: 'Layers', iconColor: 'text-purple-500 bg-purple-500/10', themeColor: 'purple' },

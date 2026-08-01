@@ -1,59 +1,60 @@
-# Rebrand PhungX to PhungX
+# Remove entire Design Category and all its Tools
 
-This plan covers the project-wide rebranding of the platform from **PhungX** to **PhungX**.
+This plan covers the permanent removal of the "Design" category and its 7 associated tools from PhungX.
 
 ## User Review Required
 
 > [!IMPORTANT]
-> This is a project-wide search and replace operation. It will affect the website title, logo text, footer, about page, and all documentation.
-
-- **Brand Change:** PhungX → PhungX
-- **Slug Change (if applicable):** If "toolifyx" appears in URLs or internal identifiers, it will be updated to "phungx".
+> The following 7 features and their source code will be permanently removed:
+> - **Color Picker**
+> - **Gradient Generator**
+> - **Box Shadow Generator**
+> - **Border Radius Generator**
+> - **Color Palette Generator**
+> - **Contrast Checker**
+> - **Font Preview Tool**
+>
+> The "Design" category will also be removed from the UI.
 
 ## Proposed Changes
 
-### Configuration
-#### [MODIFY] [package.json](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/package.json)
-- Update the project name from `toolifyx.github.io` to `phungx.github.io`.
+### Configuration & Registry
+#### [MODIFY] [tools/config.ts](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/tools/config.ts)
+- Remove all 7 design tool entries.
 
-### Core Layout & UI
-#### [MODIFY] [app/layout.tsx](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/app/layout.tsx)
-- Update the site metadata title.
+#### [MODIFY] [tools/registry.tsx](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/tools/registry.tsx)
+- Remove the dynamic import entries for all 7 design tools.
 
-#### [MODIFY] [components/Navbar.tsx](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/components/Navbar.tsx)
-- Update the logo text (PhungX → PhungX).
-- Update alt text for the logo image.
+#### [MODIFY] [tools/types.ts](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/tools/types.ts)
+- Remove `"design"` from the `ToolCategory` union type.
 
-#### [MODIFY] [app/(main)/layout.tsx](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/app/(main)/layout.tsx)
-- Update the footer copyright and brand mention.
-
-### Pages
-#### [MODIFY] [app/(main)/about/page.tsx](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/app/(main)/about/page.tsx)
-- Replace all occurrences of "PhungX" in the content.
+### UI Components
+#### [MODIFY] [components/CategoryMenu.tsx](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/components/CategoryMenu.tsx)
+- Remove the "Design" category from the menu.
 
 #### [MODIFY] [app/(main)/page.tsx](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/app/(main)/page.tsx)
-- Update any hero text or SEO descriptions.
+- Remove "Design" from the `categories` array used for the home page sections.
 
-#### [MODIFY] [app/lingosnap/page.tsx](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/app/lingosnap/page.tsx)
-- Update footer link text.
+### Source Files
+#### [DELETE] all design tool components:
+- `tools/components/ColorPicker.tsx`
+- `tools/components/GradientGenerator.tsx`
+- `tools/components/BoxShadowGenerator.tsx`
+- `tools/components/BorderRadiusGenerator.tsx`
+- `tools/components/ColorPaletteGenerator.tsx`
+- `tools/components/ContrastChecker.tsx`
+- `tools/components/FontPreviewTool.tsx`
 
-### Components
-#### [MODIFY] [components/CommandPalette.tsx](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/components/CommandPalette.tsx)
-- Update search placeholder/title.
-
-### Documentation
-#### [MODIFY] All `.md` files
-- Update project name in `INDEX.md`, `WALKTHROUGH.md`, etc.
+### Documentation & Tracking
+#### [MODIFY] [config_slugs.txt](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/config_slugs.txt)
+- Remove the slugs for all 7 design tools.
 
 ## Verification Plan
 
 ### Automated Tests
-- Run `npm run lint` to check for any broken references.
-- Run `npm run build` to ensure the project still compiles correctly.
+- Run `npm run build` to ensure no broken references (especially in search and filtering logic).
 
 ### Manual Verification
-1. Check the browser tab title.
-2. Verify the logo text in the Navbar.
-3. Scroll to the footer to see the updated copyright.
-4. Visit the About page to confirm the mission statement has been rebranded.
-5. Search for "PhungX" in the codebase again to ensure 0 results.
+1. Verify that the "Design" tab is gone from the Home page.
+2. Verify that none of the design tools appear in the "All" section or search results.
+3. Ensure the total tool count is updated correctly.

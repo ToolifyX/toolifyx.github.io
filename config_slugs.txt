@@ -1,20 +1,13 @@
 base64-tool
 blur-detector
-border-radius-generator
-box-shadow-generator
 case-converter
 character-counter
-color-palette-generator
-color-picker
-contrast-checker
 convert-to-jpg
 convert-to-png
 convert-to-webp
 css-minifier
 duplicate-remover
 export const getToolBySlug = (slug: string) => tools.find((t) => t.slug === slug);
-font-preview
-gradient-generator
 html-minifier
 image-base64
 image-color-tool

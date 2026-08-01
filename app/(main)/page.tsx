@@ -20,7 +20,6 @@ const categories: { id: ToolCategory; label: string; href: string; description: 
   { id: 'image', label: 'Image Tools', href: '/image-tools', description: 'Compress, Convert, Resize...' },
   { id: 'pdf', label: 'PDF Tools', href: '/pdf-tools', description: 'Merge, Split, Convert...' },
   { id: 'seo', label: 'SEO Tools', href: '/seo-tools', description: 'Meta Tags, Schema, Robots...' },
-  { id: 'design', label: 'Design Tools', href: '/design-tools', description: 'Picker, Gradient, Shadow...' },
   { id: 'utility', label: 'Utility Tools', href: '/utility-tools', description: 'QR, Password, Unit...' },
 ];
 

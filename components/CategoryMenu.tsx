@@ -16,7 +16,6 @@ const categories: { id: ToolCategory | 'all'; label: string }[] = [
   { id: 'text', label: 'Text' },
   { id: 'image', label: 'Image' },
   { id: 'pdf', label: 'PDF' },
-  { id: 'design', label: 'Design' },
   { id: 'utility', label: 'Utility' },
   { id: 'apps', label: 'Apps' },
 ];

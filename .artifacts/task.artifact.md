@@ -1,10 +1,8 @@
-- [ ] Update `package.json` project name
-- [ ] Update site title in `app/layout.tsx`
-- [ ] Update logo text and alt text in `components/Navbar.tsx`
-- [ ] Update footer in `app/(main)/layout.tsx`
-- [ ] Replace "PhungX" with "PhungX" in `app/(main)/about/page.tsx`
-- [ ] Update hero text and descriptions in `app/(main)/page.tsx`
-- [ ] Update footer link in `app/lingosnap/page.tsx`
-- [ ] Update search title in `components/CommandPalette.tsx`
-- [ ] Perform a global search and replace in all documentation (`.md` files)
-- [ ] Final verification and build check
+- [ ] Delete design tool component files
+- [ ] Update `tools/types.ts` (remove `"design"` category)
+- [ ] Update `tools/config.ts` (remove tool entries)
+- [ ] Update `tools/registry.tsx` (remove dynamic imports)
+- [ ] Update `components/CategoryMenu.tsx` (remove "Design" tab)
+- [ ] Update `app/(main)/page.tsx` (remove "Design" section)
+- [ ] Update `config_slugs.txt`
+- [ ] Run `npm run build` and verify
