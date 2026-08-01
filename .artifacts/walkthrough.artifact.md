@@ -1,26 +1,46 @@
-# Walkthrough - Individual Item Removal in Recently Used Tools
+# Walkthrough - Tích hợp Firebase Analytics
 
-I have successfully implemented the ability to remove individual items from the "Recently Used Quick Access" section on the Home page.
+Tôi đã hoàn tất việc tích hợp Firebase Analytics vào hệ thống theo dõi của dự án PhungX. Việc này giúp bạn theo dõi hành vi người dùng chi tiết hơn thông qua Firebase Console.
 
-## Changes Made
+## Các thay đổi đã thực hiện
 
-### 1. Updated ToolCard Component
-- Modified [ToolCard.tsx](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/components/ToolCard.tsx) to accept an optional `onRemove` callback.
-- Added a small "X" button in the top-right corner of the card.
-- This button only appears when the card is hovered and when an `onRemove` function is provided.
-- Used `e.preventDefault()` and `e.stopPropagation()` to prevent the tool from opening when the remove button is clicked.
+### 1. Cài đặt Firebase SDK
+- Đã cài đặt thư viện chính thức `firebase` (`npm install firebase`).
 
-### 2. Implemented Removal Logic
-- Updated [RecentlyUsedTools.tsx](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/components/RecentlyUsedTools.tsx) to include a `removeTool` function.
-- This function updates both the component state (for immediate UI feedback) and the `localStorage` (to persist the change).
-- Passed this function to the `onRemove` prop of each `ToolCard` in the "Recently Used" section.
+### 2. Cấu hình hệ thống
+- **[analytics/config.ts](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/analytics/config.ts):** Thêm các trường cấu hình cần thiết cho Firebase (API Key, Project ID, App ID...).
+- Đã thêm logic kiểm tra cấu hình để cảnh báo nếu thiếu các biến môi trường cần thiết trong chế độ phát triển.
 
-### 3. Styling & UX Improvements
-- The remove button matches the platform's aesthetic (rounded, semi-transparent background, destructive color on hover).
-- Added a "Remove from history" tooltip for better accessibility.
+### 3. Triển khai Firebase Provider
+- **[analytics/providers/FirebaseProvider.ts](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/analytics/providers/FirebaseProvider.ts):** Tạo lớp Provider mới để kết nối AnalyticsManager với Firebase SDK.
+- Hỗ trợ đầy đủ:
+    - `trackEvent`: Gửi các sự kiện tùy chỉnh (tool_opened, search_submitted...).
+    - `trackPageView`: Theo dõi lượt xem trang.
+    - `setUserProperties`: Lưu thông tin thuộc tính người dùng (theme, language...).
+    - `setConsent`: Hỗ trợ quản lý quyền riêng tư.
 
-## Verification Results
-- [x] **Functionality:** Clicking the "X" button removes the specific tool from the list immediately.
-- [x] **Persistence:** The item remains removed even after refreshing the page.
-- [x] **Isolation:** The "X" button only appears in the "Recently Used" section, not in other category grids or search results.
-- [x] **Build:** Successfully completed `npm run build`.
+### 4. Kích hoạt tự động
+- **[analytics/AnalyticsInitializer.tsx](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/analytics/AnalyticsInitializer.tsx):** Đăng ký `FirebaseProvider` vào danh sách các nhà cung cấp phân tích. Firebase sẽ tự động khởi chạy cùng với Google Analytics và PostHog.
+
+## Hướng dẫn cấu hình
+
+Để Firebase hoạt động, bạn cần thêm các biến môi trường sau vào file `.env.local` của mình:
+
+> [!IMPORTANT]
+> Bạn có thể xem mẫu tại file [firebase_env_template.txt](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/firebase_env_template.txt).
+
+```bash
+NEXT_PUBLIC_ENABLE_ANALYTICS=true
+NEXT_PUBLIC_FIREBASE_API_KEY=AIzaSy...
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=phungx-xxxx.firebaseapp.com
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=phungx-xxxx
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=phungx-xxxx.appspot.com
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=123456789
+NEXT_PUBLIC_FIREBASE_APP_ID=1:123456789:web:abcdef...
+NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=G-XXXXXXX
+```
+
+## Kết quả kiểm tra
+- [x] **Build:** `npm run build` hoàn thành thành công, không có lỗi TypeScript.
+- [x] **Modular:** Firebase được load động ở phía client, không làm chậm quá trình render server ban đầu.
+- [x] **Hợp nhất:** Các sự kiện hiện tại sẽ được gửi đồng thời tới cả Google Analytics, PostHog và Firebase.

@@ -5,6 +5,7 @@ import { analytics } from './core/AnalyticsManager';
 import { GoogleAnalyticsProvider } from './providers/GoogleAnalyticsProvider';
 import { MicrosoftClarityProvider } from './providers/MicrosoftClarityProvider';
 import { PostHogProvider } from './providers/PostHogProvider';
+import { FirebaseProvider } from './providers/FirebaseProvider';
 import { useTrackPage } from './hooks/useTrackPage';
 import { analyticsConfig, validateConfig } from './config';
 import './utils/errorTracker'; // Register global error handlers
@@ -22,6 +23,7 @@ export default function AnalyticsInitializer({ children }: { children: React.Rea
     analytics.registerProvider(new GoogleAnalyticsProvider());
     analytics.registerProvider(new MicrosoftClarityProvider());
     analytics.registerProvider(new PostHogProvider());
+    analytics.registerProvider(new FirebaseProvider());
 
     // Initialize all registered providers
     analytics.init();
