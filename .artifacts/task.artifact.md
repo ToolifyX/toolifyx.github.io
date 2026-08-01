@@ -1,3 +1,6 @@
-- [x] Update `components/ToolCard.tsx` to include an optional `onRemove` button
-- [x] Update `components/RecentlyUsedTools.tsx` to implement and pass the removal logic
-- [x] Verify the removal functionality works and persists
+- [ ] Update `analytics/hooks/useTrackTool.ts` with new tracking methods
+- [ ] Create `analytics/hooks/useTrackApp.ts` for mobile app tracking
+- [ ] Integrate tracking into `components/AppCard.tsx`
+- [ ] Integrate tracking into `tools/components/JsonFormatter.tsx`
+- [ ] Integrate tracking into `tools/components/ImageCompressor.tsx`
+- [ ] Verify build and event firing logic

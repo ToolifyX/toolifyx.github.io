@@ -2,18 +2,22 @@ import React from 'react';
 import { MobileApp } from '@/lib/appsData';
 import { DynamicIcon } from './DynamicIcon';
 import { ExternalLink } from 'lucide-react';
+import { useTrackApp } from '@/analytics/hooks/useTrackApp';
 
 interface AppCardProps {
   app: MobileApp;
 }
 
 export default function AppCard({ app }: AppCardProps) {
+  const { trackAppClick } = useTrackApp();
+
   return (
     <a
       href={`https://play.google.com/store/apps/details?id=${app.packageId}`}
       target="_blank"
       rel="noopener noreferrer"
       title={app.name}
+      onClick={() => trackAppClick(app.packageId, app.name)}
     >
       <div className="h-full p-5 border rounded-2xl transition-all duration-300 flex flex-col group relative overflow-hidden shadow-sm bg-primary/[0.03] border-primary/10 hover:border-primary/30 hover:bg-primary/[0.08]">
         <div className="flex items-start gap-4">

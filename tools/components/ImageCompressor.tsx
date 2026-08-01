@@ -13,10 +13,19 @@ import { Loader2, Zap, Settings2 } from 'lucide-react';
 import UploadPanel from '@/components/tool-layout/UploadPanel';
 import ResultPanel from '@/components/tool-layout/ResultPanel';
 import ResultScreen from '@/components/tool-layout/ResultScreen';
+import { useTrackTool } from '@/analytics/hooks/useTrackTool';
+import { useTrackDownload } from '@/analytics/hooks/useTrackDownload';
+import { Tool } from '@/tools/types';
 
 type ToolStatus = 'idle' | 'processing' | 'done';
 
-export default function ImageCompressor() {
+interface ImageCompressorProps {
+  tool: Tool;
+}
+
+export default function ImageCompressor({ tool }: ImageCompressorProps) {
+  const { trackStarted, trackCompleted, trackFailed } = useTrackTool(tool);
+  const { trackDownload } = useTrackDownload();
   const [status, setStatus] = useState<ToolStatus>('idle');
   const [files, setFiles] = useState<File[]>([]);
   const [quality, setQuality] = useState(0.7);
@@ -33,6 +42,7 @@ export default function ImageCompressor() {
     if (files.length === 0 || !limits) return;
     setStatus('processing');
     setResults([]);
+    trackStarted();
 
     try {
       const processedResults = await processQueue(
@@ -46,8 +56,13 @@ export default function ImageCompressor() {
       );
       setResults(processedResults);
       setStatus('done');
-    } catch (error) {
+      trackCompleted({
+        file_count: files.length,
+        quality_setting: quality
+      });
+    } catch (error: any) {
       console.error("Batch processing failed:", error);
+      trackFailed(error.message || "Compression failed");
       alert("An error occurred during compression.");
       setStatus('idle');
     } finally {
@@ -63,12 +78,14 @@ export default function ImageCompressor() {
   };
 
   const handleDownloadResult = (res: ProcessedResult) => {
+    trackDownload(tool.slug, res.name, res.blob.size);
     downloadFile(res.blob, res.name);
   };
 
   const handleDownloadAll = async () => {
     if (results.length === 0) return;
     setIsZipping(true);
+    trackDownload(tool.slug, "compressed-images.zip", results.reduce((acc, r) => acc + r.blob.size, 0));
     try {
       await downloadAllAsZip(
         results.map(r => ({ name: r.name, blob: r.blob })),

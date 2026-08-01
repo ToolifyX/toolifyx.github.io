@@ -1,37 +1,51 @@
-# Add individual item removal to Recently Used Tools
+# Implement Comprehensive Tool Usage Tracking
 
-Add a "remove" button to each tool card in the "Recently Used" section to allow users to delete specific items from their history.
+Enhance the analytics system to track detailed user interactions with tools, including processing actions, downloads, and mobile app discovery.
 
 ## User Review Required
 
-> [!NOTE]
-> A small "X" button will appear on the top-right corner of each tool card **only** in the "Recently Used" section. Clicking this button will remove the tool from the history without opening it.
+> [!IMPORTANT]
+> This update will increase the number of events sent to your analytics providers (Firebase, GA4, PostHog). It focuses on:
+> - **Tool Usage:** When a user actually *uses* a tool (e.g., clicks "Format", "Compress", "Convert").
+> - **Outputs:** When a user downloads a file or copies a result.
+> - **App Discovery:** When a user clicks on a mobile app to view it on the Play Store.
 
 ## Proposed Changes
 
-### Components
-#### [MODIFY] [ToolCard.tsx](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/components/ToolCard.tsx)
-- Add an optional `onRemove` prop to the `ToolCardProps` interface.
-- If `onRemove` is provided, render a small close button (`X` icon from `lucide-react`) at the top-right corner of the card.
-- Implement click handling with `e.preventDefault()` and `e.stopPropagation()` to ensure removing an item doesn't trigger navigation.
+### Analytics Hooks
+#### [MODIFY] [useTrackTool.ts](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/analytics/hooks/useTrackTool.ts)
+- Add new methods:
+    - `trackProcessed(properties)`: Track when a tool performs its main logic.
+    - `trackCopied(properties)`: Track when a user copies the output.
+- These will send events like `tool_processed` and `tool_output_copied`.
 
-#### [MODIFY] [RecentlyUsedTools.tsx](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/components/RecentlyUsedTools.tsx)
-- Implement a `removeTool` function that:
-    1. Reads the current `recentlyUsedTools` from `localStorage`.
-    2. Filters out the specified tool slug.
-    3. Saves the updated list back to `localStorage`.
-    4. Updates the component's state to reflect the change immediately.
-- Pass this `removeTool` function to the `onRemove` prop of each `ToolCard`.
+#### [NEW] [useTrackApp.ts](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/analytics/hooks/useTrackApp.ts)
+- Create a hook to track interactions with mobile apps:
+    - `trackAppClick(appId, appName)`: Track when a user clicks to view an app on the Play Store.
+
+### Components
+#### [MODIFY] [AppCard.tsx](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/components/AppCard.tsx)
+- Use `useTrackApp` to track clicks to the Play Store.
+
+### High-Usage Tools (Phase 1)
+#### [MODIFY] [JsonFormatter.tsx](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/tools/components/JsonFormatter.tsx)
+- Track "Format JSON" action.
+- Track "Copy to Clipboard" action.
+
+#### [MODIFY] [ImageCompressor.tsx](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/tools/components/ImageCompressor.tsx)
+- Track "Process" start and completion (with file counts).
+- Track "Download" and "Download All" (ZIP) actions.
 
 ## Verification Plan
 
 ### Automated Tests
-- Run `npm run build` to ensure no regressions.
+- Run `npm run build` to ensure all hooks are correctly integrated.
 
 ### Manual Verification
-1. Open the Home page and use some tools to populate the "Recently Used" list.
-2. Verify that each card in the "Recently Used" section has a small "X" button at the top right.
-3. Click the "X" button on one of the cards.
-4. Confirm the card is removed immediately from the UI.
-5. Refresh the page to ensure the item remains gone (persisted in `localStorage`).
-6. Verify that clicking elsewhere on the card still opens the tool as expected.
+1. Open the browser console with `NEXT_PUBLIC_ANALYTICS_DEBUG=true`.
+2. **Visits:** Verify `page_view` and `tool_opened` fire when navigating.
+3. **Usage:**
+    - Use the JSON Formatter; verify `tool_processed` and `tool_output_copied` fire.
+    - Use the Image Compressor; verify `tool_started`, `tool_completed`, and `download` fire.
+4. **Apps:** Click on a mobile app card; verify `app_store_click` fires.
+5. **Search:** Search on the home page; verify `search_submitted` fires.

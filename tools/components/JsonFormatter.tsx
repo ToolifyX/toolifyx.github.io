@@ -16,8 +16,15 @@
 
 import React, { useState } from 'react';
 import { formatJSON, copyToClipboard } from '@/lib/utils';
+import { useTrackTool } from '@/analytics/hooks/useTrackTool';
+import { Tool } from '@/tools/types';
 
-export default function JsonFormatter() {
+interface JsonFormatterProps {
+  tool: Tool;
+}
+
+export default function JsonFormatter({ tool }: JsonFormatterProps) {
+  const { trackProcessed, trackCopied } = useTrackTool(tool);
   const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
   const [indent, setIndent] = useState(2);
@@ -32,7 +39,9 @@ export default function JsonFormatter() {
       if (!input.trim()) return;
       const formatted = formatJSON(input, indent);
       setOutput(formatted);
-      setTime(parseFloat((performance.now() - start).toFixed(2)));
+      const duration = parseFloat((performance.now() - start).toFixed(2));
+      setTime(duration);
+      trackProcessed({ duration_ms: duration, input_length: input.length });
     } catch (e: any) {
       setError(e.message);
       setOutput('');
@@ -45,6 +54,7 @@ export default function JsonFormatter() {
     const success = await copyToClipboard(output);
     if (success) {
       setCopied(true);
+      trackCopied({ output_length: output.length });
       setTimeout(() => setCopied(false), 2000);
     }
   };
