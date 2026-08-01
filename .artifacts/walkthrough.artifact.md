@@ -1,32 +1,26 @@
-# Walkthrough - Removed Design Category and Tools
+# Walkthrough - Individual Item Removal in Recently Used Tools
 
-I have successfully removed the entire **Design** category and all its 7 associated tools from the PhungX platform.
+I have successfully implemented the ability to remove individual items from the "Recently Used Quick Access" section on the Home page.
 
 ## Changes Made
 
-### 1. Deleted Source Code
-- Removed 7 component files from `tools/components/`:
-    - `ColorPicker.tsx`
-    - `GradientGenerator.tsx`
-    - `BoxShadowGenerator.tsx`
-    - `BorderRadiusGenerator.tsx`
-    - `ColorPaletteGenerator.tsx`
-    - `ContrastChecker.tsx`
-    - `FontPreviewTool.tsx`
-- Deleted the category-specific landing page: `app/(main)/design-tools/page.tsx`.
+### 1. Updated ToolCard Component
+- Modified [ToolCard.tsx](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/components/ToolCard.tsx) to accept an optional `onRemove` callback.
+- Added a small "X" button in the top-right corner of the card.
+- This button only appears when the card is hovered and when an `onRemove` function is provided.
+- Used `e.preventDefault()` and `e.stopPropagation()` to prevent the tool from opening when the remove button is clicked.
 
-### 2. Configuration & Registry Cleanup
-- **`tools/config.ts`**: Removed all 7 tool metadata entries.
-- **`tools/registry.tsx`**: Removed all 7 dynamic import registrations.
-- **`tools/types.ts`**: Removed `"design"` from the `ToolCategory` type definition.
+### 2. Implemented Removal Logic
+- Updated [RecentlyUsedTools.tsx](file:///Users/phung/Documents/Workspace/google-play/toolifyx.github.io/components/RecentlyUsedTools.tsx) to include a `removeTool` function.
+- This function updates both the component state (for immediate UI feedback) and the `localStorage` (to persist the change).
+- Passed this function to the `onRemove` prop of each `ToolCard` in the "Recently Used" section.
 
-### 3. UI Updates
-- **Category Menu**: The "Design" tab has been removed from the navigation bar on the Home page.
-- **Home Page sections**: Removed the "Design Tools" section from the discovery view.
-- **config_slugs.txt**: Updated to remove the slugs of the deleted tools.
+### 3. Styling & UX Improvements
+- The remove button matches the platform's aesthetic (rounded, semi-transparent background, destructive color on hover).
+- Added a "Remove from history" tooltip for better accessibility.
 
 ## Verification Results
-- [x] **Home Page:** No "Design" tab is visible.
-- [x] **Search:** Searching for "color" or "gradient" no longer returns the deleted tools.
-- [x] **Total Count:** The tool count has been correctly adjusted across the UI.
-- [x] **Build:** Successfully completed `npm run build` with 114 total pages (down from 122).
+- [x] **Functionality:** Clicking the "X" button removes the specific tool from the list immediately.
+- [x] **Persistence:** The item remains removed even after refreshing the page.
+- [x] **Isolation:** The "X" button only appears in the "Recently Used" section, not in other category grids or search results.
+- [x] **Build:** Successfully completed `npm run build`.

@@ -1,8 +1,3 @@
-- [ ] Delete design tool component files
-- [ ] Update `tools/types.ts` (remove `"design"` category)
-- [ ] Update `tools/config.ts` (remove tool entries)
-- [ ] Update `tools/registry.tsx` (remove dynamic imports)
-- [ ] Update `components/CategoryMenu.tsx` (remove "Design" tab)
-- [ ] Update `app/(main)/page.tsx` (remove "Design" section)
-- [ ] Update `config_slugs.txt`
-- [ ] Run `npm run build` and verify
+- [x] Update `components/ToolCard.tsx` to include an optional `onRemove` button
+- [x] Update `components/RecentlyUsedTools.tsx` to implement and pass the removal logic
+- [x] Verify the removal functionality works and persists

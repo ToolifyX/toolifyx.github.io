@@ -22,6 +22,17 @@ export default function RecentlyUsedTools() {
     }
   }, []);
 
+  const removeTool = (slug: string) => {
+    try {
+      const recentlyUsedSlugs = JSON.parse(localStorage.getItem('recentlyUsedTools') || '[]');
+      const updatedSlugs = recentlyUsedSlugs.filter((s: string) => s !== slug);
+      localStorage.setItem('recentlyUsedTools', JSON.stringify(updatedSlugs));
+      setRecentTools(prev => prev.filter(tool => tool.slug !== slug));
+    } catch (e) {
+      console.error('Failed to remove tool from history', e);
+    }
+  };
+
   if (recentTools.length === 0) return null;
 
   return (
@@ -42,7 +53,11 @@ export default function RecentlyUsedTools() {
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {recentTools.map((tool) => (
-          <ToolCard key={tool.slug} tool={tool} />
+          <ToolCard
+            key={tool.slug}
+            tool={tool}
+            onRemove={removeTool}
+          />
         ))}
       </div>
     </section>

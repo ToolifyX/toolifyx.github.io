@@ -2,12 +2,14 @@ import React from 'react';
 import Link from 'next/link';
 import { Tool } from '@/tools/types';
 import { DynamicIcon } from './DynamicIcon';
+import { X } from 'lucide-react';
 
 interface ToolCardProps {
   tool: Tool;
+  onRemove?: (slug: string) => void;
 }
 
-export default function ToolCard({ tool }: ToolCardProps) {
+export default function ToolCard({ tool, onRemove }: ToolCardProps) {
   const theme = tool.themeColor || 'blue';
 
   const themeClasses: Record<string, string> = {
@@ -35,8 +37,21 @@ export default function ToolCard({ tool }: ToolCardProps) {
   const currentTheme = themeClasses[theme] || themeClasses.blue;
 
   return (
-    <Link href={`/tools/${tool.slug}`} title={tool.title}>
-      <div className={`h-full p-5 border rounded-2xl transition-all duration-300 flex flex-col group relative overflow-hidden shadow-sm ${currentTheme.split(' ').slice(0, 2).join(' ')} ${currentTheme.split(' ').slice(2).join(' ')}`}>
+    <Link href={`/tools/${tool.slug}`} title={tool.title} className="relative group">
+      <div className={`h-full p-5 border rounded-2xl transition-all duration-300 flex flex-col relative overflow-hidden shadow-sm ${currentTheme.split(' ').slice(0, 2).join(' ')} ${currentTheme.split(' ').slice(2).join(' ')}`}>
+        {onRemove && (
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              onRemove(tool.slug);
+            }}
+            className="absolute top-3 right-3 p-1.5 rounded-full bg-background/50 text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all z-20 opacity-0 group-hover:opacity-100"
+            title="Remove from history"
+          >
+            <X size={14} />
+          </button>
+        )}
         <div className="flex items-start gap-4">
           <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-all group-hover:scale-110 shadow-sm bg-white dark:bg-card border border-border/50 ${tool.iconColor?.split(' ')[0] || 'text-primary'}`}>
             <DynamicIcon name={tool.icon || 'HelpCircle'} size={24} strokeWidth={2} />
